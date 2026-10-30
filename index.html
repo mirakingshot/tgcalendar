@@ -65,18 +65,24 @@ th{background:#F7F3EF}
 .ct{background:color-mix(in srgb,var(--bgc),#000 50%);color:#fff}
 .ct{background:#B7E1D1;color:#111111}
 .rl .ct,.pp .ct,.kv .ct{background:color-mix(in srgb,var(--bgc),#000 50%);color:#fff}
+.srv{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:14px 16px;border:2px solid var(--bd);border-radius:16px;background:#fff;color:var(--tx);font-family:"Nunito",system-ui,sans-serif;cursor:pointer;text-align:left}
+.srv b{font-size:1.05rem;font-weight:800}.srv span{color:var(--mu);font-size:.88rem}
+.srv[aria-pressed=true]{background:var(--ac);border-color:var(--ln)}.srv[aria-pressed=true] span{color:var(--tx)}
 </style></head><body><main>
 <h1>Truegold calendar planner</h1>
 <p class="s">Pick a spending Monday. The planner finds the smallest Monday batch that reaches your Tempered Truegold goal by then, and lays out each week.</p>
+<section class="card"><h2>1. Pick your server group</h2><div class="row" style="margin-top:0"><button class="srv" data-g="a" aria-pressed="false"><b>Nov 23 unlock</b><span>Servers 1428–1558</span></button><button class="srv" data-g="b" aria-pressed="false"><b>Dec 21 unlock</b><span>Servers 1559–1689</span></button></div></section>
+<div id="app" hidden>
 <div class="g">
-<section class="card"><h2>1. Buildings to upgrade</h2><div class="w"><table id="bt"></table></div>
+<section class="card"><h2>2. Buildings to upgrade</h2><div class="w"><table id="bt"></table></div>
 <div class="row"><div><label for="cur">Current TTG</label><input id="cur" type="number" min="0" value="0"></div>
 <div><label for="mode">Plan for</label><select id="mode"><option value="av">Average luck</option><option value="mn">Guaranteed (worst case)</option></select></div></div></section>
-<section class="card"><h2>2. Choose your spending Monday</h2><div class="nav"><button id="pv" aria-label="Previous month">‹</button><span id="mt"></span><button id="nx" aria-label="Next month">›</button></div>
-<div class="w"><div class="cal" id="cal"></div></div><p class="note">Use the arrows to change month, and click an outlined Monday to choose your spend date. Circles show refinements per day. Refining starts Dec 21, the day upgrades unlock, and the spend Monday’s batch counts because you refine before spending.</p></section></div>
+<section class="card"><h2>3. Choose your spending Monday</h2><div class="nav"><button id="pv" aria-label="Previous month">‹</button><span id="mt"></span><button id="nx" aria-label="Next month">›</button></div>
+<div class="w"><div class="cal" id="cal"></div></div><p class="note">Use the arrows to change month, and click an outlined Monday to choose your spend date. Circles show refinements per day. Refining starts on your server’s unlock day, when upgrades unlock, and the spend Monday’s batch counts because you refine before spending.</p></section></div>
 <section class="card"><h2 id="pl">Your 6 Week Plan</h2><div class="k" id="sum"></div><div id="wr" class="warn"></div></section>
 <section class="card"><h2>Week by week</h2><div class="w"><table id="wt"></table></div>
 <p class="note">Weekly cap is 100 refinements: the Monday batch plus 1 per day Tuesday to Sunday. The first refinement each day costs half. Costs: 20/50/100/130/160 TG per refinement across each block of 20. Average TTG per refinement is estimated from the planner’s strategy table, so treat averages as close approximations.</p></section>
+</div>
 <footer class="note" style="text-align:center;margin-top:28px;font-weight:600">made with love by Mira [221330479]</footer>
 </main>
 <script>
@@ -84,7 +90,7 @@ const T=[20,50,100,130,160],MN=[1,2,3,3,3],AV=[1.45,2.15,3.18,3.43,3.71];
 const N=["Town Center","Embassy","Command Center","Infirmary","Barracks","Stable","Range","War Academy"];
 const C={6:[[900,60],[225,13],[180,12],[180,12],[405,25],[405,25],[405,25],[405,25]],7:[[1080,90],[270,19],[216,18],[216,18],[486,37],[486,37],[486,37],[486,37]],8:[[1080,120],[270,30],[216,24],[216,24],[486,54],[486,54],[486,54],[486,54]]};
 const S=new Set(["6-0","6-1","6-2","6-3","7-1","7-2"]);
-const START=new Date(2026,11,21),DAY=864e5,MS=["January","February","March","April","May","June","July","August","September","October","November","December"];
+const UNL={a:new Date(2026,10,23),b:new Date(2026,11,21)};let START=UNL.b;const DAY=864e5,MS=["January","February","March","April","May","June","July","August","September","October","November","December"];
 let sel=5,vm=new Date(2026,11,1);
 const $=id=>document.getElementById(id),f=n=>Math.round(n).toLocaleString();
 const wk=B=>{let tg=0,mn=0,av=0;for(let i=1;i<=B+6;i++){const t=Math.floor((i-1)/20);let p=T[t];if(i==1||i>B)p/=2;tg+=p;mn+=MN[t];av+=AV[t]}return{tg,mn,av}};
@@ -97,7 +103,7 @@ N.forEach((n,b)=>{h+="<tr><td>"+n+"</td>"+[6,7,8].map(l=>'<td><button class="tg"
 $("bt").innerHTML=h;
 $("bt").onclick=e=>{const k=e.target.dataset.k;if(!k)return;S.has(k)?S.delete(k):S.add(k);if(k[0]=="8"&&S.has(k)){const b=k.slice(2);S.add("6-"+b);S.add("7-"+b)}build();render()}}
 function cal(){const y=vm.getFullYear(),m=vm.getMonth(),B=plan().B,pad=new Date(y,m,1).getDay(),nd=new Date(y,m+1,0).getDate();
-$('mt').textContent=MS[m]+' '+y;$('pv').disabled=y==2026&&m==11;$('nx').disabled=y==2027&&m==5;
+$('mt').textContent=MS[m]+' '+y;$('pv').disabled=y*12+m<=START.getFullYear()*12+START.getMonth();$('nx').disabled=y==2027&&m==5;
 let h=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(x=>'<b>'+x+'</b>').join('');
 for(let i=0;i<pad;i++)h+='<span></span>';
 for(let d=1;d<=nd;d++){const dt=new Date(y,m,d),dd=Math.round((dt-START)/DAY),w=wkOf(dt),mon=dt.getDay()==1,ok=mon&&w>=1&&w%4==1,pm=addD(dt,-5),kv=dt.getDay()==6&&wkOf(pm)>=1&&wkOf(pm)%4==1,inP=dd>=0&&dd<=sel*7,isS=mon&&w==sel;
@@ -115,7 +121,8 @@ $("sum").innerHTML='<div><span>Spend date</span><b class="big">'+fm(end)+", "+en
 $("wr").textContent=p.ok?"":"Even the maximum batch of 94 does not reach "+f(p.need)+" TTG by this date. Choose a later Monday or fewer buildings.";
 let h="<tr><th>Week</th><th>Dates</th><th>Plan</th><th>TG</th><th>TTG this week</th><th>Running TTG</th></tr>",run=+$("cur").value||0,per=w[p.m];
 for(let i=0;i<sel;i++){const s=addD(START,i*7);run+=per;const pct=Math.min(100,run/Math.max(1,n.tt)*100);
-h+="<tr><td>"+(i+1)+(i==0?" (unlock Dec 21)":"")+"</td><td>"+fm(s)+" – "+fm(addD(s,6))+"</td><td>Mon ×"+p.B+", then 1 a day</td><td>"+f(w.tg)+"</td><td>"+(p.m=="av"?"≈ ":"≥ ")+f(per)+'</td><td>'+f(run)+" of "+f(n.tt)+'<div class="bar"><i style="width:'+pct+'%"></i></div></td></tr>'}
+h+="<tr><td>"+(i+1)+(i==0?" (unlock "+fm(START)+")":"")+"</td><td>"+fm(s)+" – "+fm(addD(s,6))+"</td><td>Mon ×"+p.B+", then 1 a day</td><td>"+f(w.tg)+"</td><td>"+(p.m=="av"?"≈ ":"≥ ")+f(per)+'</td><td>'+f(run)+" of "+f(n.tt)+'<div class="bar"><i style="width:'+pct+'%"></i></div></td></tr>'}
 {const s=addD(START,sel*7);run+=x[p.m];h+="<tr><td>"+(sel+1)+"</td><td>"+fm(s)+"</td><td>Mon ×"+p.B+", then spend</td><td>"+f(x.tg)+"</td><td>"+(p.m=="av"?"≈ ":"≥ ")+f(x[p.m])+"</td><td>"+f(run)+" of "+f(n.tt)+"</td></tr>"}$("pl").textContent="Your "+(sel+1)+" Week Plan";$("wt").innerHTML=h;cal()}
+document.querySelectorAll(".srv").forEach(b=>b.onclick=()=>{document.querySelectorAll(".srv").forEach(x=>x.setAttribute("aria-pressed",x==b));START=UNL[b.dataset.g];sel=5;vm=new Date(START.getFullYear(),START.getMonth(),1);$("app").hidden=false;render()});
 $("cur").oninput=render;$("mode").onchange=render;build();render();
 </script></body></html>
