@@ -2,9 +2,9 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Truegold Calendar Planner</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap">
 <style>
-:root{--bg:#F7F3EF;--cd:#FFFDFA;--tx:#111111;--mu:#6a655e;--ac:#FFE59A;--bd:#E6DED3;--tn:#DDF0E8;--ok:#2d7a52;--bad:#c2334a;--on:#111111;--ln:#111111;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root{--bg:#FAF7F1;--cd:#FDFBF6;--tx:#14307A;--mu:#5B6FA5;--ac:#9DB9EC;--bd:#B9CAEC;--tn:#E3ECFA;--ok:#2d7a52;--bad:#c2334a;--on:#14307A;--ln:#14307A;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 
 
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
@@ -13,43 +13,44 @@ body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.55 "Nunito","Hira
 main{max-width:980px;margin:0 auto;padding:20px 16px 48px}
 h1{font-size:1.9rem;margin:0 0 4px;letter-spacing:-.01em}
 h2{font-size:1.15rem;margin:0 0 10px}
-p.s{color:var(--mu);margin:0 0 18px;font-family:system-ui,sans-serif;font-size:.92rem}
-.card{background:var(--cd);border:1px solid var(--bd);border-radius:10px;padding:16px;margin-bottom:16px}
+p.s{color:var(--mu);margin:0 0 18px;font-family:"Nunito","Hiragino Maru Gothic ProN",system-ui,sans-serif;font-size:.92rem}
+.card{background:var(--cd);border:2px solid var(--bd);border-radius:10px;padding:16px;margin-bottom:16px}
 .g{display:grid;gap:16px;grid-template-columns:1fr}
 
-.sans{font-family:system-ui,sans-serif}
+.sans{font-family:"Nunito","Hiragino Maru Gothic ProN",system-ui,sans-serif}
 table{border-collapse:collapse;width:100%;font:.85rem system-ui,sans-serif}
 th,td{padding:5px 6px;text-align:center;border-bottom:1px solid var(--bd)}
 th:first-child,td:first-child{text-align:left}
 .w{overflow-x:auto}
 .tg{border:1px solid var(--bd);background:transparent;color:var(--tx);border-radius:6px;padding:3px 8px;font:.8rem system-ui,sans-serif;cursor:pointer}
+.clr{border:1px solid var(--bd);background:transparent;color:var(--mu);border-radius:50%;width:22px;height:22px;padding:0;line-height:1;font:700 .8rem "Nunito",system-ui,sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}.clr:hover:not(:disabled){background:var(--tn);color:var(--tx)}.clr:disabled{opacity:.35;cursor:default}
 .tg[aria-pressed=true]{background:var(--ac);color:var(--on);border-color:var(--ac)}
 button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
 label{font:.88rem system-ui,sans-serif;color:var(--mu)}
 input,select{font:1rem system-ui,sans-serif;background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:6px;padding:6px 8px;width:100%}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
 .big{font-size:1.6rem;font-weight:700;color:var(--ac)}
-.k{display:flex;flex-wrap:wrap;gap:18px;font-family:system-ui,sans-serif}
+.k{display:flex;flex-wrap:wrap;gap:18px;font-family:"Nunito","Hiragino Maru Gothic ProN",system-ui,sans-serif}
 .k div span{display:block;font-size:.78rem;color:var(--mu)}
 .warn{color:var(--bad);font:.9rem system-ui,sans-serif;margin-top:8px}
 .note{color:var(--mu);font:.8rem system-ui,sans-serif;margin-top:10px}
 .bar{height:6px;background:var(--bd);border-radius:3px;overflow:hidden;margin-top:4px}.bar i{display:block;height:100%;background:var(--ac)}
-table,label,input,select,.cal,.nav,.nav button,.k,.warn,.note,.tg,p.s,.d{font-family:"Nunito",system-ui,sans-serif}
+table,label,input,select,.cal,.nav,.nav button,.k,.warn,.note,.tg,p.s,.d{font-family:"Nunito","Hiragino Maru Gothic ProN",system-ui,sans-serif}
 h1,h2{font-weight:800}
-.card{border-radius:22px}
-input,select,.d,.nav button{border-radius:12px}
-.tg{border-radius:999px}
+.card{border-radius:12px}
+input,select,.d,.nav button{border-radius:6px}
+.tg{border-radius:6px}
 .tg[aria-pressed=true],.d.ms,.d.sel{border-color:var(--ln)}
 .big{color:var(--tx)}
 .bar{height:8px;border-radius:4px}.bar i{background:var(--ln)}
 button:focus-visible,select:focus-visible,input:focus-visible{outline-color:var(--ln)}
-th{background:#F7F3EF}
-.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;font-family:"Nunito",system-ui,sans-serif}
-.cal b{background:#EFE7DC;border-radius:999px;padding:6px 0;text-align:center;font-weight:800;font-size:.88rem}
+th{background:#FAF7F1}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;font-family:"Nunito","Hiragino Maru Gothic ProN",system-ui,sans-serif}
+.cal b{background:#DCE7FA;border-radius:6px;padding:6px 0;text-align:center;font-weight:800;font-size:.88rem}
 .mn{font-style:normal;font-weight:800;font-size:1.1rem;align-self:start;padding-top:8px}
 .d{display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;gap:4px;min-height:68px;padding:6px;background:#fff;border:0;border-radius:8px;color:var(--tx);text-align:left;font:inherit}
 .d.off{background:transparent;color:var(--mu)}
-.d.rl{background:#FFE59A}.d.pp{background:#FFB5C1}.d.kv{background:#A9D3FF}
+.d.rl{background:#DCE8FB}.d.pp{background:#9DB9EC}.d.kv{background:#1F3F8F}
 .d.ms{border:2px solid var(--ln);cursor:pointer}
 .d.sel{box-shadow:inset 0 0 0 2px var(--ln)}
 .d.sel .nb{background:var(--ln);color:#fff}
@@ -57,21 +58,24 @@ th{background:#F7F3EF}
 .rl .nb,.pp .nb,.kv .nb{background:rgba(255,255,255,.65)}
 .bt{display:flex;justify-content:space-between;align-items:flex-end;gap:2px;width:100%}
 .lt{font-size:.74rem;font-weight:800;line-height:1.15}
-.ct{font-style:normal;font-weight:800;font-size:.74rem;min-width:24px;height:24px;border-radius:50%;background:#B7E1D1;display:inline-flex;align-items:center;justify-content:center;margin-left:auto}
+.ct{font-style:normal;font-weight:800;font-size:.74rem;min-width:24px;height:24px;border-radius:50%;background:#C9DBF5;display:inline-flex;align-items:center;justify-content:center;margin-left:auto}
 @media(max-width:600px){.cal{grid-template-columns:repeat(7,minmax(0,1fr));gap:3px}.cal b{font-size:.7rem}.mn{font-size:.78rem}.d{padding:3px;min-height:58px}.lt{font-size:.58rem}.nb,.ct{width:20px;min-width:20px;height:20px;font-size:.62rem}}
-.nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font:800 1.05rem "Nunito",system-ui,sans-serif}.nav button{border:1px solid var(--bd);background:transparent;color:var(--tx);padding:4px 14px;cursor:pointer;font:inherit}.nav button:disabled{opacity:.35;cursor:default}
+.nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font:800 1.05rem "Nunito","Hiragino Maru Gothic ProN",system-ui,sans-serif}.nav button{border:1px solid var(--bd);background:transparent;color:var(--tx);padding:4px 14px;cursor:pointer;font:inherit}.nav button:disabled{opacity:.35;cursor:default}
 .cal{min-width:640px;gap:6px}.d{min-height:84px;padding:8px}.bt{flex-wrap:wrap}.lt{font-size:.78rem}.nb,.ct{width:28px;min-width:28px;height:28px;font-size:.8rem}
-.d{--bgc:#fff}.d.rl{--bgc:#FFE59A}.d.pp{--bgc:#FFB5C1}.d.kv{--bgc:#A9D3FF}
+.d{--bgc:#fff}.d.rl{--bgc:#DCE8FB}.d.pp{--bgc:#9DB9EC}.d.kv{--bgc:#1F3F8F}
 .ct{background:color-mix(in srgb,var(--bgc),#000 50%);color:#fff}
-.ct{background:#B7E1D1;color:#111111}
+.ct{background:#C9DBF5;color:#14307A}
 .rl .ct,.pp .ct,.kv .ct{background:color-mix(in srgb,var(--bgc),#000 50%);color:#fff}
-.srv{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:14px 16px;border:2px solid var(--bd);border-radius:16px;background:#fff;color:var(--tx);font-family:"Nunito",system-ui,sans-serif;cursor:pointer;text-align:left}
+.srv{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:14px 16px;border:2px solid var(--bd);border-radius:10px;background:#fff;color:var(--tx);font-family:"Nunito","Hiragino Maru Gothic ProN",system-ui,sans-serif;cursor:pointer;text-align:left}
 .srv b{font-size:1.05rem;font-weight:800}.srv span{color:var(--mu);font-size:.88rem}
 .srv[aria-pressed=true]{background:var(--ac);border-color:var(--ln)}.srv[aria-pressed=true] span{color:var(--tx)}
-.opt{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:14px 16px;border:2px solid var(--bd);border-radius:16px;background:#fff;color:var(--tx);font-family:"Nunito",system-ui,sans-serif;cursor:pointer;text-align:left}
+.opt{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:14px 16px;border:2px solid var(--bd);border-radius:10px;background:#fff;color:var(--tx);font-family:"Nunito","Hiragino Maru Gothic ProN",system-ui,sans-serif;cursor:pointer;text-align:left}
 .opt b{font-size:1.05rem;font-weight:800}.opt span{color:var(--mu);font-size:.88rem}
 .opt[aria-pressed=true]{background:var(--ac);border-color:var(--ln)}.opt[aria-pressed=true] span{color:var(--tx)}
-.d.st{--bgc:#B7E1D1;background:#B7E1D1}.st .nb{background:rgba(255,255,255,.65)}.st .ct{background:color-mix(in srgb,var(--bgc),#000 50%);color:#fff}
+.d.st{--bgc:#BFE6EE;background:#BFE6EE}.st .nb{background:rgba(255,255,255,.65)}.st .ct{background:color-mix(in srgb,var(--bgc),#000 50%);color:#fff}
+h1{letter-spacing:.02em}
+.d.kv{color:#fff}.kv .nb{background:rgba(255,255,255,.2);color:#fff}.kv .ct{background:#fff;color:#14307A}
+.d.sel .nb{color:#FAF7F1}
 </style></head><body><main>
 <h1>Truegold calendar planner</h1>
 <p class="s">Pick a spending Monday. The planner finds the smallest Monday batch that reaches your Tempered Truegold goal by then, and lays out each week.</p>
@@ -106,10 +110,10 @@ function weeks(){const o=(ST.getDay()+6)%7,s=dn(ST),a=[];for(let m=s-o;m<sel*7;m
 const wkOf=d=>Math.round((d-START)/DAY/7),addD=(d,n)=>new Date(d.getTime()+n*DAY);
 const fm=d=>MS[d.getMonth()].slice(0,3)+" "+d.getDate();
 function needs(){let tg=0,tt=0;S.forEach(k=>{const[l,b]=k.split("-");tg+=C[l][b][0];tt+=C[l][b][1]});return{tg,tt}}
-function build(){let h="<tr><th>Building</th><th>TG6</th><th>TG7</th><th>TG8</th></tr>";
-N.forEach((n,b)=>{h+="<tr><td>"+n+"</td>"+[6,7,8].map(l=>'<td><button class="tg" data-k="'+l+"-"+b+'" aria-pressed="'+S.has(l+"-"+b)+'">'+C[l][b][1]+" TTG</button></td>").join("")+"</tr>"});
+function build(){let h="<tr><th>Building</th><th>TG6</th><th>TG7</th><th>TG8</th><th></th></tr>";
+N.forEach((n,b)=>{h+="<tr><td>"+n+"</td>"+[6,7,8].map(l=>'<td><button class="tg" data-k="'+l+"-"+b+'" aria-pressed="'+S.has(l+"-"+b)+'">'+C[l][b][1]+" TTG</button></td>").join("")+'<td><button class="clr" data-c="'+b+'" aria-label="Clear '+n+'"'+([6,7,8].some(l=>S.has(l+"-"+b))?"":" disabled")+'>×</button></td></tr>'});
 $("bt").innerHTML=h;
-$("bt").onclick=e=>{const k=e.target.dataset.k;if(!k)return;S.has(k)?S.delete(k):S.add(k);if(k[0]=="8"&&S.has(k)){const b=k.slice(2);S.add("6-"+b);S.add("7-"+b)}build();render()}}
+$("bt").onclick=e=>{const c=e.target.dataset.c;if(c!==undefined){[6,7,8].forEach(l=>S.delete(l+"-"+c));build();render();return}const k=e.target.dataset.k;if(!k)return;S.has(k)?S.delete(k):S.add(k);if(k[0]=="8"&&S.has(k)){const b=k.slice(2);S.add("6-"+b);S.add("7-"+b)}build();render()}}
 function cal(){const y=vm.getFullYear(),m=vm.getMonth(),B=plan().B,pad=new Date(y,m,1).getDay(),nd=new Date(y,m+1,0).getDate();
 $('mt').textContent=MS[m]+' '+y;$('pv').disabled=y*12+m<=START.getFullYear()*12+START.getMonth();$('nx').disabled=y==2027&&m==5;
 let h=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(x=>'<b>'+x+'</b>').join('');
