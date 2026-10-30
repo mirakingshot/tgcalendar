@@ -77,8 +77,8 @@ h1{letter-spacing:.02em}
 .d.kv{color:#fff}.kv .nb{background:rgba(255,255,255,.2);color:#fff}.kv .ct{background:#fff;color:#14307A}
 .d.sel .nb{color:#FAF7F1}
 </style></head><body><main>
-<h1>Truegold calendar planner</h1>
-<p class="s">Pick a spending Monday. The planner finds the smallest Monday batch that reaches your Tempered Truegold goal by then, and lays out each week.</p>
+<h1>TG6-8 Calendar Planner</h1>
+<p class="s">Pick your TG goal and your targeted prep week. This planner finds the smallest Monday refinement batch that reaches your Tempered Truegold (TTG) goal by then, and lays out each week.</p>
 <section class="card"><h2>1. Pick your server group</h2><div class="row" style="margin-top:0"><button class="srv" data-g="a" aria-pressed="false"><b>Nov 23 unlock</b><span>Servers 1428–1558</span></button><button class="srv" data-g="b" aria-pressed="false"><b>Dec 21 unlock</b><span>Servers 1559–1689</span></button></div></section>
 <div id="app" hidden>
 <section class="card"><h2>2. Pick your start date</h2><div class="row" style="margin-top:0"><button class="opt" id="o1" aria-pressed="true"><b>Release day</b><span id="rd"></span></button><button class="opt" id="o2" aria-pressed="false"><b>Custom start date</b><span>Must be after the release day</span></button></div><div id="cw" hidden style="margin-top:12px;max-width:260px"><label for="cd">Start date</label><input id="cd" type="date"></div><div id="cwr" class="warn"></div></section>
@@ -86,7 +86,7 @@ h1{letter-spacing:.02em}
 <section class="card"><h2>3. Buildings to upgrade</h2><div class="w"><table id="bt"></table></div>
 <div class="row"><div><label for="cur">Current TTG</label><input id="cur" type="number" min="0" value="0"></div>
 <div><label for="mode">Plan for</label><select id="mode"><option value="av">Average luck</option><option value="mn">Guaranteed (worst case)</option></select></div></div></section>
-<section class="card"><h2>4. Choose your spending Monday</h2><div class="nav"><button id="pv" aria-label="Previous month">‹</button><span id="mt"></span><button id="nx" aria-label="Next month">›</button></div>
+<section class="card"><h2>4. Choose your Monday prep day</h2><div class="nav"><button id="pv" aria-label="Previous month">‹</button><span id="mt"></span><button id="nx" aria-label="Next month">›</button></div>
 <div class="w"><div class="cal" id="cal"></div></div><p class="note">Use the arrows to change month, and click an outlined Monday to choose your spend date. Circles show refinements per day. Refining starts on your server’s unlock day, when upgrades unlock, and the spend Monday’s batch counts because you refine before spending.</p></section></div>
 <section class="card"><h2 id="pl">Your 6 Week Plan</h2><div class="k" id="sum"></div><div id="wr" class="warn"></div></section>
 <section class="card"><h2>Week by week</h2><div class="w"><table id="wt"></table></div>
