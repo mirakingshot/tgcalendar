@@ -113,7 +113,7 @@ function needs(){let tg=0,tt=0;S.forEach(k=>{const[l,b]=k.split("-");tg+=C[l][b]
 function build(){let h="<tr><th>Building</th><th>TG6</th><th>TG7</th><th>TG8</th><th></th></tr>";
 N.forEach((n,b)=>{h+="<tr><td>"+n+"</td>"+[6,7,8].map(l=>'<td><button class="tg" data-k="'+l+"-"+b+'" aria-pressed="'+S.has(l+"-"+b)+'">'+C[l][b][1]+" TTG</button></td>").join("")+'<td><button class="clr" data-c="'+b+'" aria-label="Clear '+n+'"'+([6,7,8].some(l=>S.has(l+"-"+b))?"":" disabled")+'>×</button></td></tr>'});
 $("bt").innerHTML=h;
-$("bt").onclick=e=>{const c=e.target.dataset.c;if(c!==undefined){[6,7,8].forEach(l=>S.delete(l+"-"+c));build();render();return}const k=e.target.dataset.k;if(!k)return;S.has(k)?S.delete(k):S.add(k);if(k[0]=="8"&&S.has(k)){const b=k.slice(2);S.add("6-"+b);S.add("7-"+b)}build();render()}}
+$("bt").onclick=e=>{const c=e.target.dataset.c;if(c!==undefined){[6,7,8].forEach(l=>S.delete(l+"-"+c));build();render();return}const k=e.target.dataset.k;if(!k)return;S.has(k)?S.delete(k):S.add(k);if(S.has(k)&&k[0]=="7")S.add("6-"+k.slice(2));if(S.has(k)&&k[0]=="8"){const b=k.slice(2);S.add("6-"+b);S.add("7-"+b)}build();render()}}
 function cal(){const y=vm.getFullYear(),m=vm.getMonth(),B=plan().B,pad=new Date(y,m,1).getDay(),nd=new Date(y,m+1,0).getDate();
 $('mt').textContent=MS[m]+' '+y;$('pv').disabled=y*12+m<=START.getFullYear()*12+START.getMonth();$('nx').disabled=y==2027&&m==5;
 let h=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(x=>'<b>'+x+'</b>').join('');
