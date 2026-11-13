@@ -59,7 +59,6 @@ th{background:#FAF7F1}
 .bt{display:flex;justify-content:space-between;align-items:flex-end;gap:2px;width:100%}
 .lt{font-size:.74rem;font-weight:800;line-height:1.15}
 .ct{font-style:normal;font-weight:800;font-size:.74rem;min-width:24px;height:24px;border-radius:50%;background:#C9DBF5;display:inline-flex;align-items:center;justify-content:center;margin-left:auto}
-@media(max-width:600px){.cal{grid-template-columns:repeat(7,minmax(0,1fr));gap:3px}.cal b{font-size:.7rem}.mn{font-size:.78rem}.d{padding:3px;min-height:58px}.lt{font-size:.58rem}.nb,.ct{width:20px;min-width:20px;height:20px;font-size:.62rem}}
 .nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font:800 1.05rem "Nunito","Hiragino Maru Gothic ProN",system-ui,sans-serif}.nav button{border:1px solid var(--bd);background:transparent;color:var(--tx);padding:4px 14px;cursor:pointer;font:inherit}.nav button:disabled{opacity:.35;cursor:default}
 .cal{min-width:640px;gap:6px}.d{min-height:84px;padding:8px}.bt{flex-wrap:wrap}.lt{font-size:.78rem}.nb,.ct{width:28px;min-width:28px;height:28px;font-size:.8rem}
 .d{--bgc:#fff}.d.rl{--bgc:#DCE8FB}.d.pp{--bgc:#9DB9EC}.d.kv{--bgc:#1F3F8F}
@@ -76,6 +75,8 @@ th{background:#FAF7F1}
 h1{letter-spacing:.02em}
 .d.kv{color:#fff}.kv .nb{background:rgba(255,255,255,.2);color:#fff}.kv .ct{background:#fff;color:#14307A}
 .d.sel .nb{color:#FAF7F1}
+@media(max-width:600px){.card{padding:12px}.cal{min-width:0;gap:3px}.cal b{font-size:.68rem;padding:4px 0}.d{padding:3px;min-height:60px;gap:2px}.lt{font-size:.56rem;line-height:1.1;overflow-wrap:anywhere}.nb,.ct{width:20px;min-width:20px;height:20px;font-size:.62rem}.bt{gap:1px}
+#bt th,#bt td{padding:5px 2px}#bt td:first-child{font-size:.78rem;line-height:1.2}.tg{padding:4px 6px;font-size:.78rem;min-width:44px}.tg .u{display:none}.clr{width:24px;height:24px}}
 </style></head><body><main>
 <h1>TG6-8 Calendar Planner</h1>
 <p class="s">Pick your TG goal and your targeted prep week. This planner finds the smallest Monday refinement batch that reaches your Tempered Truegold (TTG) goal by then, and lays out each week.</p>
@@ -110,8 +111,8 @@ function weeks(){const o=(ST.getDay()+6)%7,s=dn(ST),a=[];for(let m=s-o;m<sel*7;m
 const wkOf=d=>Math.round((d-START)/DAY/7),addD=(d,n)=>new Date(d.getTime()+n*DAY);
 const fm=d=>MS[d.getMonth()].slice(0,3)+" "+d.getDate();
 function needs(){let tg=0,tt=0;S.forEach(k=>{const[l,b]=k.split("-");tg+=C[l][b][0];tt+=C[l][b][1]});return{tg,tt}}
-function build(){let h="<tr><th>Building</th><th>TG6</th><th>TG7</th><th>TG8</th><th></th></tr>";
-N.forEach((n,b)=>{h+="<tr><td>"+n+"</td>"+[6,7,8].map(l=>'<td><button class="tg" data-k="'+l+"-"+b+'" aria-pressed="'+S.has(l+"-"+b)+'">'+C[l][b][1]+" TTG</button></td>").join("")+'<td><button class="clr" data-c="'+b+'" aria-label="Clear '+n+'"'+([6,7,8].some(l=>S.has(l+"-"+b))?"":" disabled")+'>×</button></td></tr>'});
+function build(){let h="<tr><th>Building</th><th>TG6<br><small>TTG</small></th><th>TG7<br><small>TTG</small></th><th>TG8<br><small>TTG</small></th><th></th></tr>";
+N.forEach((n,b)=>{h+="<tr><td>"+n+"</td>"+[6,7,8].map(l=>'<td><button class="tg" data-k="'+l+"-"+b+'" aria-pressed="'+S.has(l+"-"+b)+'">'+C[l][b][1]+'<span class="u"> TTG</span></button></td>').join("")+'<td><button class="clr" data-c="'+b+'" aria-label="Clear '+n+'"'+([6,7,8].some(l=>S.has(l+"-"+b))?"":" disabled")+'>×</button></td></tr>'});
 $("bt").innerHTML=h;
 $("bt").onclick=e=>{const c=e.target.dataset.c;if(c!==undefined){[6,7,8].forEach(l=>S.delete(l+"-"+c));build();render();return}const k=e.target.dataset.k;if(!k)return;S.has(k)?S.delete(k):S.add(k);if(S.has(k)&&k[0]=="7")S.add("6-"+k.slice(2));if(S.has(k)&&k[0]=="8"){const b=k.slice(2);S.add("6-"+b);S.add("7-"+b)}build();render()}}
 function cal(){const y=vm.getFullYear(),m=vm.getMonth(),B=plan().B,pad=new Date(y,m,1).getDay(),nd=new Date(y,m+1,0).getDate();
