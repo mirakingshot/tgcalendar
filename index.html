@@ -2,145 +2,305 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Truegold Calendar Planner</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
 <style>
-:root{--bg:#FAF7F1;--cd:#FDFBF6;--tx:#14307A;--mu:#5B6FA5;--ac:#9DB9EC;--bd:#B9CAEC;--tn:#E3ECFA;--ok:#2d7a52;--bad:#c2334a;--on:#14307A;--ln:#14307A;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-
-
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
+:root{--bg:#EEF0F7;--shell:#fff;--side:#FCFCFE;--tx:#1C1E3C;--mu:#9A9DB5;--ln:#EEEFF5;--soft:#F7F8FC;--pr:#5352D4;--prt:#ECECFC;--co:#F86F6B;--cot:#FEEDEC;--ye:#F2B53C;--yet:#FFF5DE;--s:36px;color-scheme:light}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.55 "Nunito","Hiragino Maru Gothic ProN",system-ui,sans-serif}
-main{max-width:980px;margin:0 auto;padding:20px 16px 48px}
-h1{font-size:1.9rem;margin:0 0 4px;letter-spacing:-.01em}
-h2{font-size:1.15rem;margin:0 0 10px}
-p.s{color:var(--mu);margin:0 0 18px;font-family:"Nunito","Hiragino Maru Gothic ProN",system-ui,sans-serif;font-size:.92rem}
-.card{background:var(--cd);border:2px solid var(--bd);border-radius:10px;padding:16px;margin-bottom:16px}
-.g{display:grid;gap:16px;grid-template-columns:1fr}
+html{scroll-padding-top:16px}
+body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.5 "Plus Jakarta Sans",system-ui,sans-serif;min-height:100vh;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0)}
+button,input,select{font:inherit;color:inherit}
+button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--pr);outline-offset:2px}
 
-.sans{font-family:"Nunito","Hiragino Maru Gothic ProN",system-ui,sans-serif}
-table{border-collapse:collapse;width:100%;font:.85rem system-ui,sans-serif}
-th,td{padding:5px 6px;text-align:center;border-bottom:1px solid var(--bd)}
-th:first-child,td:first-child{text-align:left}
+/* shell */
+.shell{max-width:1320px;margin:28px auto;display:grid;grid-template-columns:244px minmax(0,1fr);background:var(--shell);border-radius:32px;box-shadow:0 30px 80px rgba(70,80,140,.10);overflow:hidden}
+.sidebar{background:var(--side);padding:34px 22px 26px;display:flex;flex-direction:column;border-right:1px solid var(--ln)}
+.brand{font-size:24px;font-weight:800;letter-spacing:-.02em;margin:0 12px 44px}.brand em{font-style:normal;color:var(--pr)}
+.side-nav{display:flex;flex-direction:column;gap:8px}
+.side-nav a{position:relative;display:flex;align-items:center;gap:14px;height:46px;padding:0 14px;border-radius:14px;color:var(--mu);text-decoration:none;font-weight:600}
+.side-nav a:hover{color:var(--tx)}
+.side-nav a.active{background:var(--cot);color:var(--tx);font-weight:700}.side-nav a.active svg{color:var(--pr)}
+.side-nav a.active:after{content:"";position:absolute;right:-23px;top:6px;bottom:6px;width:3px;border-radius:3px;background:var(--pr)}
+.side-nav svg{width:20px;height:20px;flex:none}
+.nav-label{margin:0 14px 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#B5B8CC}
+.side-nav+.nav-label{margin-top:30px}
+.ml{display:none}
+.sub{display:flex;flex-direction:column;gap:2px;margin:2px 0 6px 23px;padding-left:9px;border-left:1.5px solid var(--ln)}
+.sub span{white-space:nowrap}
+.srv{position:relative;display:flex;align-items:center;gap:10px;width:100%;padding:6px 8px;border:0;border-radius:12px;background:none;color:var(--mu);text-align:left;cursor:pointer;transition:background .15s}
+.srv:hover{color:var(--tx);background:var(--soft)}
+.srv>span{display:flex;flex-direction:column;min-width:0}
+.srv b{font-size:13px;font-weight:600;line-height:1.3}.srv span small{font-size:11px;color:var(--mu)}
+.dt{width:34px;height:34px;flex:none;border-radius:10px;background:var(--soft);color:var(--tx);display:flex;flex-direction:column;align-items:center;justify-content:center;font-style:normal;font-weight:800;font-size:13px;line-height:1}
+.dt small{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--mu);margin-bottom:2px}
+.srv[aria-pressed=true]{color:var(--tx)}.srv[aria-pressed=true] b{font-weight:700;color:var(--pr)}
+.srv[aria-pressed=true] .dt{background:var(--pr);color:#fff;box-shadow:0 6px 14px rgba(83,82,212,.3)}.srv[aria-pressed=true] .dt small{color:rgba(255,255,255,.75)}.pill{margin-left:auto;font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;background:var(--pr);color:#fff}
+.promo{margin-top:auto;padding:22px 16px;border-radius:20px;background:var(--soft);text-align:center}
+.promo i{width:52px;height:52px;margin:0 auto 12px;border-radius:50%;background:var(--cot);color:var(--co);display:grid;place-items:center}
+.promo i svg{width:22px;height:22px}
+.promo span{display:block;font-size:12px;color:var(--mu)}.promo b{display:block;font-weight:700;margin-top:2px}
+
+.workspace{min-width:0;padding:34px 32px 26px}
+.topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:26px}
+.topbar h1{margin:0;font-size:26px;font-weight:800;letter-spacing:-.02em}
+.topbar p{margin:4px 0 0;color:var(--mu);font-size:13px;max-width:620px}
+.profile{display:flex;align-items:center;gap:12px;flex:none}
+.profile b{display:block;font-size:13px;text-align:right}.profile div span{display:block;font-size:11px;color:var(--mu);text-align:right}
+.ovl{padding:8px 14px;border-radius:12px;background:var(--tx);color:#fff;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap}.ovl:hover{background:var(--pr)}
+.avatar{width:46px;height:46px;border-radius:50%;background:linear-gradient(145deg,#8C8BF0,var(--pr));color:#fff;font-weight:800;display:grid;place-items:center;box-shadow:0 8px 18px rgba(83,82,212,.25)}
+
+.cols{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+.cols:has(#rail[hidden]){grid-template-columns:minmax(0,1fr)}
+#app[hidden],#rail[hidden]{display:none!important}
+
+/* cards */
+.card{background:#fff;border-radius:22px;padding:22px;margin-bottom:22px;box-shadow:0 8px 30px rgba(70,80,140,.07)}
+.card h2{display:flex;align-items:center;gap:10px;margin:0 0 16px;font-size:16px;font-weight:700}
+.step{width:24px;height:24px;border-radius:8px;background:var(--prt);color:var(--pr);display:grid;place-items:center;font-size:12px;font-weight:800;flex:none}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.row.top{margin-top:0}
+.opt{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:14px 16px;border:1.5px solid var(--ln);border-radius:16px;background:#fff;cursor:pointer;text-align:left;transition:border-color .15s,background .15s}
+.opt:hover{border-color:#D6D6F5}
+.opt b{font-size:14px;font-weight:700}.opt span{font-size:12px;color:var(--mu)}
+.opt[aria-pressed=true]{background:var(--prt);border-color:var(--pr)}.opt[aria-pressed=true] b{color:var(--pr)}
+.m-only{display:none}
+label{display:block;font-size:12px;font-weight:600;color:var(--mu);margin-bottom:6px}
+input,select{width:100%;padding:10px 12px;border:1.5px solid transparent;border-radius:12px;background:var(--soft);font-size:14px}
+input:focus,select:focus{border-color:var(--pr);outline:none}
+.warn{color:var(--co);font-size:13px;font-weight:600;margin-top:8px}.warn:empty{display:none}
+.note{color:var(--mu);font-size:12px;margin:14px 0 0}
+
+/* tables */
 .w{overflow-x:auto}
-.tg{border:1px solid var(--bd);background:transparent;color:var(--tx);border-radius:6px;padding:3px 8px;font:.8rem system-ui,sans-serif;cursor:pointer}
-.clr{border:1px solid var(--bd);background:transparent;color:var(--mu);border-radius:50%;width:22px;height:22px;padding:0;line-height:1;font:700 .8rem "Nunito",system-ui,sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}.clr:hover:not(:disabled){background:var(--tn);color:var(--tx)}.clr:disabled{opacity:.35;cursor:default}
-.tg[aria-pressed=true]{background:var(--ac);color:var(--on);border-color:var(--ac)}
-button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
-label{font:.88rem system-ui,sans-serif;color:var(--mu)}
-input,select{font:1rem system-ui,sans-serif;background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:6px;padding:6px 8px;width:100%}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-.big{font-size:1.6rem;font-weight:700;color:var(--ac)}
-.k{display:flex;flex-wrap:wrap;gap:18px;font-family:"Nunito","Hiragino Maru Gothic ProN",system-ui,sans-serif}
-.k div span{display:block;font-size:.78rem;color:var(--mu)}
-.warn{color:var(--bad);font:.9rem system-ui,sans-serif;margin-top:8px}
-.note{color:var(--mu);font:.8rem system-ui,sans-serif;margin-top:10px}
-.bar{height:6px;background:var(--bd);border-radius:3px;overflow:hidden;margin-top:4px}.bar i{display:block;height:100%;background:var(--ac)}
-table,label,input,select,.cal,.nav,.nav button,.k,.warn,.note,.tg,p.s,.d{font-family:"Nunito","Hiragino Maru Gothic ProN",system-ui,sans-serif}
-h1,h2{font-weight:800}
-.card{border-radius:12px}
-input,select,.d,.nav button{border-radius:6px}
-.tg{border-radius:6px}
-.tg[aria-pressed=true],.d.ms,.d.sel{border-color:var(--ln)}
-.big{color:var(--tx)}
-.bar{height:8px;border-radius:4px}.bar i{background:var(--ln)}
-button:focus-visible,select:focus-visible,input:focus-visible{outline-color:var(--ln)}
-th{background:#FAF7F1}
-.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;font-family:"Nunito","Hiragino Maru Gothic ProN",system-ui,sans-serif}
-.cal b{background:#DCE7FA;border-radius:6px;padding:6px 0;text-align:center;font-weight:800;font-size:.88rem}
-.mn{font-style:normal;font-weight:800;font-size:1.1rem;align-self:start;padding-top:8px}
-.d{display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;gap:4px;min-height:68px;padding:6px;background:#fff;border:0;border-radius:8px;color:var(--tx);text-align:left;font:inherit}
-.d.off{background:transparent;color:var(--mu)}
-.d.rl{background:#DCE8FB}.d.pp{background:#9DB9EC}.d.kv{background:#1F3F8F}
-.d.ms{border:2px solid var(--ln);cursor:pointer}
-.d.sel{box-shadow:inset 0 0 0 2px var(--ln)}
-.d.sel .nb{background:var(--ln);color:#fff}
-.nb{display:inline-flex;width:24px;height:24px;border-radius:50%;align-items:center;justify-content:center;font-weight:700;font-size:.8rem}
-.rl .nb,.pp .nb,.kv .nb{background:rgba(255,255,255,.65)}
-.bt{display:flex;justify-content:space-between;align-items:flex-end;gap:2px;width:100%}
-.lt{font-size:.74rem;font-weight:800;line-height:1.15}
-.ct{font-style:normal;font-weight:800;font-size:.74rem;min-width:24px;height:24px;border-radius:50%;background:#C9DBF5;display:inline-flex;align-items:center;justify-content:center;margin-left:auto}
-.nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font:800 1.05rem "Nunito","Hiragino Maru Gothic ProN",system-ui,sans-serif}.nav button{border:1px solid var(--bd);background:transparent;color:var(--tx);padding:4px 14px;cursor:pointer;font:inherit}.nav button:disabled{opacity:.35;cursor:default}
-.cal{min-width:640px;gap:6px}.d{min-height:84px;padding:8px}.bt{flex-wrap:wrap}.lt{font-size:.78rem}.nb,.ct{width:28px;min-width:28px;height:28px;font-size:.8rem}
-.d{--bgc:#fff}.d.rl{--bgc:#DCE8FB}.d.pp{--bgc:#9DB9EC}.d.kv{--bgc:#1F3F8F}
-.ct{background:color-mix(in srgb,var(--bgc),#000 50%);color:#fff}
-.ct{background:#C9DBF5;color:#14307A}
-.rl .ct,.pp .ct,.kv .ct{background:color-mix(in srgb,var(--bgc),#000 50%);color:#fff}
-.srv{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:14px 16px;border:2px solid var(--bd);border-radius:10px;background:#fff;color:var(--tx);font-family:"Nunito","Hiragino Maru Gothic ProN",system-ui,sans-serif;cursor:pointer;text-align:left}
-.srv b{font-size:1.05rem;font-weight:800}.srv span{color:var(--mu);font-size:.88rem}
-.srv[aria-pressed=true]{background:var(--ac);border-color:var(--ln)}.srv[aria-pressed=true] span{color:var(--tx)}
-.opt{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:14px 16px;border:2px solid var(--bd);border-radius:10px;background:#fff;color:var(--tx);font-family:"Nunito","Hiragino Maru Gothic ProN",system-ui,sans-serif;cursor:pointer;text-align:left}
-.opt b{font-size:1.05rem;font-weight:800}.opt span{color:var(--mu);font-size:.88rem}
-.opt[aria-pressed=true]{background:var(--ac);border-color:var(--ln)}.opt[aria-pressed=true] span{color:var(--tx)}
-.d.st{--bgc:#BFE6EE;background:#BFE6EE}.st .nb{background:rgba(255,255,255,.65)}.st .ct{background:color-mix(in srgb,var(--bgc),#000 50%);color:#fff}
-h1{letter-spacing:.02em}
-.d.kv{color:#fff}.kv .nb{background:rgba(255,255,255,.2);color:#fff}.kv .ct{background:#fff;color:#14307A}
-.d.sel .nb{color:#FAF7F1}
-@media(max-width:600px){.card{padding:12px}.cal{min-width:0;gap:3px}.cal b{font-size:.68rem;padding:4px 0}.d{padding:3px;min-height:60px;gap:2px}.lt{font-size:.56rem;line-height:1.1;overflow-wrap:anywhere}.nb,.ct{width:20px;min-width:20px;height:20px;font-size:.62rem}.bt{gap:1px}
-#bt th,#bt td{padding:5px 2px}#bt td:first-child{font-size:.78rem;line-height:1.2}.tg{padding:4px 6px;font-size:.78rem;min-width:44px}.tg .u{display:none}.clr{width:24px;height:24px}}
-</style></head><body><main>
-<h1>TG6-8 Calendar Planner</h1>
-<p class="s">Pick your TG goal and your targeted prep week. This planner finds the smallest Monday refinement batch that reaches your Tempered Truegold (TTG) goal by then, and lays out each week.</p>
-<section class="card"><h2>1. Pick your server group</h2><div class="row" style="margin-top:0"><button class="srv" data-g="a" aria-pressed="false"><b>Nov 23 unlock</b><span>Servers 1428–1558</span></button><button class="srv" data-g="b" aria-pressed="false"><b>Dec 21 unlock</b><span>Servers 1559–1689</span></button></div></section>
+table{border-collapse:collapse;width:100%;font-size:13px}
+th{font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.04em;padding:0 8px 10px;text-align:center;line-height:1.3}
+th small{font-weight:600;text-transform:none;letter-spacing:0}
+td{padding:9px 8px;text-align:center;border-top:1px solid var(--ln)}
+th:first-child,td:first-child{text-align:left}
+#bt td:first-child{font-weight:600}
+.tg{min-width:64px;padding:6px 10px;border:1.5px solid var(--ln);border-radius:10px;background:#fff;color:var(--mu);font-size:12px;font-weight:700;cursor:pointer}
+.tg:hover{border-color:#D6D6F5;color:var(--tx)}
+.tg[aria-pressed=true]{background:var(--pr);border-color:var(--pr);color:#fff;box-shadow:0 5px 12px rgba(83,82,212,.25)}
+.tg.s1[aria-pressed=true]{background:var(--ye);border-color:var(--ye);color:var(--tx);box-shadow:0 5px 12px rgba(242,181,60,.3)}
+body:not(.two) .two-only,body:not(.two) .stg{display:none!important}.stg{display:flex}
+.stg{align-items:center;gap:10px;flex-wrap:wrap;margin:14px 0}.stg>span{font-size:12px;font-weight:600;color:var(--mu)}
+.seg{display:inline-flex;gap:4px;padding:4px;border-radius:12px;background:var(--soft)}
+.seg button{display:flex;align-items:center;gap:6px;padding:6px 12px;border:0;border-radius:9px;background:none;color:var(--mu);font-size:12px;font-weight:700;cursor:pointer}
+.seg button[aria-pressed=true]{background:#fff;color:var(--tx);box-shadow:0 2px 8px rgba(70,80,140,.12)}
+.seg i{width:10px;height:10px;border-radius:3px}.k1{background:var(--ye)}.k2{background:var(--pr)}
+.tag{display:inline-block;margin-top:4px;padding:1px 7px;border-radius:6px;background:var(--yet);color:#8A5F00;font-size:10px;font-weight:700}
+.clr{width:26px;height:26px;padding:0;border:0;border-radius:8px;background:var(--cot);color:var(--co);font-weight:700;cursor:pointer;display:inline-grid;place-items:center}
+.clr:disabled{background:var(--soft);color:#C6C8D8;cursor:default}
+#wt td{white-space:nowrap}#wt td:nth-child(3){white-space:normal;min-width:130px}
+.bar{height:6px;background:var(--prt);border-radius:3px;overflow:hidden;margin-top:6px}.bar i{display:block;height:100%;background:var(--pr);border-radius:3px}
+
+/* summary */
+.kp{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+.stat{display:flex;align-items:center;gap:12px}
+.stat b{display:block;font-size:20px;font-weight:800;line-height:1.2}.stat span{display:block;font-size:12px;color:var(--mu)}
+.ic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;flex:none;font-style:normal;font-weight:800}
+.ic svg{width:20px;height:20px}
+.i1{background:var(--prt);color:var(--pr)}.i2{background:var(--cot);color:var(--co)}.i3{background:var(--yet);color:var(--ye)}
+.ks{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:18px}
+.ks div{background:var(--soft);border-radius:14px;padding:12px 14px}
+.ks span{display:block;font-size:11px;color:var(--mu)}.ks b{font-size:15px;font-weight:700}
+
+/* calendar */
+.nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+#mt{font-size:17px;font-weight:800}
+.nav div{display:flex;gap:8px}
+.nav button{width:30px;height:30px;padding:0;border:1.5px solid var(--ln);border-radius:9px;background:#fff;color:var(--tx);cursor:pointer;display:grid;place-items:center;font-size:16px;line-height:1}
+.nav button#nx:not(:disabled){color:var(--co);border-color:#FBD3D1}
+.nav button:disabled{opacity:.35;cursor:default}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));row-gap:6px}
+.cal b{font-size:10px;font-weight:700;color:var(--mu);text-align:center;text-transform:uppercase;letter-spacing:.04em;padding-bottom:8px}
+.c{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:0;border:0;background:none;min-width:0}
+.c:before{content:"";position:absolute;top:0;left:0;right:0;height:var(--s)}
+.c.in:before{background:var(--prt)}
+.c.a:before{left:50%}.c.z:before{right:50%}
+.c.in.rs:before{border-radius:12px 0 0 12px}.c.in.re:before{border-radius:0 12px 12px 0}.c.in.rs.re:before{border-radius:12px}
+.n{position:relative;z-index:1;width:var(--s);height:var(--s);border-radius:11px;display:grid;place-items:center;font-size:13px;font-weight:600}
+.c.sun .n{color:var(--co)}
+.c.x .n,.c.off .n{color:#C6C8D8}
+.c.pk{cursor:pointer}.c.pk .n{box-shadow:inset 0 0 0 1.5px var(--pr);color:var(--pr);font-weight:700}
+.c.pk:not(.sel):not(.sel1):hover .n{background:#fff}
+.c.in1:before{background:var(--yet)}
+.c.st .n,.c.sel .n{background:var(--pr);color:#fff;box-shadow:0 6px 14px rgba(83,82,212,.32)}
+.c.sel1 .n{background:var(--ye);color:var(--tx);box-shadow:0 6px 14px rgba(242,181,60,.35)}
+.c.rl .n{background:var(--co);color:#fff;box-shadow:0 6px 14px rgba(248,111,107,.32)}
+.m{height:12px;display:flex;align-items:center;justify-content:center;gap:3px;font-size:10px;font-weight:700;font-style:normal;color:var(--pr)}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--pr)}.dot.kv{background:var(--co)}
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;margin-top:16px;padding-top:14px;border-top:1px solid var(--ln);font-size:11px;color:var(--mu)}
+.legend span{display:flex;align-items:center;gap:8px}
+.legend i{width:14px;height:14px;border-radius:5px;flex:none;font-style:normal}
+.lg-ye{background:var(--ye)}.lg-rl{background:var(--co)}.lg-pr{background:var(--pr)}.lg-pk{box-shadow:inset 0 0 0 1.5px var(--pr)}.lg-in{background:var(--prt)}
+.legend i.dot{width:6px;height:6px;margin:0 4px}
+.lg-q{width:auto!important;height:auto!important;color:var(--pr);font-weight:800;font-size:10px}
+
+/* key dates */
+.rail-head{display:flex;justify-content:space-between;align-items:baseline}
+.rail-head span{font-size:12px;color:var(--mu)}
+.kd{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.kd li{display:grid;grid-template-columns:52px 1fr;gap:12px;align-items:stretch}
+.kd time{font-size:11px;color:var(--mu);padding-top:10px}.kd time b{display:block;color:var(--tx);font-size:13px}
+.kd li div{padding:10px 14px;border-radius:0 14px 14px 0;border-left:3px solid var(--pr);background:linear-gradient(90deg,var(--prt),#fff)}
+.kd li.co div{border-color:var(--co);background:linear-gradient(90deg,var(--cot),#fff)}
+.kd li div b{display:block;font-weight:700;color:var(--pr)}.kd li.co div b{color:var(--co)}
+.kd li.ye div{border-color:var(--ye);background:linear-gradient(90deg,var(--yet),#fff)}.kd li.ye div b{color:#8A5F00}
+.kd li div span{font-size:12px;color:var(--mu)}
+.cta{width:100%;margin-top:18px;padding:12px;border:0;border-radius:14px;background:var(--co);color:#fff;font-weight:700;cursor:pointer;box-shadow:0 8px 18px rgba(248,111,107,.3)}
+.cta:hover{filter:brightness(1.04)}
+
+footer{text-align:center;color:var(--mu);font-size:12px;margin-top:6px}
+footer a{color:inherit;font-weight:700;text-decoration:none}
+
+/* responsive */
+@media(max-width:1180px){.shell{grid-template-columns:84px minmax(0,1fr)}.sidebar{padding:30px 14px}.brand{margin:0 0 40px;text-align:center;font-size:18px}.brand em{display:none}.side-nav a span,.pill,.srv>span,.nav-label{display:none}.side-nav a{justify-content:center;padding:0}.srv{justify-content:center;padding:4px 0}.sub{margin:4px 0;padding:8px 0;border:0;border-top:1px solid var(--ln);border-bottom:1px solid var(--ln)}.jump{margin-top:20px;padding-top:20px;border-top:1px solid var(--ln)}}
+@media(max-width:1000px){.cols{display:flex;flex-direction:column;gap:0}.colmain,#app,.colrail{display:contents}.cols>*>*,#app>*{width:100%}
+#pick{order:1}#start{order:2}#buildings{order:3}#calendar{order:4}#keys{order:5}#results{order:6}#weeks{order:7}footer{order:8}}
+@media(max-width:720px){.shell{display:block;margin:0;border-radius:0;box-shadow:none;background:var(--bg)}.sidebar{display:block;background:none;border:0;padding:20px 16px 0}.brand,.jump,.jl,.pl,.pages-nav>a{display:none}.nav-label:not(.jl):not(.pl){display:block;margin:0 2px 8px}
+.server-nav{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0;padding:0;border:0}.srv{justify-content:flex-start;padding:10px;gap:10px;background:#fff;box-shadow:0 6px 20px rgba(70,80,140,.07)}.srv>span{display:flex}.srv b{font-size:13px}.srv[aria-pressed=true]{background:var(--prt);box-shadow:inset 0 0 0 1.5px var(--pr)}.srv[aria-pressed=true]:after{display:none}
+.d-only{display:none}.m-only{display:inline}.workspace{padding:20px 16px}.topbar{flex-direction:column;gap:12px}.avatar{display:none}.topbar h1{font-size:22px}.profile div{display:none}.card{padding:16px;border-radius:20px;margin-bottom:16px}
+#bt th,#bt td{padding-left:2px;padding-right:2px}#bt td:first-child{font-size:12px;line-height:1.25}.tg{min-width:44px;padding:6px 4px}.tg .u{display:none}
+#wt tr:first-child{display:none}#wt tr{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;padding:12px 0;border-top:1px solid var(--ln)}#wt tr:nth-child(2){border-top:0}
+#wt td{border:0;padding:0;text-align:left;white-space:normal}#wt td:before{content:attr(data-l);display:block;font-size:10px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.04em}
+#wt td:first-child{grid-column:1/-1;font-weight:700}#wt td:first-child:before{display:none}#wt td:last-child{grid-column:1/-1}}
+@media(max-width:400px){:root{--s:32px}.n{font-size:12px}.legend{grid-template-columns:1fr}}
+</style></head><body>
+<div class="shell">
+<aside class="sidebar">
+<div class="brand">TG<em>Planner</em></div>
+<div class="nav-label pl">Pages</div>
+<div class="nav-label ml">Server group</div>
+<nav class="side-nav pages-nav" aria-label="Pages">
+<a href="index.html" class="active" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>Planner</span></a>
+<div class="sub server-nav" role="group" aria-label="Server group">
+<button class="srv" data-g="a" aria-pressed="false"><i class="dt"><small>Nov</small>23</i><span><b>Nov 23 unlock</b><small>Servers 1428–1558</small></span></button>
+<button class="srv" data-g="b" aria-pressed="false"><i class="dt"><small>Dec</small>21</i><span><b>Dec 21 unlock</b><small>Servers 1559–1689</small></span></button>
+</div>
+<a href="overview.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="M4 16l5-6 4 3 7-8"/></svg><span>Overview</span></a>
+</nav>
+<div class="nav-label jl">Jump to</div>
+<nav class="side-nav jump">
+<a href="#buildings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 21V9l8-5 8 5v12z"/><path d="M9 21v-6h6v6"/></svg><span>Buildings</span><b class="pill" id="nb">0</b></a>
+<a href="#calendar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>Calendar</span></a>
+<a href="#results"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/></svg><span>Plan</span></a>
+</nav>
+</aside>
+<div class="workspace">
+<header class="topbar">
+<div><h1>TG6-8 Calendar Planner</h1><p>Pick your TG goal and your targeted prep week. This planner finds the smallest Monday refinement batch that reaches your Tempered Truegold (TTG) goal by then, and lays out each week.</p></div>
+<div class="profile"><a class="ovl" href="overview.html">Overview <span aria-hidden="true">→</span></a><div><b>Welcome, NPC!</b><span id="srvr">Pick a server group</span></div><span class="avatar">N</span></div>
+</header>
+<div class="cols">
+<div class="colmain">
+<section class="card" id="pick"><h2>Start by picking your server group</h2><p class="note" style="margin:0">Choose <b>Nov 23</b> or <b>Dec 21 unlock</b> <span class="d-only">in the sidebar</span><span class="m-only">above</span> to build your plan.</p></section>
 <div id="app" hidden>
-<section class="card"><h2>2. Pick your start date</h2><div class="row" style="margin-top:0"><button class="opt" id="o1" aria-pressed="true"><b>Release day</b><span id="rd"></span></button><button class="opt" id="o2" aria-pressed="false"><b>Custom start date</b><span>Must be after the release day</span></button></div><div id="cw" hidden style="margin-top:12px;max-width:260px"><label for="cd">Start date</label><input id="cd" type="date"></div><div id="cwr" class="warn"></div></section>
-<div class="g">
-<section class="card"><h2>3. Buildings to upgrade</h2><div class="w"><table id="bt"></table></div>
+<section class="card" id="start"><h2><span class="step">1</span>Pick your start date</h2><div class="row top"><button class="opt" id="o1" aria-pressed="true"><b>Release day</b><span id="rd"></span></button><button class="opt" id="o2" aria-pressed="false"><b>Custom start date</b><span>Must be after the release day</span></button></div><div id="cw" hidden style="margin-top:14px;max-width:260px"><label for="cd">Start date</label><input id="cd" type="date"></div><div id="cwr" class="warn"></div></section>
+<section class="card" id="buildings"><h2><span class="step">2</span>Buildings to upgrade</h2>
+<div class="row top"><button class="opt" id="sp1" aria-pressed="true"><b>One spend</b><span>Everything on one prep Monday</span></button><button class="opt" id="sp2" aria-pressed="false"><b>Two spends</b><span>Finish some first, the rest next prep</span></button></div>
+<div class="stg"><span>Tap cells to set:</span><div class="seg"><button data-stg="1" aria-pressed="true"><i class="k1"></i>1st spend</button><button data-stg="2" aria-pressed="false"><i class="k2"></i>2nd spend</button></div><span id="stgh"></span></div>
+<div class="w"><table id="bt"></table></div>
+<p class="note">Prerequisites are added for you: no building can be above the Town Center, a TG7/TG8 Town Center needs the Embassy one level below, and the Command Center needs the Embassy at the same level. Removing an upgrade also removes the ones that depend on it.</p>
 <div class="row"><div><label for="cur">Current TTG</label><input id="cur" type="number" min="0" value="0"></div>
 <div><label for="mode">Plan for</label><select id="mode"><option value="av">Average luck</option><option value="mn">Guaranteed (worst case)</option></select></div></div></section>
-<section class="card"><h2>4. Choose your Monday prep day</h2><div class="nav"><button id="pv" aria-label="Previous month">‹</button><span id="mt"></span><button id="nx" aria-label="Next month">›</button></div>
-<div class="w"><div class="cal" id="cal"></div></div><p class="note">Use the arrows to change month, and click an outlined Monday to choose your spend date. Circles show refinements per day. Refining starts on your server’s unlock day, when upgrades unlock, and the spend Monday’s batch counts because you refine before spending.</p></section></div>
-<section class="card"><h2 id="pl">Your 6 Week Plan</h2><div class="k" id="sum"></div><div id="wr" class="warn"></div></section>
-<section class="card"><h2>Week by week</h2><div class="w"><table id="wt"></table></div>
+<section class="card" id="results"><h2 id="pl">Your 6 Week Plan</h2><div id="sum"></div><div id="wr" class="warn"></div></section>
+<section class="card" id="weeks"><h2>Week by week</h2><div class="w"><table id="wt"></table></div>
 <p class="note">Weekly cap is 100 refinements: the Monday batch plus 1 per day Tuesday to Sunday. The first refinement each day costs half. Costs: 20/50/100/130/160 TG per refinement across each block of 20. Average TTG per refinement is estimated from the planner’s strategy table, so treat averages as close approximations.</p></section>
 </div>
-<footer class="note" style="text-align:center;margin-top:28px">made with love by <a href="https://mirakingshot.github.io/" style="color:inherit;text-decoration:none;font-weight:700">Mira [221330479]</a></footer>
-</main>
+<footer>made with love by <a href="https://mirakingshot.github.io/">Mira [221330479]</a></footer>
+</div>
+<aside class="colrail" id="rail" hidden>
+<section class="card" id="calendar"><h2><span class="step">3</span>Choose your Monday prep day</h2>
+<div class="stg" style="margin-top:0"><span>Picking:</span><div class="seg"><button data-stg="1" aria-pressed="true"><i class="k1"></i>1st spend</button><button data-stg="2" aria-pressed="false"><i class="k2"></i>2nd spend</button></div></div>
+<div class="nav"><span id="mt"></span><div><button id="pv" aria-label="Previous month">‹</button><button id="nx" aria-label="Next month">›</button></div></div>
+<div class="cal" id="cal"></div>
+<div class="legend"><span><i class="lg-rl"></i>TG6-8 release</span><span><i class="lg-pr"></i>Your start / spend day</span><span class="two-only"><i class="lg-ye"></i>1st spend days</span><span><i class="lg-pk"></i>Prep Monday (tap to pick)</span><span><i class="lg-in"></i>Refining days</span><span><i class="dot kv"></i>KvK battle</span><span><i class="lg-q">×N</i>Refinements that day</span></div>
+<p class="note">Refining starts on your server’s unlock day, when upgrades unlock. Every other day in the band gets 1 refinement, and the spend Monday’s batch counts because you refine before spending.</p></section>
+<section class="card" id="keys"><div class="rail-head"><h2>Key dates</h2><span id="kdn"></span></div><ul class="kd" id="kd"></ul><button class="cta" id="jump">Show my spend month</button></section>
+</aside>
+</div>
+</div>
+</div>
 <script>
 const T=[20,50,100,130,160],MN=[1,2,3,3,3],AV=[1.45,2.15,3.18,3.43,3.71];
 const N=["Town Center","Embassy","Command Center","Infirmary","Barracks","Stable","Range","War Academy"];
 const C={6:[[900,60],[225,13],[180,12],[180,12],[405,25],[405,25],[405,25],[405,25]],7:[[1080,90],[270,19],[216,18],[216,18],[486,37],[486,37],[486,37],[486,37]],8:[[1080,120],[270,30],[216,24],[216,24],[486,54],[486,54],[486,54],[486,54]]};
-const S=new Set(["6-0","6-1","6-2","6-3","7-1","7-2"]);
-const UNL={a:new Date(2026,10,23),b:new Date(2026,11,21)};let START=UNL.b,ST=UNL.b;const DAY=864e5,MS=["January","February","March","April","May","June","July","August","September","October","November","December"];
-let sel=5,vm=new Date(2026,11,1);
+const S=new Set(["6-0","6-1","6-2","6-3","7-0","7-1","7-2"]);
+const UNL={a:new Date(2026,10,23),b:new Date(2026,11,21)};let START=UNL.b,ST=UNL.b;const DAY=864e5,MS=["January","February","March","April","May","June","July","August","September","October","November","December"],DW=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+let sel=5,sel1=1,TWO=false,stg=1,vm=new Date(2026,11,1);const S1=new Set(),WM={};
 const $=id=>document.getElementById(id),f=n=>Math.round(n).toLocaleString();
+const ICAL='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>';
 const wk=B=>{let tg=0,mn=0,av=0;for(let i=1;i<=B+6;i++){const t=Math.floor((i-1)/20);let p=T[t];if(i==1||i>B)p/=2;tg+=p;mn+=MN[t];av+=AV[t]}return{tg,mn,av}};
-const mw=B=>{let tg=0,mn=0,av=0;for(let i=1;i<=B;i++){const t=Math.floor((i-1)/20);tg+=i==1?T[t]/2:T[t];mn+=MN[t];av+=AV[t]}return{tg,mn,av}};
 const wkN=(B,n)=>{let tg=0,mn=0,av=0;for(let i=1;i<=B+n-1;i++){const t=Math.floor((i-1)/20);let p=T[t];if(i==1||i>B)p/=2;tg+=p;mn+=MN[t];av+=AV[t]}return{tg,mn,av}};
 const dOf=n=>new Date(START.getFullYear(),START.getMonth(),START.getDate()+n),dn=d=>Math.round((d-START)/DAY),iso=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
 function weeks(){const o=(ST.getDay()+6)%7,s=dn(ST),a=[];for(let m=s-o;m<sel*7;m+=7)a.push(m==s-o?{s:s,n:7-o}:{s:m,n:7});a.push({s:sel*7,n:1,fin:1});return a}
 const wkOf=d=>Math.round((d-START)/DAY/7),addD=(d,n)=>new Date(d.getTime()+n*DAY);
 const fm=d=>MS[d.getMonth()].slice(0,3)+" "+d.getDate();
-function needs(){let tg=0,tt=0;S.forEach(k=>{const[l,b]=k.split("-");tg+=C[l][b][0];tt+=C[l][b][1]});return{tg,tt}}
+const wkM=(B,n)=>WM[B*8+n]||(WM[B*8+n]=wkN(B,n));
+function firstPrep(){let s=1;while(s*7<dn(ST))s+=4;return s}
+function needs(X=S){let tg=0,tt=0;X.forEach(k=>{const[l,b]=k.split("-");tg+=C[l][b][0];tt+=C[l][b][1]});return{tg,tt}}
 function build(){let h="<tr><th>Building</th><th>TG6<br><small>TTG</small></th><th>TG7<br><small>TTG</small></th><th>TG8<br><small>TTG</small></th><th></th></tr>";
-N.forEach((n,b)=>{h+="<tr><td>"+n+"</td>"+[6,7,8].map(l=>'<td><button class="tg" data-k="'+l+"-"+b+'" aria-pressed="'+S.has(l+"-"+b)+'">'+C[l][b][1]+'<span class="u"> TTG</span></button></td>').join("")+'<td><button class="clr" data-c="'+b+'" aria-label="Clear '+n+'"'+([6,7,8].some(l=>S.has(l+"-"+b))?"":" disabled")+'>×</button></td></tr>'});
+N.forEach((n,b)=>{h+="<tr><td>"+n+"</td>"+[6,7,8].map(l=>{const k=l+"-"+b,one=TWO&&S1.has(k);return '<td><button class="tg'+(one?' s1':'')+'" data-k="'+k+'" aria-pressed="'+S.has(k)+'"'+(TWO&&S.has(k)?' title="'+(one?'1st':'2nd')+' spend"':'')+'>'+C[l][b][1]+'<span class="u"> TTG</span></button></td>'}).join("")+'<td><button class="clr" data-c="'+b+'" aria-label="Clear '+n+'"'+([6,7,8].some(l=>S.has(l+"-"+b))?"":" disabled")+'>×</button></td></tr>'});
 $("bt").innerHTML=h;
-$("bt").onclick=e=>{const c=e.target.dataset.c;if(c!==undefined){[6,7,8].forEach(l=>S.delete(l+"-"+c));build();render();return}const k=e.target.dataset.k;if(!k)return;S.has(k)?S.delete(k):S.add(k);if(S.has(k)&&k[0]=="7")S.add("6-"+k.slice(2));if(S.has(k)&&k[0]=="8"){const b=k.slice(2);S.add("6-"+b);S.add("7-"+b)}build();render()}}
-function cal(){const y=vm.getFullYear(),m=vm.getMonth(),B=plan().B,pad=new Date(y,m,1).getDay(),nd=new Date(y,m+1,0).getDate();
-$('mt').textContent=MS[m]+' '+y;$('pv').disabled=y*12+m<=START.getFullYear()*12+START.getMonth();$('nx').disabled=y==2027&&m==5;
-let h=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(x=>'<b>'+x+'</b>').join('');
-for(let i=0;i<pad;i++)h+='<span></span>';
-for(let d=1;d<=nd;d++){const dt=new Date(y,m,d),dd=dn(dt),ds=dd-dn(ST),w=wkOf(dt),mon=dt.getDay()==1,ms=mon&&w>=1&&w%4==1,ok=ms&&ds>=0,pm=addD(dt,-5),kv=dt.getDay()==6&&wkOf(pm)>=1&&wkOf(pm)%4==1,inP=ds>=0&&dd<=sel*7,bt=ds==0||(mon&&ds>0),isS=ok&&w==sel;
-let k='d',lb='';if(dd==0){k+=' rl';lb='TG6-8 Release'}else if(ms){k+=' pp';lb='Prep Day 1'}else if(ds==0){k+=' st';lb='Your Start'}else if(kv){k+=' kv';lb='KvK Battle'}else if(ds<0)k+=' off';
-const body='<span class="nb">'+d+'</span><span class="bt"><strong class="lt">'+lb+'</strong>'+(inP?'<em class="ct">'+(bt?B:1)+'</em>':'')+'</span>';
-h+=ok?'<button class="'+k+' ms'+(isS?' sel':'')+'" data-w="'+w+'">'+body+'</button>':'<div class="'+k+'">'+body+'</div>'}
+$("bt").onclick=e=>{const t=e.target.closest("button");if(!t)return;const c=t.dataset.c;if(c!==undefined){[6,7,8].forEach(l=>S.delete(l+"-"+c));fixS();build();render();return}const k=t.dataset.k;if(!k)return;
+if(TWO&&stg==1){if(S1.has(k)){S1.delete(k);prune(S1)}else deps(k).forEach(x=>{S.add(x);S1.add(x)})}
+else if(TWO&&S1.has(k)){S1.delete(k);prune(S1)}
+else if(S.has(k)){S.delete(k);fixS()}else deps(k).forEach(x=>S.add(x));
+build();render()}}
+// prerequisites: lower level of same building; nothing above the Town Center; TGn TC needs TG(n-1) Embassy; Command Center needs same-level Embassy
+function req(k){const l=+k[0],b=+k.slice(2),r=[];if(l>6)r.push((l-1)+"-"+b);if(b)r.push(l+"-0");if(b==0&&l>6)r.push((l-1)+"-1");if(b==2)r.push(l+"-1");return r}
+function deps(k){const o=new Set(),st=[k];while(st.length){const x=st.pop();if(!o.has(x)){o.add(x);st.push(...req(x))}}return o}
+function prune(X){let ch=true;while(ch){ch=false;X.forEach(k=>{if(req(k).some(y=>!X.has(y))){X.delete(k);ch=true}})}}
+function fixS(){prune(S);S1.forEach(k=>{if(!S.has(k))S1.delete(k)});prune(S1)}
+function cal(p=plan()){const y=vm.getFullYear(),m=vm.getMonth(),pad=new Date(y,m,1).getDay(),nd=new Date(y,m+1,0).getDate(),end=sel*7,e1=TWO?sel1*7:-1,s0=dn(ST);
+$('mt').textContent=MS[m]+', '+y;$('pv').disabled=y*12+m<=START.getFullYear()*12+START.getMonth();$('nx').disabled=y==2027&&m==5;
+let h=DW.map(x=>'<b>'+x+'</b>').join('');
+for(let i=pad;i>0;i--)h+='<div class="c x"><span class="n">'+new Date(y,m,1-i).getDate()+'</span><i class="m"></i></div>';
+for(let d=1;d<=nd;d++){const dt=new Date(y,m,d),dd=dn(dt),ds=dd-s0,w=wkOf(dt),dow=dt.getDay(),mon=dow==1,ms=mon&&w>=1&&w%4==1,ok=ms&&ds>=0&&!(TWO&&stg==2&&dd<=e1),pm=addD(dt,-5),kv=dow==6&&wkOf(pm)>=1&&wkOf(pm)%4==1,inP=ds>=0&&dd<=end,bt=ds==0||(mon&&ds>0),fst=TWO&&dd<=e1,B=fst?p.B1:p.B2;
+let k='c',lb=[];
+if(inP)k+=' in'+(fst?' in1':'');if(ds==0)k+=' a';if(dd==end)k+=' z';if(dow==0||d==1)k+=' rs';if(dow==6||d==nd)k+=' re';if(dow==0)k+=' sun';if(ds<0)k+=' off';
+if(dd==0){k+=' rl';lb.push('TG6-8 release')}if(ds==0&&dd!=0){k+=' st';lb.push('Your start')}if(ok)k+=' pk';if(dd==end&&ms&&ds>=0){k+=' sel';lb.push(TWO?'2nd spend':'Spend day')}if(dd==e1){k+=' sel1';lb.push('1st spend')}if(ms)lb.push('Prep Day 1');if(kv)lb.push('KvK battle');
+if(inP)lb.push((bt?B:1)+' refinement'+((bt?B:1)==1?'':'s'));
+const mk=(inP?'×'+(bt?B:1):'')+(kv?'<span class="dot kv"></span>':ms&&!inP?'<span class="dot"></span>':'');
+const body='<span class="n">'+d+'</span><i class="m">'+mk+'</i>',tl=fm(dt)+(lb.length?': '+lb.join(', '):'');
+h+=ok?'<button class="'+k+'" data-w="'+w+'" aria-label="'+tl+'" aria-pressed="'+(dd==end||dd==e1)+'" title="'+tl+'">'+body+'</button>':'<div class="'+k+'" title="'+tl+'">'+body+'</div>'}
+const rem=(7-(pad+nd)%7)%7;for(let i=1;i<=rem;i++)h+='<div class="c x"><span class="n">'+i+'</span><i class="m"></i></div>';
 $('cal').innerHTML=h}
 $("pv").onclick=()=>{vm=new Date(vm.getFullYear(),vm.getMonth()-1,1);cal()};
 $("nx").onclick=()=>{vm=new Date(vm.getFullYear(),vm.getMonth()+1,1);cal()};
-$("cal").onclick=e=>{const b=e.target.closest("[data-w]");if(b){sel=+b.dataset.w;render()}};
-function plan(){const need=Math.max(0,needs().tt-(+$("cur").value||0)),m=$("mode").value;let B=1;
-const W=weeks(),tot=b=>W.reduce((q,x)=>q+wkN(b,x.n)[m],0);while(B<94&&tot(B)<need)B++;return{B,need,ok:tot(B)>=need,m}}
-function render(){const p=plan(),w=wk(p.B),W=weeks(),n=needs(),end=addD(START,sel*7),RT=W.reduce((q,y)=>q+wkN(p.B,y.n).tg,0);
-$("sum").innerHTML='<div><span>Spend date</span><b class="big">'+fm(end)+", "+end.getFullYear()+"</b></div><div><span>Monday batch</span><b class=\"big\">"+p.B+"</b></div><div><span>TTG still needed</span><b class=\"big\">"+f(p.need)+"</b></div><div><span>TG on refining, per week</span><b>"+f(w.tg)+"</b></div><div><span>TG on refining, total</span><b>"+f(RT)+"</b></div><div><span>TG for the upgrades</span><b>"+f(n.tg)+"</b></div><div><span>TG needed overall</span><b>"+f(RT+n.tg)+"</b></div>";
-$("wr").textContent=p.ok?"":"Even the maximum batch of 94 does not reach "+f(p.need)+" TTG by this date. Choose a later Monday or fewer buildings.";
+$("cal").onclick=e=>{const b=e.target.closest("[data-w]");if(!b)return;const w=+b.dataset.w;if(TWO&&stg==1){sel1=w;if(sel<=w)sel=w+4}else sel=w;render()};
+function syncStg(){document.querySelectorAll("[data-stg]").forEach(x=>x.setAttribute("aria-pressed",+x.dataset.stg==stg));$("stgh").textContent=stg==1?"Tap a yellow cell again to move it to the 2nd spend.":"Tap a yellow cell to move it to the 2nd spend."}
+document.querySelectorAll("[data-stg]").forEach(x=>x.onclick=()=>{stg=+x.dataset.stg;syncStg();cal()});
+function setTwo(v){TWO=v;$("sp1").setAttribute("aria-pressed",!v);$("sp2").setAttribute("aria-pressed",v);document.body.classList.toggle("two",v);
+if(v){sel1=firstPrep();if(sel<=sel1)sel=sel1+4;if(!S1.size){const h8=[...S].some(k=>k[0]=="8");S.forEach(k=>{if(k[0]=="6"||(h8&&k[0]=="7"))S1.add(k)});prune(S1)}stg=1;syncStg()}build();render()}
+$("sp1").onclick=()=>setTwo(false);$("sp2").onclick=()=>setTwo(true);
+$("jump").onclick=()=>{const e=dOf(sel*7);vm=new Date(e.getFullYear(),e.getMonth(),1);cal();$("calendar").scrollIntoView({behavior:"smooth",block:"start"})};
+function plan(){const m=$("mode").value,cur=+$("cur").value||0,n=needs(),W=weeks(),need=Math.max(0,n.tt-cur),v=(b,x)=>wkM(b,x)[m],c=(b,x)=>wkM(b,x).tg;
+if(!TWO){const tot=b=>W.reduce((q,x)=>q+v(b,x.n),0);let B=1;while(B<94&&tot(B)<need)B++;return{m,B1:B,B2:B,need,ok:tot(B)>=need,ok1:true,n,W}}
+const n1=needs(S1),n2={tg:n.tg-n1.tg,tt:n.tt-n1.tt},e1=sel1*7,pre=W.filter(x=>x.s<e1),post=W.filter(x=>x.s>e1);
+const s1=b=>pre.reduce((q,x)=>q+v(b,x.n),0)+v(b,1),s2=b=>post.reduce((q,x)=>q+v(b,x.n),0),k1=b=>pre.reduce((q,x)=>q+c(b,x.n),0)+c(b,7),k2=b=>post.reduce((q,x)=>q+c(b,x.n),0);
+let best=null,f1=0;
+for(let b1=1;b1<=94;b1++){const t1=s1(b1);if(cur+t1<n1.tt)continue;if(!f1)f1=b1;const g2=n2.tt-(cur+t1-n1.tt)-(v(b1,7)-v(b1,1));let b2=1;while(b2<94&&s2(b2)<g2)b2++;if(s2(b2)<g2)continue;const cost=k1(b1)+k2(b2);if(!best||cost<best.cost)best={b1,b2,cost}}
+return{m,B1:best?best.b1:f1||94,B2:best?best.b2:94,need,ok:!!best,ok1:!!f1,n,n1,n2,W}}
+function render(){const p=plan(),W=p.W,n=p.n,end=dOf(sel*7),e1=sel1*7,d1=dOf(e1),Bw=y=>!TWO||y.s<=e1?p.B1:p.B2,RT=W.reduce((q,y)=>q+wkN(Bw(y),y.n).tg,0),dif=TWO&&p.B1!=p.B2;
+$("sum").innerHTML='<div class="kp">'+(TWO?'<div class="stat"><i class="ic i3">'+ICAL+'</i><div><b>'+fm(d1)+", "+d1.getFullYear()+'</b><span>1st spend</span></div></div>':'')+'<div class="stat"><i class="ic i1">'+ICAL+'</i><div><b>'+fm(end)+", "+end.getFullYear()+'</b><span>'+(TWO?'2nd spend':'Spend date')+'</span></div></div><div class="stat"><i class="ic i2">×</i><div><b>'+(dif?p.B1+' → '+p.B2:p.B1)+'</b><span>Monday batch</span></div></div>'+(TWO?'':'<div class="stat"><i class="ic i3">◆</i><div><b>'+f(p.need)+'</b><span>TTG still needed</span></div></div>')+'</div><div class="ks">'+(TWO?'<div><span>TTG for 1st / 2nd spend</span><b>'+f(p.n1.tt)+' / '+f(p.n2.tt)+'</b></div>':'')+'<div><span>TG on refining, per week</span><b>'+(dif?f(wk(p.B1).tg)+' → '+f(wk(p.B2).tg):f(wk(p.B1).tg))+'</b></div><div><span>TG on refining, total</span><b>'+f(RT)+'</b></div><div><span>TG for the upgrades</span><b>'+f(n.tg)+'</b></div><div><span>TG needed overall</span><b>'+f(RT+n.tg)+'</b></div></div>';
+$("wr").textContent=TWO&&!S1.size?"Nothing is set for the 1st spend yet. Choose 1st spend above the building table, then tap the cells to finish first.":TWO&&!p.ok1?"Even the maximum batch of 94 does not reach the 1st spend goal ("+f(p.n1.tt)+" TTG) by "+fm(d1)+". Pick a later 1st spend Monday or move buildings to the 2nd spend.":p.ok?"":"Even the maximum batch of 94 does not reach "+f(p.need)+" TTG by "+(TWO?"the 2nd spend":"this date")+". Choose a later Monday or fewer buildings.";
 let h="<tr><th>Week</th><th>Dates</th><th>Plan</th><th>TG</th><th>TTG this week</th><th>Running TTG</th></tr>",run=+$("cur").value||0;
-W.forEach((y,i)=>{const q=wkN(p.B,y.n),per=q[p.m];run+=per;const pct=Math.min(100,run/Math.max(1,n.tt)*100),a=dOf(y.s),b=dOf(y.s+y.n-1),mon=a.getDay()==1,pl=y.fin?"Mon ×"+p.B+", then spend":(i==0&&!mon?"Start day ×"+p.B+(y.n>1?", then 1 a day":""):"Mon ×"+p.B+", then 1 a day");
-h+="<tr><td>"+(i+1)+(i==0?(dn(ST)==0?" (unlock "+fm(START)+")":" (your start)"):"")+"</td><td>"+(y.n>1?fm(a)+" – "+fm(b):fm(a))+"</td><td>"+pl+"</td><td>"+f(q.tg)+"</td><td>"+(p.m=="av"?"≈ ":"≥ ")+f(per)+"</td><td>"+f(run)+" of "+f(n.tt)+(y.fin?"":'<div class="bar"><i style="width:'+pct+'%"></i></div>')+"</td></tr>"});
-$("pl").textContent="Your "+W.length+" Week Plan";$("wt").innerHTML=h;cal()}
-document.querySelectorAll(".srv").forEach(b=>b.onclick=()=>{document.querySelectorAll(".srv").forEach(x=>x.setAttribute("aria-pressed",x==b));START=UNL[b.dataset.g];$("cd").min=iso(dOf(1));$("cd").max="2027-06-14";$("cd").value="";$("o1").setAttribute("aria-pressed","true");$("o2").setAttribute("aria-pressed","false");$("cw").hidden=true;$("rd").textContent=fm(START)+", "+START.getFullYear();$("app").hidden=false;applyStart()});
+W.forEach((y,i)=>{const B=Bw(y),q=wkN(B,y.n),per=q[p.m];run+=per;const mid=TWO&&y.s==e1,pct=Math.min(100,run/Math.max(1,n.tt)*100),a=dOf(y.s),b=dOf(y.s+y.n-1),mon=a.getDay()==1,pl=y.fin?"Mon ×"+B+", then "+(TWO?"2nd spend":"spend"):mid?"Mon ×"+B+", 1st spend, then 1 a day":(i==0&&!mon?"Start day ×"+B+(y.n>1?", then 1 a day":""):"Mon ×"+B+", then 1 a day");
+h+='<tr><td data-l="Week">Week '+(i+1)+(i==0?(dn(ST)==0?" (unlock "+fm(START)+")":" (your start)"):"")+'</td><td data-l="Dates">'+(y.n>1?fm(a)+" – "+fm(b):fm(a))+'</td><td data-l="Plan">'+pl+'</td><td data-l="TG">'+f(q.tg)+'</td><td data-l="TTG this week">'+(p.m=="av"?"≈ ":"≥ ")+f(per)+'</td><td data-l="Running TTG">'+f(run)+" of "+f(n.tt)+(y.fin?"":'<div class="bar"><i style="width:'+pct+'%"></i></div>')+(mid?'<span class="tag">1st spend uses '+f(p.n1.tt)+' TTG</span>':'')+"</td></tr>"});
+$("pl").textContent="Your "+W.length+" Week Plan";$("wt").innerHTML=h;$("nb").textContent=S.size;
+const kd=[[START,"TG6-8 release","Upgrades unlock, refining starts","co"]];if(dn(ST)>0)kd.push([ST,"Your start","First refining day, ×"+p.B1,""]);
+if(TWO)kd.push([d1,"1st spend","Mon ×"+p.B1+", then spend","ye"]);
+kd.push([end,TWO?"2nd spend":"Spend day","Mon ×"+p.B2+", then spend",""],[dOf(sel*7+5),"KvK battle","Saturday after your spend","co"]);
+$("kdn").textContent=W.length+" weeks";
+$("kd").innerHTML=kd.map(([d,t,s,c])=>'<li class="'+c+'"><time>'+DW[d.getDay()]+'<b>'+fm(d)+'</b></time><div><b>'+t+'</b><span>'+s+'</span></div></li>').join("");
+cal(p)}
+document.querySelectorAll(".srv").forEach(b=>b.onclick=()=>{document.querySelectorAll(".srv").forEach(x=>x.setAttribute("aria-pressed",x==b));START=UNL[b.dataset.g];$("cd").min=iso(dOf(1));$("cd").max="2027-06-14";$("cd").value="";$("o1").setAttribute("aria-pressed","true");$("o2").setAttribute("aria-pressed","false");$("cw").hidden=true;$("rd").textContent=fm(START)+", "+START.getFullYear();$("pick").hidden=true;$("app").hidden=false;$("rail").hidden=false;$("srvr").textContent=b.querySelector("span small").textContent;try{history.replaceState(null,"","?g="+b.dataset.g);localStorage.setItem("tgGroup",b.dataset.g)}catch(e){}applyStart()});
 function applyStart(){let v=START,msg="";if($("o2").getAttribute("aria-pressed")=="true"){const p=$("cd").value.split("-"),d=p.length==3?new Date(+p[0],+p[1]-1,+p[2]):null;if(d&&d>START&&d<=new Date(2027,5,14))v=d;else msg="Pick a date after "+fm(START)+" and on or before Jun 14."}
-$("cwr").textContent=msg;ST=v;sel=5;while(sel*7<dn(ST))sel+=4;vm=new Date(ST.getFullYear(),ST.getMonth(),1);render()}
+$("cwr").textContent=msg;ST=v;sel=5;while(sel*7<dn(ST))sel+=4;sel1=firstPrep();if(TWO&&sel<=sel1)sel=sel1+4;vm=new Date(ST.getFullYear(),ST.getMonth(),1);render()}
 $("o1").onclick=()=>{$("o1").setAttribute("aria-pressed","true");$("o2").setAttribute("aria-pressed","false");$("cw").hidden=true;applyStart()};
 $("o2").onclick=()=>{$("o1").setAttribute("aria-pressed","false");$("o2").setAttribute("aria-pressed","true");$("cw").hidden=false;if(!$("cd").value)$("cd").value=iso(dOf(1));applyStart()};
 $("cd").onchange=applyStart;
 $("cur").oninput=render;$("mode").onchange=render;build();render();
+{const g=new URLSearchParams(location.search).get("g"),b=g&&document.querySelector('.srv[data-g="'+g+'"]');if(b)b.click()}
 </script></body></html>
