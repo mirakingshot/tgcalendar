@@ -58,7 +58,28 @@ button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{ou
 @media(prefers-reduced-motion:reduce){.cd-live i{animation:none}}
 .lazy{padding:8px 14px;border:0;border-radius:12px;background:var(--co);color:#fff;font-size:12px;font-weight:700;white-space:nowrap;cursor:pointer;box-shadow:0 6px 14px rgba(248,111,107,.3)}.lazy:hover{filter:brightness(1.05)}
 dialog#lz{width:min(640px,calc(100vw - 24px));max-height:calc(100vh - 40px);padding:22px;border:0;border-radius:24px;background:#fff;color:var(--tx);box-shadow:0 30px 80px rgba(28,30,60,.3);overflow:auto}
-dialog#lz::backdrop{background:rgba(28,30,60,.45)}
+dialog#lz::backdrop,dialog#sm::backdrop{background:rgba(28,30,60,.45)}
+dialog#sm{width:min(920px,calc(100vw - 24px));max-height:calc(100vh - 40px);padding:22px;border:0;border-radius:24px;background:#fff;color:var(--tx);box-shadow:0 30px 80px rgba(28,30,60,.3);overflow:auto}
+.sumbtn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin:0 0 22px;padding:15px;border:0;border-radius:18px;background:linear-gradient(135deg,#7372EA,var(--pr));color:#fff;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 10px 24px rgba(83,82,212,.28)}
+.sumbtn svg{width:20px;height:20px}.sumbtn:hover{filter:brightness(1.06)}
+@media(max-width:720px){.sumbtn{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:auto;max-width:calc(100vw - 32px);margin:0;padding:11px 18px;border-radius:999px;font-size:13px;white-space:nowrap;z-index:20;box-shadow:0 10px 26px rgba(83,82,212,.4)}.sumbtn svg{width:16px;height:16px}body:has(#sumb:not([hidden])) .workspace{padding-bottom:80px}}
+#sumb[hidden]{display:none!important}
+.sm-tot{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:14px 24px;padding:20px 22px;border-radius:20px;background:var(--prt);margin-bottom:18px}
+.sm-tot span{display:block;font-size:12px;font-weight:800;color:var(--pr);text-transform:uppercase;letter-spacing:.06em}
+.sm-tot strong{display:block;font-size:52px;font-weight:800;line-height:1.05;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.sm-tot strong small{font-size:20px;color:var(--mu);margin-left:8px;letter-spacing:0}
+.sm-bd{display:flex;gap:8px;flex-wrap:wrap}.sm-bd div{background:#fff;border-radius:12px;padding:8px 12px;font-size:11px;color:var(--mu)}.sm-bd b{display:block;font-size:15px;color:var(--tx);font-variant-numeric:tabular-nums}
+.sm-g{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:22px;align-items:start}
+.sm-cals{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
+.sm-cal{--s:28px}.sm-cal h3{margin:0 0 8px;font-size:14px;font-weight:800}
+.sm-cal .cal{row-gap:3px}.sm-cal .cal b{padding-bottom:4px;font-size:9px}.sm-cal .n{font-size:11px;border-radius:9px}.sm-cal .m{height:11px;font-size:9px}
+.sm-leg{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;font-size:11px;color:var(--mu)}.sm-leg span{display:flex;align-items:center;gap:6px}.sm-leg i{width:12px;height:12px;border-radius:4px}
+.sm-p{border:1.5px solid var(--ln);border-radius:16px;padding:14px 16px;margin-bottom:12px}
+.sm-p h3{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:0 0 8px;font-size:13px;font-weight:700}
+.sm-l{list-style:none;margin:0;padding:0}.sm-l li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:7px 0;border-top:1px solid var(--ln);font-size:13px}.sm-l li:first-child{border-top:0}
+.sm-l small{color:var(--mu);font-weight:600}.sm-lv{display:inline-block;min-width:40px;text-align:center;padding:2px 8px;border-radius:7px;background:var(--pr);color:#fff;font-weight:800;font-size:11px}
+.sm-p.p1 .sm-lv{background:var(--ye);color:var(--tx)}
+@media(max-width:760px){.sm-g{grid-template-columns:1fr}.sm-tot strong{font-size:38px}}
 .lz-h{display:flex;justify-content:space-between;gap:12px;margin-bottom:16px}.lz-h h2{margin:0;font-size:18px;font-weight:800}.lz-h p{margin:4px 0 0;font-size:12px;color:var(--mu)}
 .lz-x{width:32px;height:32px;flex:none;border:0;border-radius:10px;background:var(--soft);font-size:18px;line-height:1;cursor:pointer}.lz-x:hover{background:var(--cot);color:var(--co)}
 .lz-l{list-style:none;margin:0;padding:0;display:grid;gap:10px}
@@ -194,8 +215,8 @@ footer a{color:inherit;font-weight:700;text-decoration:none}
 @media(max-width:1180px){.shell{grid-template-columns:84px minmax(0,1fr)}.sidebar{padding:30px 14px}.brand{margin:0 0 40px;text-align:center;font-size:18px}.brand em,.brand span{display:none}.side-nav a span,.pill,.srv>span,.nav-label{display:none}.side-nav a{justify-content:center;padding:0}.srv{justify-content:center;padding:4px 0}.sub{margin:4px 0;padding:8px 0;border:0;border-top:1px solid var(--ln);border-bottom:1px solid var(--ln)}.jump{margin-top:20px;padding-top:20px;border-top:1px solid var(--ln)}}
 @media(max-width:1000px){.cols{display:flex;flex-direction:column;gap:0}.colmain,#app,.colrail{display:contents}.cols>*>*,#app>*{width:100%}
 #pick{order:1}#start{order:2}#buildings{order:3}#calendar{order:4}#keys{order:5}#results{order:6}#weeks{order:7}footer{order:8}}
-@media(max-width:720px){.shell{display:block;margin:0;border-radius:0;box-shadow:none;background:var(--bg)}.sidebar{display:block;background:none;border:0;padding:20px 16px 0}.brand,.jump,.jl,.pl,.pages-nav>a{display:none}.nav-label:not(.jl):not(.pl){display:block;margin:0 2px 8px}
-.server-nav{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0;padding:0;border:0}.srv{justify-content:flex-start;padding:10px;gap:10px;background:#fff;box-shadow:0 6px 20px rgba(70,80,140,.07)}.srv>span{display:flex}.srv b{font-size:13px}.srv[aria-pressed=true]{background:var(--prt);box-shadow:inset 0 0 0 1.5px var(--pr)}.srv[aria-pressed=true]:after{display:none}
+@media(max-width:720px){.shell{display:block;margin:0;border-radius:0;box-shadow:none;background:var(--bg)}.sidebar{display:block;background:none;border:0;padding:20px 16px 0}.brand,.jump,.jl,.ml{display:none}.nav-label.pl{display:block;margin:0 2px 8px}.pages-nav{display:grid;grid-template-columns:1fr 1fr;gap:8px}.pages-nav>a{justify-content:center;padding:0 8px;background:#fff;box-shadow:0 6px 20px rgba(70,80,140,.07);font-size:12px}.pages-nav>a svg{display:none}.pages-nav>a span{display:inline;white-space:normal;text-align:center;line-height:1.2}.pages-nav>a.active{background:var(--prt);box-shadow:inset 0 0 0 1.5px var(--pr)}.pages-nav>a.active:after{display:none}
+.server-nav{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 0;padding:0;border:0;order:9;grid-column:1/-1}.server-nav:before{content:"Server group";grid-column:1/-1;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#B5B8CC;margin:0 2px -4px}.srv{justify-content:flex-start;padding:10px;gap:10px;background:#fff;box-shadow:0 6px 20px rgba(70,80,140,.07)}.srv>span{display:flex}.srv b{font-size:13px}.srv[aria-pressed=true]{background:var(--prt);box-shadow:inset 0 0 0 1.5px var(--pr)}.srv[aria-pressed=true]:after{display:none}
 .d-only{display:none}.m-only{display:inline}.workspace{padding:20px 16px}.topbar{flex-direction:column;gap:12px}.avatar{display:none}.topbar h1{font-size:22px}.profile{width:100%;justify-content:space-between}.card{padding:16px;border-radius:20px;margin-bottom:16px}
 #bt th,#bt td{padding-left:2px;padding-right:2px}#bt td:first-child{font-size:12px;line-height:1.25}.tg{min-width:44px;padding:6px 4px}.tg .u{display:none}
 #wt tr:first-child{display:none}#wt tr{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;padding:12px 0;border-top:1px solid var(--ln)}#wt tr:nth-child(2){border-top:0}
@@ -255,6 +276,7 @@ footer a{color:inherit;font-weight:700;text-decoration:none}
 </aside>
 <section class="card span" id="weeks" hidden><h2>Week by week</h2><div class="w"><table id="wt"></table></div>
 <p class="note">Weekly cap is 100 refinements: the Monday batch plus 1 per day Tuesday to Sunday. The first refinement each day costs half. Costs: 20/50/100/130/160 TG per refinement across each block of 20. Average TTG per refinement is estimated from the planner’s strategy table, so treat averages as close approximations.</p></section>
+<button class="span sumbtn" id="sumb" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><span class="d-only">Show me a quick summary of this plan</span><span class="m-only">Quick summary</span></button>
 <footer class="span">made with love by <a href="https://mirakingshot.github.io/">Mira [221330479]</a></footer>
 </div>
 </div>
@@ -262,6 +284,10 @@ footer a{color:inherit;font-weight:700;text-decoration:none}
 <dialog id="lz" aria-labelledby="lzt">
 <div class="lz-h"><div><h2 id="lzt">Help me, I’m lazy!</h2><p id="lzs">Ready-made plans with the total TG each one needs. Pick one and the planner fills everything in.</p></div><button class="lz-x" id="lzx" aria-label="Close">×</button></div>
 <div id="lzb"></div>
+</dialog>
+<dialog id="sm" aria-labelledby="smt">
+<div class="lz-h"><div><h2 id="smt">Plan summary</h2><p id="sms"></p></div><button class="lz-x" id="smx" aria-label="Close">×</button></div>
+<div id="smb"></div>
 </dialog>
 <script>
 const T=[20,50,100,130,160],MN=[1,2,3,3,3],AV=[1.45,2.15,3.18,3.43,3.71];
@@ -338,13 +364,34 @@ kd.push([end,TWO?"2nd spend":"Spend day",sp(p.B2),""],[dOf(sel*7+5),"KvK battle"
 $("kdn").textContent=W.length+" weeks";
 $("kd").innerHTML=kd.map(([d,t,s,c])=>'<li class="'+c+'"><time>'+DW[d.getDay()]+'<b>'+fm(d)+'</b></time><div><b>'+t+'</b><span>'+s+'</span></div></li>').join("");
 cal(p)}
-document.querySelectorAll(".srv").forEach(b=>b.onclick=()=>{document.querySelectorAll(".srv").forEach(x=>x.setAttribute("aria-pressed",x==b));START=UNL[b.dataset.g];curG=b.dataset.g;tick();$("cd").min=iso(dOf(1));$("cd").max="2027-06-14";$("cd").value="";$("o1").setAttribute("aria-pressed","true");$("o2").setAttribute("aria-pressed","false");$("cw").hidden=true;$("rd").textContent=fm(START)+", "+START.getFullYear();$("pick").hidden=true;$("app").hidden=false;$("weeks").hidden=false;$("rail").hidden=false;try{history.replaceState(null,"","?g="+b.dataset.g);localStorage.setItem("tgGroup",b.dataset.g)}catch(e){}applyStart()});
+document.querySelectorAll(".srv").forEach(b=>b.onclick=()=>{document.querySelectorAll(".srv").forEach(x=>x.setAttribute("aria-pressed",x==b));START=UNL[b.dataset.g];curG=b.dataset.g;tick();$("cd").min=iso(dOf(1));$("cd").max="2027-06-14";$("cd").value="";$("o1").setAttribute("aria-pressed","true");$("o2").setAttribute("aria-pressed","false");$("cw").hidden=true;$("rd").textContent=fm(START)+", "+START.getFullYear();$("pick").hidden=true;$("app").hidden=false;$("weeks").hidden=false;$("sumb").hidden=false;$("rail").hidden=false;try{history.replaceState(null,"","?g="+b.dataset.g);localStorage.setItem("tgGroup",b.dataset.g)}catch(e){}applyStart()});
 function applyStart(){let v=START,msg="";if($("o2").getAttribute("aria-pressed")=="true"){const p=$("cd").value.split("-"),d=p.length==3?new Date(+p[0],+p[1]-1,+p[2]):null;if(d&&d>START&&d<=new Date(2027,5,14))v=d;else msg="Pick a date after "+fm(START)+" and on or before Jun 14."}
 $("cwr").textContent=msg;ST=v;sel=5;while(sel*7<dn(ST))sel+=4;sel1=firstPrep();if(TWO&&sel<=sel1)sel=sel1+4;vm=new Date(ST.getFullYear(),ST.getMonth(),1);render()}
 $("o1").onclick=()=>{$("o1").setAttribute("aria-pressed","true");$("o2").setAttribute("aria-pressed","false");$("cw").hidden=true;applyStart()};
 $("o2").onclick=()=>{$("o1").setAttribute("aria-pressed","false");$("o2").setAttribute("aria-pressed","true");$("cw").hidden=false;if(!$("cd").value)$("cd").value=iso(dOf(1));applyStart()};
 $("cd").onchange=applyStart;
 $("cur").oninput=render;$("mode").onchange=render;setTwo(true);
+/* quick plan summary */
+function miniCal(y,m,p){const pad=new Date(y,m,1).getDay(),nd=new Date(y,m+1,0).getDate(),end=sel*7+pd,e1=TWO?sel1*7+pd:-1e9,s0=dn(ST),blank='<div class="c x"><span class="n"></span><i class="m"></i></div>';
+let h=DW.map(x=>'<b>'+x[0]+'</b>').join('');for(let i=0;i<pad;i++)h+=blank;
+for(let d=1;d<=nd;d++){const dt=new Date(y,m,d),dd=dn(dt),ds=dd-s0,dow=dt.getDay(),inP=ds>=0&&dd<=end,bt=ds==0||(dow==1&&ds>0),fst=TWO&&dd<=e1,B=fst?p.B1:p.B2;let k='c';
+if(inP)k+=' in'+(fst?' in1':'');if(ds==0)k+=' a';if(dd==end)k+=' z';if(dow==0||d==1)k+=' rs';if(dow==6||d==nd)k+=' re';if(ds<0||dd>end)k+=' off';if(dd==0)k+=' rl';if(ds==0&&dd!=0)k+=' st';if(dd==end)k+=' sel';if(dd==e1)k+=' sel1';
+h+='<div class="'+k+'"><span class="n">'+d+'</span><i class="m">'+(inP?'×'+(bt?B:1):'')+'</i></div>'}
+for(let i=(pad+nd)%7;i&&i<7;i++)h+=blank;return h}
+function summary(){const p=plan(),n=p.n,e1=sel1*7,d1=dOf(e1+pd),d2=dOf(sel*7+pd),RT=p.W.reduce((q,y)=>q+wkN(!TWO||y.s<=e1?p.B1:p.B2,y.n).tg,0),dif=TWO&&p.B1!=p.B2,g=document.querySelector('.srv[aria-pressed="true"]');
+const lv=(X,b)=>Math.max(0,...[6,7,8].filter(l=>X.has(l+"-"+b))),row=(b,l,from)=>'<li><span>'+N[b]+'</span><span>'+(from?'<small>TG'+from+' → </small>':'')+'<b class="sm-lv">TG'+l+'</b></span></li>';
+const blk=(c,label,dt,rows,tt)=>'<div class="sm-p '+c+'"><h3><i class="pp '+c+'">'+label+'</i><span>'+DW[dt.getDay()]+', '+fm(dt)+', '+dt.getFullYear()+'</span></h3><ul class="sm-l">'+(rows.length?rows.join(""):'<li><small>Nothing set for this spend</small></li>')+'</ul><p class="note" style="margin-top:8px">Spends '+f(tt)+' TTG</p></div>';
+let lev;/* assumes every building starts at TG5 */
+if(TWO){const r1=[],r2=[];N.forEach((_,b)=>{const a=lv(S1,b),z=lv(S,b);if(a)r1.push(row(b,a,5));if(z>a)r2.push(row(b,z,a||5))});lev=blk("p1","1st Prep",d1,r1,p.n1.tt)+blk("p2","2nd Prep",d2,r2,p.n2.tt)}
+else{const r=[];N.forEach((_,b)=>{const z=lv(S,b);if(z)r.push(row(b,z,5))});lev=blk("p2","Prep day",d2,r,n.tt)}
+const months=[];let y=ST.getFullYear(),m=ST.getMonth();while(y*12+m<=d2.getFullYear()*12+d2.getMonth()){months.push([y,m]);if(++m>11){m=0;y++}}
+$("sms").textContent=(g?g.querySelector("b").textContent+" · "+g.querySelector("span small").textContent+" · ":"")+p.W.length+"-week plan · "+(TWO?"2 spends":"1 spend")+" · "+($("mode").value=="av"?"average luck":"guaranteed");
+$("smb").innerHTML=(p.ok&&(!TWO||p.ok1)?'':'<p class="warn" style="margin:0 0 12px">'+$("wr").textContent+'</p>')+
+'<div class="sm-tot"><div><span>Total TG needed for this plan</span><strong>'+f(RT+n.tg)+'<small>TG</small></strong></div><div class="sm-bd"><div><b>'+f(RT)+'</b>refining</div><div><b>'+f(n.tg)+'</b>upgrades</div><div><b>×'+(dif?p.B1+' → ×'+p.B2:p.B1)+'</b>Monday batch</div></div></div>'+
+'<div class="sm-g"><div><div class="sm-cals">'+months.map(([y,m])=>'<div class="sm-cal"><h3>'+MS[m]+' '+y+'</h3><div class="cal">'+miniCal(y,m,p)+'</div></div>').join("")+'</div><div class="sm-leg"><span><i class="lg-rl"></i>Release</span>'+(TWO?'<span><i class="lg-ye"></i>1st spend</span>':'')+'<span><i class="lg-pr"></i>'+(TWO?'2nd spend':'Spend day')+'</span><span><i class="lg-in"></i>Refining days</span><span><b style="color:var(--pr)">×N</b>Refinements that day</span></div></div><div>'+lev+'</div></div>'}
+$("sumb").onclick=()=>{summary();$("sm").showModal()};
+$("smx").onclick=()=>$("sm").close();
+$("sm").onclick=e=>{if(e.target==$("sm")){const r=$("sm").getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)$("sm").close()}};
 /* release countdown: unlock is 00:00 UTC on the release day */
 const UTCD=d=>Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()),p2=n=>String(n).padStart(2,"0");
 function tick(){const now=Date.now(),up=Object.keys(UNL).filter(k=>UTCD(UNL[k])>now),g=curG||up[0]||"b",left=UTCD(UNL[g])-now,lbl=fm(UNL[g])+" unlock";
