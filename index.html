@@ -93,6 +93,10 @@ dialog#sm{width:min(920px,calc(100vw - 24px));max-height:calc(100vh - 40px);padd
 .pp{font-style:normal;font-size:10px;font-weight:800;padding:2px 8px;border-radius:7px;text-transform:uppercase;letter-spacing:.04em}.pp.p1{background:var(--yet);color:#8A5F00}.pp.p2{background:var(--prt);color:var(--pr)}
 .lz-l li.na{background:var(--soft);border-style:dashed;border-color:#D9DAE6}.lz-l li.na:hover{border-color:#D9DAE6}.lz-l li.na b{color:var(--mu);text-decoration:line-through;text-decoration-color:rgba(248,111,107,.6)}.lz-l li.na .pp,.lz-l li.na b small{opacity:.6}
 .lz-l li.na .lz-why b{display:inline;text-decoration:none;color:var(--tx);font-size:12px}
+.lz-q{margin:0 0 10px;font-size:15px;font-weight:800}
+.lz-sp button{padding:18px}.lz-sp b{font-size:15px;margin-bottom:2px}
+.lz-sw{display:flex;align-items:center;gap:10px;margin:0 0 14px;font-size:12px;font-weight:600;color:var(--mu)}
+.seg2{display:flex;gap:4px;padding:4px;border-radius:12px;background:var(--soft)}.seg2 button{border:0;background:none;padding:6px 12px;border-radius:9px;font-size:12px;font-weight:700;color:var(--mu);cursor:pointer}.seg2 button[aria-pressed=true]{background:#fff;color:var(--pr);box-shadow:0 2px 8px rgba(70,80,140,.12)}
 .lz-why{display:flex;gap:8px;align-items:flex-start;margin-top:8px;font-size:12px;color:var(--tx)}.lz-why i{flex:none;width:18px;height:18px;border-radius:50%;background:var(--co);color:#fff;font-style:normal;font-size:10px;font-weight:800;display:grid;place-items:center}
 .lz-no{display:inline-block;padding:6px 12px;border-radius:10px;background:var(--cot);color:var(--co);font-size:12px;font-weight:800;white-space:nowrap}
 .lz-g{display:grid;grid-template-columns:1fr 1fr;gap:10px}.lz-g button{padding:14px;border:1.5px solid var(--ln);border-radius:16px;background:#fff;text-align:left;cursor:pointer}.lz-g button:hover{border-color:var(--pr);background:var(--prt)}.lz-g b{display:block}.lz-g span{font-size:12px;color:var(--mu)}
@@ -404,24 +408,32 @@ tick();setInterval(tick,1000);
 /* "Help me, I'm lazy!" presets. Buildings: 0 TC, 1 Embassy, 2 CC, 3 Infirmary, 4 Barracks, 5 Stable, 6 Range, 7 War Academy. Prerequisites are added automatically. */
 const TR=[0,4,5,6],ALL=[0,1,2,3,4,5,6,7];
 const PRESETS=[
-{l1:"TG8 TC, Troops",s2:[[8,TR]],at:1},
-{l1:"TG7 TC, Troops, Command Center",l2:"TG8 TC, Troops, Command Center",s1:[[7,[0,2,4,5,6]]],s2:[[8,[0,2,4,5,6]]]},
-{l1:"TG7 TC, Troops, TG6 Command Center",l2:"TG8 TC, Troops, Command Center",s1:[[7,TR],[6,[2]]],s2:[[8,[0,2,4,5,6]]]},
-{l1:"TG7 TC, Troops",l2:"TG8 TC, Troops",s1:[[7,TR]],s2:[[8,TR]]},
-{l1:"Full TG7",l2:"Full TG8",s1:[[7,ALL]],s2:[[8,ALL]]},
-{l1:"TG6 TC, Troops",l2:"TG7 TC, Troops",s1:[[6,TR]],s2:[[7,TR]]}];
+{k:"mid",pin:1,l1:"TG8 TC, Troops",s2:[[8,TR]],at:1},
+{k:"mid",l1:"TG7 TC, Troops, Command Center",l2:"TG8 TC, Troops, Command Center",s1:[[7,[0,2,4,5,6]]],s2:[[8,[0,2,4,5,6]]]},
+{k:"mid",l1:"TG7 TC, Troops, TG6 Command Center",l2:"TG8 TC, Troops, Command Center",s1:[[7,TR],[6,[2]]],s2:[[8,[0,2,4,5,6]]]},
+{k:"mid",l1:"TG7 TC, Troops",l2:"TG8 TC, Troops",s1:[[7,TR]],s2:[[8,TR]]},
+{k:"mid",l1:"Full TG7",l2:"Full TG8",s1:[[7,ALL]],s2:[[8,ALL]]},
+{k:"f2p",l1:"TG6 TC, Troops",l2:"TG7 TC, Troops",s1:[[6,TR]],s2:[[7,TR]]},
+{k:"f2p",l1:"TG6 TC, Troops",s2:[[6,TR]],at:1},
+{k:"f2p",l2:"TG6 TC, Troops",s2:[[6,TR]]}];
+let spend=null;try{spend=localStorage.getItem("tgSpend")}catch(e){}
+const SPEND={f2p:["F2P / low spend","Smaller goals that fit a lighter TG budget"],mid:["Mid spend +","Bigger TG7 and TG8 pushes"]};
 function presetSets(p){const a=new Set(),b=new Set(),add=(X,list)=>(list||[]).forEach(([l,bs])=>bs.forEach(x=>deps(l+"-"+x).forEach(k=>X.add(k))));add(a,p.s1);add(b,p.s2);a.forEach(k=>b.add(k));return{S:b,S1:a}}
 function applyState(p){const q=presetSets(p),p1=firstPrep();S.clear();q.S.forEach(k=>S.add(k));S1.clear();q.S1.forEach(k=>S1.add(k));TWO=!!p.s1;sel1=p1;sel=p.at==1?p1:p1+4}
 function evalPreset(p){const keep={S:[...S],S1:[...S1],TWO,sel,sel1};applyState(p);const r=plan(),e1=sel1*7,RT=r.W.reduce((q,y)=>q+wkN(!TWO||y.s<=e1?r.B1:r.B2,y.n).tg,0),cur=+$("cur").value||0,mx=TWO?null:cur+r.W.reduce((q,y)=>q+wkN(94,y.n)[r.m],0),out={tot:RT+r.n.tg,ok:r.ok&&(!TWO||r.ok1),B1:r.B1,B2:r.B2,two:TWO,d1:dOf(sel1*7+pd),d2:dOf(sel*7+pd),mx,need:r.n.tt};
 S.clear();keep.S.forEach(k=>S.add(k));S1.clear();keep.S1.forEach(k=>S1.add(k));TWO=keep.TWO;sel=keep.sel;sel1=keep.sel1;return out}
 function lazyList(){if($("app").hidden){$("lzb").innerHTML='<p class="note" style="margin:0 0 12px">Pick your server group first so the totals use the right dates.</p><div class="lz-g">'+[...document.querySelectorAll(".srv")].map(b=>'<button data-lg="'+b.dataset.g+'"><b>'+b.querySelector("b").textContent+'</b><span>'+b.querySelector("span small").textContent+'</span></button>').join("")+'</div>';return}
 $("lzs").textContent="Totals use your start date, "+DW[pd+1]+" prep day, current TTG and "+({av:"average luck",sh:"shitty luck",mn:"guaranteed"}[$("mode").value])+" setting. Pick one and the planner fills everything in.";
-$("lzb").innerHTML='<ul class="lz-l">'+PRESETS.map((p,i)=>{const r=evalPreset(p),ln=(n,t,d)=>t?'<b><i class="pp p'+n+'">'+(n==1?"1st":"2nd")+' Prep</i>'+t+'<small>'+fm(d)+'</small></b>':"",title=ln(1,p.l1,r.two||p.at==1?r.d1:r.d2)+ln(2,p.l2,r.d2);
+if(!SPEND[spend]){$("lzb").innerHTML='<p class="lz-q">I’m more…</p><div class="lz-g lz-sp">'+Object.entries(SPEND).map(([k,[t,s]])=>'<button data-sp="'+k+'"><b>'+t+'</b><span>'+s+'</span></button>').join("")+'</div>';return}
+const seg='<div class="lz-sw"><span>I’m more</span><div class="seg2">'+Object.entries(SPEND).map(([k,[t]])=>'<button data-sp="'+k+'" aria-pressed="'+(k==spend)+'">'+t+'</button>').join("")+'</div></div>';
+const items=PRESETS.map((p,i)=>({p,i,r:evalPreset(p)})).filter(x=>x.p.k==spend).sort((a,b)=>(b.p.pin||0)-(a.p.pin||0)||(a.r.ok-b.r.ok)||(a.r.tot-b.r.tot));
+$("lzb").innerHTML=seg+'<ul class="lz-l">'+items.map(({p,i,r})=>{const ln=(n,t,d)=>t?'<b><i class="pp p'+n+'">'+(n==1?"1st":"2nd")+' Prep</i>'+t+'<small>'+fm(d)+'</small></b>':"",title=ln(1,p.l1,r.two||p.at==1?r.d1:r.d2)+ln(2,p.l2,r.d2);
 if(!r.ok)return'<li class="na"><div>'+title+'<div class="lz-why"><i>✕</i><span>Not possible. '+(r.mx!=null?'Even the max ×94 batch every week only reaches about <b>'+f(r.mx)+'</b> of the <b>'+f(r.need)+'</b> TTG needed by then.':'Even the max ×94 batch can’t reach these goals in time.')+'</span></div></div><div class="lz-r"><span class="lz-no">Not possible</span></div></li>';
 return'<li><div>'+title+'<div class="lz-st">'+(r.two?'<i>×'+r.B1+' → ×'+r.B2+' Monday batch</i>':'<i>×'+r.B1+' Monday batch</i>')+'</div></div><div class="lz-r"><strong>'+f(r.tot)+'</strong><small><img class="gi" src="truegold.png" alt="">TG needed in total</small><button data-p="'+i+'">Use this plan</button></div></li>'}).join("")+'</ul><p class="note">Totals include refining plus the upgrade costs. Prerequisites like the Embassy are included automatically.</p>'}
 $("lazy").onclick=()=>{lazyList();$("lz").showModal()};
 $("lzx").onclick=()=>$("lz").close();
 $("lz").onclick=e=>{if(e.target==$("lz")){const r=$("lz").getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom){$("lz").close();return}}const g=e.target.closest("[data-lg]");if(g){document.querySelector('.srv[data-g="'+g.dataset.lg+'"]').click();lazyList();return}
+const sp=e.target.closest("[data-sp]");if(sp){spend=sp.dataset.sp;try{localStorage.setItem("tgSpend",spend)}catch(x){}lazyList();return}
 const b=e.target.closest("[data-p]");if(!b)return;applyState(PRESETS[+b.dataset.p]);$("sp1").setAttribute("aria-pressed",!TWO);$("sp2").setAttribute("aria-pressed",TWO);document.body.classList.toggle("two",TWO);stg=1;syncStg();build();render();const e2=dOf((TWO?sel1:sel)*7+pd);vm=new Date(e2.getFullYear(),e2.getMonth(),1);cal();$("lz").close();$("results").scrollIntoView({behavior:"smooth",block:"start"})};
 {const g=new URLSearchParams(location.search).get("g"),b=g&&document.querySelector('.srv[data-g="'+g+'"]');if(b)b.click()}
 </script></body></html>
