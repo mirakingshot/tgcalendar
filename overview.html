@@ -134,6 +134,7 @@ th:first-child,td:first-child{text-align:left}
 .pages{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.pages a{justify-content:center;padding:0 8px;font-size:12px;background:#fff;box-shadow:0 6px 20px rgba(70,80,140,.07)}.pages a svg{display:none}.pages a span{display:inline;white-space:normal;text-align:center;line-height:1.2}.pages a.active{background:var(--prt);box-shadow:inset 0 0 0 1.5px var(--pr)}.pages a.active:after{display:none}
 .workspace{padding:20px 16px}.topbar{flex-direction:column}.topbar h1{font-size:22px}.profile{display:none}.card{padding:16px;border-radius:20px;margin-bottom:16px}.ch{flex-wrap:wrap}}
 @media(max-width:720px){.sidebar .brand{display:block!important;margin:0 2px 18px;text-align:left;font-size:22px}.sidebar .brand em,.sidebar .brand span{display:inline!important}}
+.gi{width:1.3em;height:1.3em;vertical-align:-.32em;margin-right:.3em;object-fit:contain}.gi.gl{width:28px;height:28px;margin:0;vertical-align:middle}.gi.gx{width:46px;height:46px;vertical-align:-5px;margin-right:10px}
 </style></head><body>
 <div class="shell">
 <aside class="sidebar">
@@ -164,7 +165,7 @@ th:first-child,td:first-child{text-align:left}
 <div class="cols">
 <div class="colmain">
 <section class="card" id="chart-card">
-<div class="ch"><div><h2><span class="step">2</span>Total TG needed</h2><p>Refining plus upgrade cost, by how long your plan is</p></div><div class="seg" role="group" aria-label="Plan for"><button data-m="av" aria-pressed="true">Average luck</button><button data-m="mn" aria-pressed="false">Guaranteed</button></div></div>
+<div class="ch"><div><h2><span class="step">2</span><img class="gi" src="truegold.png" alt="">Total TG needed</h2><p>Refining plus upgrade cost, by how long your plan is</p></div><div class="seg" role="group" aria-label="Plan for"><button data-m="av" aria-pressed="true">Average luck</button><button data-m="sh" aria-pressed="false">Shitty luck</button><button data-m="mn" aria-pressed="false">Guaranteed</button></div></div>
 <div class="legend"><span><i style="background:var(--s6)"></i>Through TG6</span><span><i style="background:var(--s7)"></i>Through TG7</span><span><i style="background:var(--s8)"></i>Through TG8</span></div>
 <div id="chart" tabindex="0" aria-label="Total TG chart. Use the left and right arrow keys to pick a plan length."><div class="tip" id="tip"></div></div>
 <div class="cap"><span>Plan length in weeks · tap or click to pick one</span><span><i></i>2, 6, 10… week plans end on a prep Monday, the days the planner lets you spend</span></div>
@@ -193,14 +194,14 @@ th:first-child,td:first-child{text-align:left}
 </div>
 </div>
 <script>
-const T=[20,50,100,130,160],MN=[1,2,3,3,3],AV=[1.45,2.15,3.18,3.43,3.71];
+const T=[20,50,100,130,160],MN=[1,2,3,3,3],AV=[1.45,2.15,3.18,3.435,3.71],SH=AV.map((a,t)=>(a+MN[t])/2);
 const N=["Town Center","Embassy","Command Center","Infirmary","Barracks","Stable","Range","War Academy"];
 const C={6:[[900,60],[225,13],[180,12],[180,12],[405,25],[405,25],[405,25],[405,25]],7:[[1080,90],[270,19],[216,18],[216,18],[486,37],[486,37],[486,37],[486,37]],8:[[1080,120],[270,30],[216,24],[216,24],[486,54],[486,54],[486,54],[486,54]]};
 const SETS={mt:{name:"TC + Troops",b:[0,1,4,5,6]},mtc:{name:"TC + Troops + CC",b:[0,1,2,4,5,6]},full:{name:"Full TG8",b:[0,1,2,3,4,5,6,7]}};
 const COL={6:"#9085e9",7:"#6250d6",8:"#3a2a9c"},NMAX=28,PREP=[1,5,9,13,17,21,25],MAXB=94,INK="#1C1E3C",MU="#9A9DB5",LN="#EEEFF5";
 const UNL=[["Nov 23 group",new Date(2026,10,23)],["Dec 21 group",new Date(2026,11,21)]],MS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const $=id=>document.getElementById(id),f=n=>Math.round(n).toLocaleString();
-const wkN=(B,n)=>{let tg=0,mn=0,av=0;for(let i=1;i<=B+n-1;i++){const t=Math.floor((i-1)/20);let p=T[t];if(i==1||i>B)p/=2;tg+=p;mn+=MN[t];av+=AV[t]}return{tg,mn,av}};
+const wkN=(B,n)=>{let tg=0,mn=0,av=0,sh=0;for(let i=1;i<=B+n-1;i++){const t=Math.floor((i-1)/20);let p=T[t];if(i==1||i>B)p/=2;tg+=p;mn+=MN[t];av+=AV[t];sh+=SH[t]}return{tg,mn,av,sh}};
 const W7=[],W1=[];for(let B=1;B<=MAXB;B++){W7[B]=wkN(B,7);W1[B]=wkN(B,1)}
 let set="full",mode="av",pin=9,tab=8,D,G;
 
@@ -212,7 +213,7 @@ const kf=v=>v>=1000?(v/1000).toFixed(v%1000?1:0)+"k":String(v);
 function nice(x){const p=10**Math.floor(Math.log10(x)),r=x/p;return(r<=1?1:r<=2?2:r<=2.5?2.5:r<=5?5:10)*p}
 const dAdd=(d,n)=>new Date(d.getFullYear(),d.getMonth(),d.getDate()+n),fd=d=>MS[d.getMonth()]+" "+d.getDate()+", "+d.getFullYear();
 
-function sets(){$("sets").innerHTML=Object.entries(SETS).map(([k,s])=>{const g=goal(k,8);return'<button class="set" data-s="'+k+'" aria-pressed="'+(k==set)+'"><i class="ck"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.2 5 8.5 9.5 3.5"/></svg></i><b>'+s.name+'</b><span>'+s.b.map(b=>N[b]).join(", ")+'</span><span class="ft"><i>'+s.b.length+' buildings</i><i>'+f(g.tt)+' TTG to TG8</i></span></button>'}).join("")}
+function sets(){$("sets").innerHTML=Object.entries(SETS).map(([k,s])=>{const g=goal(k,8);return'<button class="set" data-s="'+k+'" aria-pressed="'+(k==set)+'"><i class="ck"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.2 5 8.5 9.5 3.5"/></svg></i><b>'+s.name+'</b><span>'+s.b.map(b=>N[b]).join(", ")+'</span><span class="ft"><i>'+s.b.length+' buildings</i><i><img class="gi" src="temperedtruegold.png" alt="">'+f(g.tt)+' TTG to TG8</i></span></button>'}).join("")}
 
 function chart(){const box=$("chart"),w=box.clientWidth,mob=w<520,h=mob?250:310,L=mob?38:50,R=mob?36:50,Tp=40,Bt=30;
 let ym=0;[6,7,8].forEach(l=>D[l].pts.forEach(p=>{if(p&&p.tot>ym)ym=p.tot}));const st=nice(ym/4);ym=Math.ceil(ym/st)*st;

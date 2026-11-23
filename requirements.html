@@ -83,6 +83,7 @@ tr.gap td{border:0;padding:3px}
 .stk td:first-child,.stk td.l{grid-column:1/-1}.stk td:first-child:before{display:none}
 .stk tr.gap{display:none}.stk tr.sum{border-radius:14px;padding:12px 14px;border:0;margin-top:8px;background:var(--soft)}.stk tr.sum.cu{background:var(--prt)}.stk tr.sum td{background:none}}
 @media(max-width:720px){.sidebar .brand{display:block!important;margin:0 2px 18px;text-align:left;font-size:22px}.sidebar .brand em,.sidebar .brand span{display:inline!important}}
+.gi{width:1.3em;height:1.3em;vertical-align:-.32em;margin-right:.3em;object-fit:contain}.gi.gl{width:28px;height:28px;margin:0;vertical-align:middle}.gi.gx{width:46px;height:46px;vertical-align:-5px;margin-right:10px}
 </style></head><body>
 <div class="shell">
 <aside class="sidebar">
@@ -135,9 +136,9 @@ const res=m=>m>=1000?(m/1000).toFixed(2).replace(/\.?0+$/,"")+"B":(+m.toFixed(1)
 const lt=(l,k)=>C[l].reduce((q,x)=>q+x[k],0);
 let show=0;
 
-$("kp").innerHTML=[["i1","TG",f(lt(6,0)+lt(7,0)+lt(8,0)),"TrueGold, all buildings TG6–8"],["i2","TTG",f(lt(6,1)+lt(7,1)+lt(8,1)),"Tempered TrueGold"],["i3","8",N.length+" buildings","3 levels each"],["i4","d",[6,7,8].reduce((q,l)=>q+TCR[l][5],0)+" days","Town Center build time"]].map(([c,i,b,s])=>'<div class="stat"><i class="'+c+'">'+i+'</i><div><b>'+b+'</b><span>'+s+'</span></div></div>').join("");
+$("kp").innerHTML=[["i1","<img class='gi gl' src='truegold.png' alt=''>",f(lt(6,0)+lt(7,0)+lt(8,0)),"TrueGold, all buildings TG6–8"],["i2","<img class='gi gl' src='temperedtruegold.png' alt=''>",f(lt(6,1)+lt(7,1)+lt(8,1)),"Tempered TrueGold"],["i3","8",N.length+" buildings","3 levels each"],["i4","d",[6,7,8].reduce((q,l)=>q+TCR[l][5],0)+" days","Town Center build time"]].map(([c,i,b,s])=>'<div class="stat"><i class="'+c+'">'+i+'</i><div><b>'+b+'</b><span>'+s+'</span></div></div>').join("");
 
-function table(){let h='<tr><th>Building</th><th>Level</th><th class="l">Prerequisites</th><th>TrueGold</th><th>Tempered</th></tr>',cg=0,ct=0;
+function table(){let h='<tr><th>Building</th><th>Level</th><th class="l">Prerequisites</th><th><img class="gi" src="truegold.png" alt="">TrueGold</th><th><img class="gi" src="temperedtruegold.png" alt="">Tempered</th></tr>',cg=0,ct=0;
 [6,7,8].forEach(l=>{cg+=lt(l,0);ct+=lt(l,1);if(show&&show!=l)return;
 N.forEach((n,b)=>{h+='<tr><td data-l="Building">'+n+'</td><td data-l="Level"><span class="lv">TG'+l+'</span></td><td class="l" data-l="Prerequisites"><span class="pq">'+pre(b,l).map(p=>'<i>'+p+'</i>').join("")+'</span></td><td class="tg" data-l="TrueGold">'+f(C[l][b][0])+'</td><td class="tt" data-l="Tempered">'+f(C[l][b][1])+'</td></tr>'});
 h+='<tr class="sum"><td data-l="">TG'+l+' total</td><td data-l="Level"></td><td class="l" data-l="Prerequisites"><span class="pq" style="color:var(--mu);font-weight:600">All 8 buildings</span></td><td class="tg" data-l="TrueGold">'+f(lt(l,0))+'</td><td class="tt" data-l="Tempered">'+f(lt(l,1))+'</td></tr>'+(show?'':'<tr class="gap"><td colspan="5"></td></tr>')});
