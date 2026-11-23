@@ -56,7 +56,12 @@ button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{ou
 /* cards */
 .card{background:#fff;border-radius:22px;padding:22px;margin-bottom:22px;box-shadow:0 8px 30px rgba(70,80,140,.07)}
 .card h2{display:flex;align-items:center;gap:10px;margin:0 0 16px;font-size:16px;font-weight:700}
-.step{width:24px;height:24px;border-radius:8px;background:var(--prt);color:var(--pr);display:grid;place-items:center;font-size:12px;font-weight:800;flex:none}
+.hint{position:relative;width:20px;height:20px;border-radius:50%;background:var(--soft);color:var(--mu);display:inline-grid;place-items:center;font-size:12px;font-weight:800;cursor:help;flex:none}
+.hint:hover,.hint:focus{background:var(--prt);color:var(--pr);outline:none}
+.hint-tip{position:absolute;left:50%;top:calc(100% + 10px);transform:translateX(-50%);width:280px;max-width:calc(100vw - 32px);padding:12px 14px;border-radius:14px;background:var(--tx);color:#fff;font-size:12px;font-weight:500;line-height:1.5;text-align:left;box-shadow:0 12px 30px rgba(28,30,60,.22);opacity:0;visibility:hidden;transition:opacity .12s;z-index:5;pointer-events:none}
+.hint-tip b{display:block;font-size:13px;margin-bottom:4px}
+.hint:hover .hint-tip,.hint:focus .hint-tip{opacity:1;visibility:visible}
+@media(max-width:720px){.hint-tip{left:auto;right:-40px;transform:none;width:270px}}.step{width:24px;height:24px;border-radius:8px;background:var(--prt);color:var(--pr);display:grid;place-items:center;font-size:12px;font-weight:800;flex:none}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
 .row.top{margin-top:0}
 .opt{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:14px 16px;border:1.5px solid var(--ln);border-radius:16px;background:#fff;cursor:pointer;text-align:left;transition:border-color .15s,background .15s}
@@ -199,11 +204,10 @@ footer a{color:inherit;font-weight:700;text-decoration:none}
 <section class="card" id="pick"><h2>Start by picking your server group</h2><p class="note" style="margin:0">Choose <b>Nov 23</b> or <b>Dec 21 unlock</b> <span class="d-only">in the sidebar</span><span class="m-only">above</span> to build your plan.</p></section>
 <div id="app" hidden>
 <section class="card" id="start"><h2><span class="step">1</span>Pick your start date</h2><div class="row top"><button class="opt" id="o1" aria-pressed="true"><b>Release day</b><span id="rd"></span></button><button class="opt" id="o2" aria-pressed="false"><b>Custom start date</b><span>Must be after the release day</span></button></div><div id="cw" hidden style="margin-top:14px;max-width:260px"><label for="cd">Start date</label><input id="cd" type="date"></div><div id="cwr" class="warn"></div><div class="stg pdrow"><span>Construction Prep Day:</span><div class="seg" id="pdp"><button data-pd="0" aria-pressed="true">Mon</button><button data-pd="1" aria-pressed="false">Tue</button><button data-pd="4" aria-pressed="false">Fri</button></div><span>Same prep week; the Monday batch and each day up to it still count.</span></div></section>
-<section class="card" id="buildings"><h2><span class="step">2</span>Buildings to upgrade</h2>
+<section class="card" id="buildings"><h2><span class="step">2</span>Buildings to upgrade<span class="hint" tabindex="0" role="button" aria-label="How prerequisites work">?<span class="hint-tip" role="tooltip"><b>Prerequisites are added for you</b>No building can be above the Town Center. A TG7 Town Center needs a TG6 Embassy and Range; a TG8 Town Center needs a TG7 Embassy and Stable. The Command Center needs the Embassy at the same level. Removing an upgrade also removes the ones that depend on it.</span></span></h2>
 <div class="row top"><button class="opt" id="sp1" aria-pressed="true"><b>One spend</b><span>Everything on one prep day</span></button><button class="opt" id="sp2" aria-pressed="false"><b>Two spends</b><span>Finish some first, the rest next prep</span></button></div>
 <div class="stg"><span>Tap cells to set:</span><div class="seg"><button data-stg="1" aria-pressed="true"><i class="k1"></i>1st spend</button><button data-stg="2" aria-pressed="false"><i class="k2"></i>2nd spend</button></div><span id="stgh"></span></div>
 <div class="w"><table id="bt"></table></div>
-<p class="note">Prerequisites are added for you: no building can be above the Town Center, a TG7 Town Center needs a TG6 Embassy and TG6 Range, a TG8 Town Center needs a TG7 Embassy and TG7 Stable, and the Command Center needs the Embassy at the same level. Removing an upgrade also removes the ones that depend on it.</p>
 <div class="row"><div><label for="cur">Current TTG</label><input id="cur" type="number" min="0" value="0"></div>
 <div><label for="mode">Plan for</label><select id="mode"><option value="av">Average luck</option><option value="mn">Guaranteed (worst case)</option></select></div></div></section>
 <section class="card" id="results"><h2 id="pl">Your 6 Week Plan</h2><div id="sum"></div><div id="wr" class="warn"></div></section>
