@@ -18,7 +18,7 @@ button:focus-visible,a:focus-visible,#chart:focus-visible{outline:2px solid var(
 .nav-label{margin:0 14px 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#B5B8CC}
 .side-nav+.nav-label{margin-top:30px}
 .side-nav{display:flex;flex-direction:column;gap:8px}
-.side-nav a{position:relative;display:flex;align-items:center;gap:14px;height:46px;padding:0 14px;border-radius:14px;color:var(--mu);text-decoration:none;font-weight:600}
+.side-nav a{position:relative;display:flex;align-items:center;gap:14px;min-height:46px;padding:10px 14px;line-height:1.25;border-radius:14px;color:var(--mu);text-decoration:none;font-weight:600}
 .side-nav a:hover{color:var(--tx)}
 .side-nav a.active{background:var(--cot);color:var(--tx);font-weight:700}.side-nav a.active svg{color:var(--pr)}
 .side-nav a.active:after{content:"";position:absolute;right:-23px;top:6px;bottom:6px;width:3px;border-radius:3px;background:var(--pr)}
@@ -131,7 +131,7 @@ th:first-child,td:first-child{text-align:left}
 @media(max-width:1000px){.cols{display:flex;flex-direction:column;gap:0}.colmain,.colrail{display:contents}.cols>*>*{width:100%}
 #sets-card{order:1}#chart-card{order:2}#week-card{order:3}#prep-card{order:4}footer{order:5}}
 @media(max-width:720px){.shell{display:block;margin:0;border-radius:0;box-shadow:none;background:var(--bg)}.sidebar{display:block;background:none;border:0;padding:20px 16px 0}.brand,.jump,.jl,.sub{display:none}.nav-label:not(.jl){display:block;margin:0 2px 8px}
-.pages{display:grid;grid-template-columns:1fr 1fr;gap:10px}.pages a{justify-content:center;padding:0 12px;background:#fff;box-shadow:0 6px 20px rgba(70,80,140,.07)}.pages a span{display:inline}.pages a.active{background:var(--prt);box-shadow:inset 0 0 0 1.5px var(--pr)}.pages a.active:after{display:none}
+.pages{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.pages a{justify-content:center;padding:0 8px;font-size:12px;background:#fff;box-shadow:0 6px 20px rgba(70,80,140,.07)}.pages a svg{display:none}.pages a span{display:inline;white-space:normal;text-align:center;line-height:1.2}.pages a.active{background:var(--prt);box-shadow:inset 0 0 0 1.5px var(--pr)}.pages a.active:after{display:none}
 .workspace{padding:20px 16px}.topbar{flex-direction:column}.topbar h1{font-size:22px}.profile{display:none}.card{padding:16px;border-radius:20px;margin-bottom:16px}.ch{flex-wrap:wrap}}
 </style></head><body>
 <div class="shell">
@@ -145,6 +145,8 @@ th:first-child,td:first-child{text-align:left}
 <a class="srv" href="index.html?g=b"><i class="dt"><small>Dec</small>21</i><span><b>Dec 21 unlock</b><small>Servers 1559–1689</small></span></a>
 </div>
 <a href="overview.html" class="active" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="M4 16l5-6 4 3 7-8"/></svg><span>Overview</span></a>
+<a href="refinement.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6L4.5 18.5A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.5-2.5L14 9V3"/><path d="M7 15h10"/></svg><span>How Refinement Works</span></a>
+<a href="requirements.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 21V9l8-5 8 5v12z"/><path d="M9 21v-6h6v6"/></svg><span>Building Requirements</span></a>
 </nav>
 <div class="nav-label jl">Jump to</div>
 <nav class="side-nav jump">

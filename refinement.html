@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>How Refinement Works</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+:root{--bg:#EEF0F7;--shell:#fff;--side:#FCFCFE;--tx:#1C1E3C;--mu:#9A9DB5;--ln:#EEEFF5;--soft:#F7F8FC;--pr:#5352D4;--prt:#ECECFC;--co:#F86F6B;--cot:#FEEDEC;--ye:#F2B53C;--yet:#FFF5DE;--s6:#9085e9;--s7:#6250d6;--s8:#3a2a9c;color-scheme:light}
+*{box-sizing:border-box}
+html{scroll-padding-top:16px}
+body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.5 "Plus Jakarta Sans",system-ui,sans-serif;min-height:100vh;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0)}
+button,input{font:inherit;color:inherit}
+button:focus-visible,a:focus-visible,input:focus-visible,.viz:focus-visible{outline:2px solid var(--pr);outline-offset:2px}
+
+/* shell (shared with planner) */
+.shell{max-width:1320px;margin:28px auto;display:grid;grid-template-columns:244px minmax(0,1fr);background:var(--shell);border-radius:32px;box-shadow:0 30px 80px rgba(70,80,140,.10);overflow:hidden}
+.sidebar{background:var(--side);padding:34px 22px 26px;display:flex;flex-direction:column;border-right:1px solid var(--ln)}
+.brand{font-size:22px;white-space:nowrap;font-weight:800;letter-spacing:-.02em;margin:0 12px 44px}.brand em,.brand i{font-style:normal;color:var(--pr)}
+.nav-label{margin:0 14px 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#B5B8CC}
+.side-nav+.nav-label{margin-top:30px}
+.side-nav{display:flex;flex-direction:column;gap:8px}
+.side-nav a{position:relative;display:flex;align-items:center;gap:14px;min-height:46px;padding:10px 14px;line-height:1.25;border-radius:14px;color:var(--mu);text-decoration:none;font-weight:600}
+.side-nav a:hover{color:var(--tx)}
+.side-nav a.active{background:var(--cot);color:var(--tx);font-weight:700}.side-nav a.active svg{color:var(--pr)}
+.side-nav a.active:after{content:"";position:absolute;right:-23px;top:6px;bottom:6px;width:3px;border-radius:3px;background:var(--pr)}
+.side-nav svg{width:20px;height:20px;flex:none}
+
+.sub{display:flex;flex-direction:column;gap:2px;margin:2px 0 6px 23px;padding-left:9px;border-left:1.5px solid var(--ln)}
+.side-nav a.srv{height:auto;gap:10px;padding:6px 8px;border-radius:12px;font-weight:400}
+.side-nav a.srv:hover{background:var(--soft)}
+.srv>span{display:flex;flex-direction:column;min-width:0}
+.srv b{font-size:13px;font-weight:600;line-height:1.3}.srv span small{font-size:11px;color:var(--mu)}
+.dt{width:34px;height:34px;flex:none;border-radius:10px;background:var(--soft);color:var(--tx);display:flex;flex-direction:column;align-items:center;justify-content:center;font-style:normal;font-weight:800;font-size:13px;line-height:1}
+.dt small{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--mu);margin-bottom:2px}
+.workspace{min-width:0;padding:34px 32px 26px}
+.topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:26px}
+.topbar h1{margin:0;font-size:26px;font-weight:800;letter-spacing:-.02em}
+.topbar p{margin:4px 0 0;color:var(--mu);font-size:13px;max-width:640px}
+.profile{display:flex;align-items:center;gap:12px;flex:none}
+.profile b{display:block;font-size:13px;text-align:right}.profile div span{display:block;font-size:11px;color:var(--mu);text-align:right}
+.ovl{padding:8px 14px;border-radius:12px;background:var(--tx);color:#fff;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap}.ovl:hover{background:var(--pr)}
+.avatar{width:46px;height:46px;border-radius:50%;background:linear-gradient(145deg,#8C8BF0,var(--pr));color:#fff;font-weight:800;display:grid;place-items:center;box-shadow:0 8px 18px rgba(83,82,212,.25)}
+.card{background:#fff;border-radius:22px;padding:22px;margin-bottom:22px;box-shadow:0 8px 30px rgba(70,80,140,.07)}
+.card h2{display:flex;align-items:center;gap:10px;margin:0;font-size:16px;font-weight:700}
+.step{width:24px;height:24px;border-radius:8px;background:var(--prt);color:var(--pr);display:grid;place-items:center;font-size:12px;font-weight:800;flex:none}
+.note{color:var(--mu);font-size:12px;margin:14px 0 0}
+footer{text-align:center;color:var(--mu);font-size:12px;margin-top:6px}
+footer a{color:inherit;font-weight:700;text-decoration:none}
+.ch{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:16px}
+.ch p{margin:4px 0 0;font-size:12px;color:var(--mu)}
+.seg{display:flex;gap:4px;padding:4px;border-radius:13px;background:var(--soft);flex:none}
+.seg button{border:0;background:none;padding:6px 12px;border-radius:10px;font-size:12px;font-weight:700;color:var(--mu);cursor:pointer}
+.seg button:hover{color:var(--tx)}
+.seg button[aria-pressed=true]{background:#fff;color:var(--pr);box-shadow:0 2px 8px rgba(70,80,140,.10)}
+
+/* rules */
+.rules{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:22px}
+.rule{background:#fff;border-radius:22px;padding:18px;box-shadow:0 8px 30px rgba(70,80,140,.07);display:flex;flex-direction:column;gap:10px}
+.rule i{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:13px}
+.rule b{font-size:20px;font-weight:800;line-height:1.15}
+.rule span{font-size:12px;color:var(--mu)}
+.r1 i{background:var(--prt);color:var(--pr)}.r2 i{background:var(--cot);color:var(--co)}.r3 i{background:var(--yet);color:#B07A0E}.r4 i{background:var(--soft);color:var(--tx)}
+.luck{display:flex;align-items:center;gap:12px;margin:-6px 0 18px;font-size:12px;font-weight:600;color:var(--mu)}
+
+/* charts */
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px}
+.grid2 .card{margin-bottom:22px}
+.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:12px;font-weight:600;color:var(--mu);margin:-4px 0 8px}
+.legend span{display:flex;align-items:center;gap:7px}
+.legend i{width:10px;height:10px;border-radius:4px}
+.viz{position:relative;touch-action:pan-y;border-radius:14px}
+.viz svg{display:block;overflow:visible}
+.viz text{font-family:inherit}
+.tip{position:absolute;pointer-events:none;background:var(--tx);color:#fff;border-radius:14px;padding:10px 12px;font-size:12px;min-width:170px;box-shadow:0 12px 30px rgba(28,30,60,.22);opacity:0;transition:opacity .1s;z-index:3;top:8px}
+.tip.on{opacity:1}
+.tip b{display:block;font-size:13px;margin-bottom:6px}
+.tip div{display:grid;grid-template-columns:10px 1fr auto;gap:8px;align-items:center;margin-top:3px}
+.tip i{width:9px;height:9px;border-radius:3px;box-shadow:0 0 0 1.5px #fff}
+.tip em{font-style:normal;text-align:right;font-variant-numeric:tabular-nums}
+.tip small{display:block;color:#B5B8CC;margin-top:6px}
+.slider{display:flex;align-items:center;gap:14px;margin:4px 0 14px}
+.slider label{font-size:12px;font-weight:700;color:var(--mu);white-space:nowrap}
+.slider output{min-width:46px;padding:4px 10px;border-radius:10px;background:var(--pr);color:#fff;font-weight:800;font-size:13px;text-align:center}
+input[type=range]{flex:1;accent-color:var(--pr);min-width:0}
+.ks{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}
+.ks div{background:var(--soft);border-radius:14px;padding:12px 14px}
+.ks span{display:block;font-size:11px;color:var(--mu)}.ks b{font-size:15px;font-weight:700;font-variant-numeric:tabular-nums}
+.pts{margin:14px 0 0;padding:0;list-style:none;display:grid;gap:8px}
+.pts li{position:relative;padding-left:18px;font-size:12px;color:var(--mu)}
+.pts li:before{content:"";position:absolute;left:2px;top:7px;width:6px;height:6px;border-radius:50%;background:var(--pr)}
+.pts b{color:var(--tx)}
+details{margin-top:12px;padding-top:12px;border-top:1px solid var(--ln);font-size:12px}
+summary{cursor:pointer;color:var(--pr);font-weight:700}
+.tw{overflow-x:auto;margin-top:8px}
+table{border-collapse:collapse;width:100%;font-size:12px;font-variant-numeric:tabular-nums}
+th{font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.04em;padding:6px 8px;text-align:right;white-space:nowrap}
+td{padding:7px 8px;text-align:right;border-top:1px solid var(--ln);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+
+/* responsive (same breakpoints as planner) */
+@media(max-width:1180px){.shell{grid-template-columns:84px minmax(0,1fr)}.sidebar{padding:30px 14px}.brand{margin:0 0 40px;text-align:center;font-size:18px}.brand em,.brand span{display:none}.side-nav a span,.nav-label{display:none}.side-nav a{justify-content:center;padding:0}.side-nav a.active:after{right:-15px}.side-nav a.srv{justify-content:center;padding:4px 0}.sub{margin:4px 0;padding:8px 0;border:0;border-top:1px solid var(--ln);border-bottom:1px solid var(--ln)}.jump{margin-top:20px;padding-top:20px;border-top:1px solid var(--ln)}}
+@media(max-width:1000px){.grid2{grid-template-columns:minmax(0,1fr);gap:0}.rules{grid-template-columns:1fr 1fr}.ks{grid-template-columns:1fr 1fr}}
+@media(max-width:720px){.shell{display:block;margin:0;border-radius:0;box-shadow:none;background:var(--bg)}.sidebar{display:block;background:none;border:0;padding:20px 16px 0}.brand,.jump,.jl,.sub{display:none}.nav-label:not(.jl){display:block;margin:0 2px 8px}
+.pages{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.pages a{justify-content:center;padding:0 8px;background:#fff;box-shadow:0 6px 20px rgba(70,80,140,.07);font-size:12px}.pages a svg{display:none}.pages a span{display:inline;white-space:normal;text-align:center;line-height:1.2}.pages a.active{background:var(--prt);box-shadow:inset 0 0 0 1.5px var(--pr)}.pages a.active:after{display:none}
+.workspace{padding:20px 16px}.topbar{flex-direction:column}.topbar h1{font-size:22px}.profile{display:none}.card{padding:16px;border-radius:20px;margin-bottom:16px}.ch{flex-wrap:wrap}.rules{gap:12px;margin-bottom:16px}.rule{padding:14px;border-radius:20px}.rule b{font-size:17px}}
+</style></head><body>
+<div class="shell">
+<aside class="sidebar">
+<div class="brand"><span>Mira&rsquo;s</span><i>TG</i><em>Planner</em></div>
+<div class="nav-label">Pages</div>
+<nav class="side-nav pages" aria-label="Pages">
+<a href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>Planner</span></a>
+<div class="sub" aria-label="Open the planner for a server group">
+<a class="srv" href="index.html?g=a"><i class="dt"><small>Nov</small>23</i><span><b>Nov 23 unlock</b><small>Servers 1428–1558</small></span></a>
+<a class="srv" href="index.html?g=b"><i class="dt"><small>Dec</small>21</i><span><b>Dec 21 unlock</b><small>Servers 1559–1689</small></span></a>
+</div>
+<a href="overview.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="M4 16l5-6 4 3 7-8"/></svg><span>Overview</span></a>
+<a href="refinement.html" class="active" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6L4.5 18.5A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.5-2.5L14 9V3"/><path d="M7 15h10"/></svg><span>How Refinement Works</span></a>
+<a href="requirements.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 21V9l8-5 8 5v12z"/><path d="M9 21v-6h6v6"/></svg><span>Building Requirements</span></a>
+</nav>
+<div class="nav-label jl">Jump to</div>
+<nav class="side-nav jump">
+<a href="#week-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 20V12M10 20V8M15 20V14M20 20V5"/></svg><span>A week</span></a>
+<a href="#tier-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4v-5H4zM10 20h4V10h-4zM16 20h4V4h-4z"/></svg><span>Price tiers</span></a>
+<a href="#batch-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="M4 17C9 16 13 12 20 5"/></svg><span>Batch size</span></a>
+<a href="#weeks-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>More weeks</span></a>
+</nav>
+</aside>
+<div class="workspace">
+<header class="topbar">
+<div><h1>How Refinement Works</h1><p>Refining Truegold into Tempered Truegold (TTG) has a weekly cap, a daily discount and rising price tiers. These charts show how those rules shape what a week costs, and why spreading refining out is cheaper.</p></div>
+<div class="profile"><a class="ovl" href="index.html"><span aria-hidden="true">←</span> Planner</a><div><b>Welcome, NPC!</b><span id="srvr">Pick a server group</span></div><span class="avatar">N</span></div>
+</header>
+
+<div class="rules">
+<div class="rule r1"><i>100</i><b>100 a week</b><span>Up to 100 refinements per week, Monday to Sunday. The count resets every Monday.</span></div>
+<div class="rule r2"><i>½</i><b>First one each day is half price</b><span>So a big Monday batch plus 1 a day Tuesday to Sunday gets 7 discounts a week.</span></div>
+<div class="rule r3"><i>×5</i><b>20 → 160 TG</b><span>Price rises every 20 refinements in the week: 20, 50, 100, 130, then 160 TG each.</span></div>
+<div class="rule r4"><i>TTG</i><b>1 to 3 TTG each</b><span>Guaranteed 1/2/3/3/3 TTG per tier. Average luck is about 1.45, 2.15, 3.18, 3.43 and 3.71.</span></div>
+</div>
+
+<div class="luck"><span>TTG shown for</span><div class="seg" role="group" aria-label="Luck"><button data-m="av" aria-pressed="true">Average luck</button><button data-m="mn" aria-pressed="false">Guaranteed</button></div></div>
+
+<section class="card" id="week-card">
+<div class="ch"><div><h2><span class="step">1</span>A week of refinements</h2><p>Price of each of the week’s 100 refinements. Drag the slider to change the Monday batch.</p></div></div>
+<div class="slider"><label for="bs">Monday batch</label><input type="range" id="bs" min="1" max="94" value="40"><output id="bo">×40</output></div>
+<div class="legend"><span><i style="background:var(--pr)"></i>Monday batch</span><span><i style="background:var(--co)"></i>1 a day, Tue–Sun (½ price)</span><span><i style="background:#E3E4EE"></i>Unused weekly cap</span></div>
+<div class="viz" id="c1" tabindex="0" aria-label="Bar chart of the price of each refinement in a week. Use left and right arrow keys to inspect refinements."><div class="tip" id="t1"></div></div>
+<div class="ks" id="k1"></div>
+<ul class="pts">
+<li><b>Daily refinements don’t reset the price.</b> They continue the week’s count, so with a ×40 batch your Tuesday refinement is #41 and costs half of 100 TG.</li>
+<li><b>The cap is 100, so the biggest Monday batch is ×94.</b> That leaves 6 refinements for Tuesday to Sunday.</li>
+<li><b>Short bars are discounts.</b> The first bar (Monday’s first) and the coral bars are half price.</li>
+</ul>
+</section>
+
+<div class="grid2">
+<section class="card" id="tier-card">
+<div class="ch"><div><h2><span class="step">2</span>Price per TTG, by tier</h2><p>What 1 TTG costs in each block of 20</p></div></div>
+<div class="legend"><span><i style="background:var(--s8)"></i>Full price</span><span><i style="background:var(--s6)"></i>½ price (first of the day)</span></div>
+<div class="viz" id="c2" tabindex="0" aria-label="Grouped bar chart of TG per TTG for each price tier."><div class="tip" id="t2"></div></div>
+<p class="note">Higher tiers give more TTG per refinement, but the price rises faster, so every tier costs more per TTG than the one before.</p>
+</section>
+<section class="card" id="batch-card">
+<div class="ch"><div><h2><span class="step">3</span>Bigger batches cost more per TTG</h2><p>Average TG per TTG for a full week, by Monday batch</p></div></div>
+<div class="legend"><span><i style="background:var(--s8)"></i>TG per TTG</span><span><i style="background:var(--pr);border-radius:50%"></i>Your slider batch</span></div>
+<div class="viz" id="c3" tabindex="0" aria-label="Line chart of TG per TTG by Monday batch size."><div class="tip" id="t3"></div></div>
+<p class="note">Each extra refinement in the batch is pricier than the last, and it pushes the 6 daily refinements into pricier tiers too.</p>
+</section>
+</div>
+
+<section class="card" id="weeks-card">
+<div class="ch"><div><h2><span class="step">4</span>More weeks, less TG</h2><p>TG spent on refining to reach a TTG goal, by how many full weeks you refine</p></div><div class="seg" id="goals" role="group" aria-label="TTG goal"><button data-g="250" aria-pressed="false">250 TTG</button><button data-g="500" aria-pressed="true">500 TTG</button><button data-g="900" aria-pressed="false">900 TTG</button></div></div>
+<div class="viz" id="c4" tabindex="0" aria-label="Bar chart of total refining TG by number of weeks."><div class="tip" id="t4"></div></div>
+<ul class="pts">
+<li><b>The weekly cap sets a minimum number of weeks.</b> A full week of 100 refinements gives about <span id="mx"></span> TTG, so some goals can’t be reached in fewer weeks.</li>
+<li><b>Every extra week lowers the total.</b> You need a smaller Monday batch each week, which stays in the cheap tiers and gets 7 more half-price refinements.</li>
+<li>For reference, every building from TG6 through TG8 needs 904 TTG in total.</li>
+</ul>
+<details><summary>View as table</summary><div class="tw"><table id="dt"></table></div></details>
+</section>
+
+<footer>made with love by <a href="https://mirakingshot.github.io/">Mira [221330479]</a></footer>
+</div>
+</div>
+<script>
+const T=[20,50,100,130,160],MN=[1,2,3,3,3],AV=[1.45,2.15,3.18,3.43,3.71],MAXB=94,WMAX=12;
+const PR="#5352D4",CO="#F86F6B",OFF="#E3E4EE",S6="#9085e9",S7="#6250d6",S8="#3a2a9c",INK="#1C1E3C",MU="#9A9DB5",LN="#EEEFF5";
+const $=id=>document.getElementById(id),f=n=>Math.round(n).toLocaleString(),f1=n=>n.toFixed(1);
+const tier=i=>Math.floor((i-1)/20),cost=(i,B)=>T[tier(i)]/(i==1||i>B?2:1);
+const wkN=(B,n)=>{let tg=0,mn=0,av=0;for(let i=1;i<=B+n-1;i++){const t=tier(i);tg+=cost(i,B);mn+=MN[t];av+=AV[t]}return{tg,mn,av}};
+const W7=[];for(let B=1;B<=MAXB;B++)W7[B]=wkN(B,7);
+let B=40,mode="av",goal=500;
+const kf=v=>v>=1000?(v/1000).toFixed(v%1000?1:0)+"k":String(v);
+function nice(x){const p=10**Math.floor(Math.log10(x)),r=x/p;return(r<=1?1:r<=2?2:r<=2.5?2.5:r<=5?5:10)*p}
+const svg=(w,h,s)=>'<svg width="'+w+'" height="'+h+'" viewBox="0 0 '+w+' '+h+'" aria-hidden="true">'+s+'</svg>';
+const put=(id,s)=>{const b=$(id);b.querySelectorAll("svg").forEach(e=>e.remove());b.insertAdjacentHTML("afterbegin",s)};
+const grid=(L,R,w,Y,max,st,fmt=kf)=>{let s="";for(let v=0;v<=max+1e-9;v+=st)s+='<line x1="'+L+'" x2="'+(w-R)+'" y1="'+Y(v)+'" y2="'+Y(v)+'" stroke="'+LN+'"/><text x="'+(L-8)+'" y="'+(Y(v)+4)+'" text-anchor="end" font-size="11" fill="'+MU+'">'+fmt(v)+'</text>';return s};
+function tipAt(id,x,html,w){const t=$(id);t.innerHTML=html;t.classList.add("on");const tw=t.offsetWidth;let l=x+14;if(l+tw>w)l=x-14-tw;t.style.left=Math.max(0,l)+"px"}
+const hideTip=id=>$(id).classList.remove("on");
+const G={};
+
+/* 1: a week of refinements */
+function c1(){const w=$("c1").clientWidth,mob=w<560,h=mob?220:270,L=40,R=6,Tp=30,Bt=26,sl=(w-L-R)/100,bw=Math.max(1,sl-(sl>5?2:1)),Y=v=>Tp+(1-v/160)*(h-Tp-Bt);G.c1={L,sl,w,Y,h,Bt,Tp,bw};
+let s="";for(let t=0;t<5;t++){const x=L+t*20*sl;s+='<rect x="'+x+'" y="'+(Tp-24)+'" width="'+20*sl+'" height="'+(h-Bt-Tp+24)+'" fill="'+(t%2?"#fff":"#F7F8FC")+'"/><text x="'+(x+10*sl)+'" y="'+(Tp-9)+'" text-anchor="middle" font-size="11" font-weight="700" fill="'+INK+'">'+T[t]+(mob?"":" TG each")+'</text>'}
+s+=grid(L,R,w,Y,160,40,v=>v);
+for(let i=1;i<=100;i++){const k=i<=B?0:i<=B+6?1:2,v=k==2?T[tier(i)]:cost(i,B),x=L+(i-1)*sl+(sl-bw)/2;s+='<rect x="'+x+'" y="'+Y(v)+'" width="'+bw+'" height="'+(Y(0)-Y(v))+'" rx="'+Math.min(2,bw/2)+'" fill="'+[PR,CO,OFF][k]+'"/>'}
+[1,20,40,60,80,100].forEach(i=>{s+='<text x="'+(L+(i-.5)*sl)+'" y="'+(h-8)+'" text-anchor="middle" font-size="11" fill="'+MU+'">'+(i==100?(mob?"100":"100 cap"):"#"+i)+'</text>'});
+s+='<rect id="h1" y="'+(Tp-24)+'" height="'+(h-Bt-Tp+24)+'" width="'+sl+'" fill="'+INK+'" opacity=".06" style="display:none"/>';
+put("c1",svg(w,h,s));
+const q=W7[B];$("k1").innerHTML='<div><span>Refinements used</span><b>'+(B+6)+' of 100</b></div><div><span>TG this week</span><b>'+f(q.tg)+'</b></div><div><span>TTG this week</span><b>'+(mode=="av"?"≈ "+f(q.av):"≥ "+f(q.mn))+'</b></div><div><span>TG per TTG</span><b>'+f1(q.tg/q[mode])+'</b></div>'}
+function h1(i){const g=G.c1,r=$("h1");if(!i){r.style.display="none";hideTip("t1");return}
+r.style.display="";r.setAttribute("x",g.L+(i-1)*g.sl);const k=i<=B?0:i<=B+6?1:2,t=tier(i),full=T[t],day=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"][i<=B?0:Math.min(6,i-B)];
+tipAt("t1",g.L+(i-.5)*g.sl,'<b>Refinement #'+i+'</b><div><i style="background:'+[PR,CO,OFF][k]+'"></i><span>'+(k==0?"Monday batch":k==1?day+", 1 a day":"Not used this week")+'</span><em></em></div><div><i style="background:transparent;box-shadow:none"></i><span>Price</span><em>'+(k==2?full+" TG":cost(i,B)+" TG"+(cost(i,B)<full?" (½)":""))+'</em></div><div><i style="background:transparent;box-shadow:none"></i><span>TTG</span><em>'+(mode=="av"?"≈ "+AV[t]:MN[t])+'</em></div>',g.w)}
+
+/* 2: TG per TTG by tier */
+function c2(){const w=$("c2").clientWidth,h=250,L=38,R=6,Tp=14,Bt=30,M=mode=="av"?AV:MN,vals=T.map((c,t)=>[c/M[t],c/2/M[t]]);
+let mx=0;vals.forEach(v=>mx=Math.max(mx,v[0]));const st=nice(mx/4),ym=Math.ceil(mx/st)*st,Y=v=>Tp+(1-v/ym)*(h-Tp-Bt),gw=(w-L-R)/5,bw=Math.min(26,gw*.32);G.c2={L,gw,w,vals};
+let s=grid(L,R,w,Y,ym,st,v=>v);
+vals.forEach((v,t)=>{const cx=L+gw*(t+.5);[[v[0],S8,-1],[v[1],S6,1]].forEach(([val,c,d])=>{const x=cx+(d<0?-bw-1:1);s+='<rect x="'+x+'" y="'+Y(val)+'" width="'+bw+'" height="'+(Y(0)-Y(val))+'" rx="4" fill="'+c+'"/>'});
+s+='<text x="'+cx+'" y="'+(h-10)+'" text-anchor="middle" font-size="11" fill="'+MU+'">#'+(t*20+1)+'–'+(t*20+20)+'</text>'});
+s+='<text x="'+(L+gw*4.5-bw-1+bw/2)+'" y="'+(Y(vals[4][0])-6)+'" text-anchor="middle" font-size="11" font-weight="700" fill="'+INK+'">'+f1(vals[4][0])+'</text><text x="'+(L+gw*.5+1+bw/2)+'" y="'+(Y(vals[0][1])-6)+'" text-anchor="middle" font-size="11" font-weight="700" fill="'+INK+'">'+f1(vals[0][1])+'</text>';
+s+='<rect id="h2" y="'+Tp+'" height="'+(h-Tp-Bt)+'" width="'+gw+'" fill="'+INK+'" opacity=".05" rx="10" style="display:none"/>';
+put("c2",svg(w,h,s))}
+function h2(t){const g=G.c2,r=$("h2");if(t<0){r.style.display="none";hideTip("t2");return}r.style.display="";r.setAttribute("x",g.L+g.gw*t);const M=mode=="av"?AV:MN;
+tipAt("t2",g.L+g.gw*(t+.5),'<b>Refinements #'+(t*20+1)+'–'+(t*20+20)+'</b><div><i style="background:'+S8+'"></i><span>Full price, '+T[t]+' TG</span><em>'+f1(g.vals[t][0])+' TG/TTG</em></div><div><i style="background:'+S6+'"></i><span>½ price, '+T[t]/2+' TG</span><em>'+f1(g.vals[t][1])+' TG/TTG</em></div><small>'+(mode=="av"?"≈ "+M[t]+" TTG each on average":M[t]+" TTG each, guaranteed")+'</small>',g.w)}
+
+/* 3: TG per TTG by batch */
+function c3(){const w=$("c3").clientWidth,h=250,L=38,R=10,Tp=14,Bt=30,v=[];for(let b=1;b<=MAXB;b++)v[b]=W7[b].tg/W7[b][mode];
+const mx=v[MAXB],st=nice(mx/4),ym=Math.ceil(mx/st)*st,X=b=>L+(b-1)/(MAXB-1)*(w-L-R),Y=y=>Tp+(1-y/ym)*(h-Tp-Bt);G.c3={X,Y,v,w,L,R};
+let s=grid(L,R,w,Y,ym,st,y=>y);
+[1,20,40,60,80,94].forEach(b=>{s+='<text x="'+X(b)+'" y="'+(h-10)+'" text-anchor="middle" font-size="11" fill="'+MU+'">×'+b+'</text>'});
+let d="";for(let b=1;b<=MAXB;b++)d+=(b==1?"M":"L")+X(b)+","+Y(v[b]);
+s+='<path d="'+d+"L"+X(MAXB)+","+Y(0)+"L"+X(1)+","+Y(0)+'Z" fill="'+S8+'" opacity=".07"/><path d="'+d+'" fill="none" stroke="'+S8+'" stroke-width="2" stroke-linejoin="round"/>';
+s+='<line x1="'+X(B)+'" x2="'+X(B)+'" y1="'+Tp+'" y2="'+Y(0)+'" stroke="'+PR+'" stroke-dasharray="3 4" opacity=".5"/><circle cx="'+X(B)+'" cy="'+Y(v[B])+'" r="6" fill="'+PR+'" stroke="#fff" stroke-width="2"/>';
+const lx=Math.min(Math.max(X(B),L+30),w-R-30);s+='<text x="'+lx+'" y="'+(Y(v[B])-12)+'" text-anchor="middle" font-size="11" font-weight="700" fill="'+INK+'">×'+B+': '+f1(v[B])+'</text>';
+s+='<g id="h3" style="display:none"><line id="h3l" y1="'+Tp+'" y2="'+Y(0)+'" stroke="'+INK+'" opacity=".3"/><circle id="h3c" r="5" fill="'+S8+'" stroke="#fff" stroke-width="2"/></g>';
+put("c3",svg(w,h,s))}
+function h3(b){const g=G.c3,e=$("h3");if(!b){e.style.display="none";hideTip("t3");return}e.style.display="";const x=g.X(b);$("h3l").setAttribute("x1",x);$("h3l").setAttribute("x2",x);$("h3c").setAttribute("cx",x);$("h3c").setAttribute("cy",g.Y(g.v[b]));
+const q=W7[b];tipAt("t3",x,'<b>Monday ×'+b+'</b><div><i style="background:'+S8+'"></i><span>TG per TTG</span><em>'+f1(g.v[b])+'</em></div><small>'+f(q.tg)+' TG for '+(mode=="av"?"≈ "+f(q.av):"≥ "+f(q.mn))+' TTG a week</small>',g.w)}
+
+/* 4: more weeks, less TG */
+function solve(n){for(let b=1;b<=MAXB;b++)if(n*W7[b][mode]>=goal)return{b,tot:n*W7[b].tg};return null}
+function c4(){const w=$("c4").clientWidth,mob=w<560,h=mob?240:280,L=44,R=6,Tp=24,Bt=30,P=[];for(let n=1;n<=WMAX;n++)P[n]=solve(n);
+let mx=0;P.forEach(p=>{if(p&&p.tot>mx)mx=p.tot});const st=nice(mx/4),ym=Math.ceil(mx/st)*st,gw=(w-L-R)/WMAX,bw=Math.min(44,gw-(mob?6:14)),Y=v=>Tp+(1-v/ym)*(h-Tp-Bt);G.c4={L,gw,w,P};
+let s=grid(L,R,w,Y,ym,st),first=0;
+for(let n=1;n<=WMAX;n++){const p=P[n],cx=L+gw*(n-.5);if(p){if(!first)first=n;s+='<rect x="'+(cx-bw/2)+'" y="'+Y(p.tot)+'" width="'+bw+'" height="'+(Y(0)-Y(p.tot))+'" rx="4" fill="'+(n==first?S8:S7)+'"/>'}
+else s+='<rect x="'+(cx-bw/2)+'" y="'+(Y(0)-34)+'" width="'+bw+'" height="34" rx="4" fill="none" stroke="'+OFF+'" stroke-width="1.5" stroke-dasharray="3 3"/><text x="'+cx+'" y="'+(Y(0)-14)+'" text-anchor="middle" font-size="10" font-weight="700" fill="'+MU+'">cap</text>';
+s+='<text x="'+cx+'" y="'+(h-10)+'" text-anchor="middle" font-size="11" fill="'+MU+'">'+n+(mob?"":" wk"+(n>1?"s":""))+'</text>'}
+const lab=n=>{const p=P[n];if(p)s+='<text x="'+(L+gw*(n-.5))+'" y="'+(Y(p.tot)-7)+'" text-anchor="middle" font-size="11" font-weight="700" fill="'+INK+'">'+kf(Math.round(p.tot/100)*100)+'</text>'};
+if(first){lab(first);if(first!=WMAX)lab(WMAX)}
+s+='<rect id="h4" y="'+Tp+'" height="'+(h-Tp-Bt)+'" width="'+gw+'" fill="'+INK+'" opacity=".05" rx="10" style="display:none"/>';
+put("c4",svg(w,h,s));$("mx").textContent=mode=="av"?f(wkN(94,7).av):f(wkN(94,7).mn);
+let tb="<tr><th>Weeks</th><th>Monday batch</th><th>TG per week</th><th>Total refining TG</th></tr>";for(let n=1;n<=WMAX;n++){const p=P[n];tb+="<tr><td>"+n+"</td><td>"+(p?"×"+p.b:"—")+"</td><td>"+(p?f(W7[p.b].tg):"—")+"</td><td>"+(p?f(p.tot):"Over the weekly cap")+"</td></tr>"}$("dt").innerHTML=tb}
+function h4(n){const g=G.c4,r=$("h4");if(!n){r.style.display="none";hideTip("t4");return}r.style.display="";r.setAttribute("x",g.L+g.gw*(n-1));const p=g.P[n];
+tipAt("t4",g.L+g.gw*(n-.5),'<b>'+n+' week'+(n>1?"s":"")+' to '+f(goal)+' TTG</b>'+(p?'<div><i style="background:'+S7+'"></i><span>Total refining</span><em>'+f(p.tot)+' TG</em></div><small>×'+p.b+' Monday batch + 1 a day · '+f(W7[p.b].tg)+' TG a week</small>':'<small>Not reachable: even ×94 every week falls short, because of the 100-a-week cap.</small>'),g.w)}
+
+function all(){c1();c2();c3();c4()}
+/* interaction */
+function bind(id,idx,fn,n){const el=$(id),lx=e=>e.clientX-el.getBoundingClientRect().left;let cur=0;
+el.addEventListener("pointermove",e=>{cur=idx(lx(e));fn(cur)});el.addEventListener("pointerleave",()=>fn(null));
+el.addEventListener("keydown",e=>{if(e.key=="ArrowLeft"||e.key=="ArrowRight"){e.preventDefault();cur=Math.min(n[1],Math.max(n[0],(cur||n[0])+(e.key=="ArrowLeft"?-1:1)));fn(cur)}});el.addEventListener("blur",()=>fn(null))}
+const cl=(v,a,b)=>Math.min(b,Math.max(a,v));
+bind("c1",x=>cl(Math.floor((x-G.c1.L)/G.c1.sl)+1,1,100),i=>h1(i||0),[1,100]);
+bind("c2",x=>cl(Math.floor((x-G.c2.L)/G.c2.gw),0,4),t=>h2(t==null?-1:t),[0,4]);
+bind("c3",x=>cl(Math.round((x-G.c3.L)/(G.c3.w-G.c3.L-G.c3.R)*(MAXB-1))+1,1,MAXB),b=>h3(b||0),[1,MAXB]);
+bind("c4",x=>cl(Math.floor((x-G.c4.L)/G.c4.gw)+1,1,WMAX),n=>h4(n||0),[1,WMAX]);
+$("bs").oninput=e=>{B=+e.target.value;$("bo").textContent="×"+B;c1();c3()};
+document.querySelectorAll("[data-m]").forEach(b=>b.onclick=()=>{mode=b.dataset.m;document.querySelectorAll("[data-m]").forEach(x=>x.setAttribute("aria-pressed",x==b));all()});
+document.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>{goal=+b.dataset.g;document.querySelectorAll("[data-g]").forEach(x=>x.setAttribute("aria-pressed",x==b));c4()});
+const ro={};["c1","c2","c3","c4"].forEach(id=>new ResizeObserver(()=>{const w=$(id).clientWidth;if(w!=ro[id]){ro[id]=w;({c1,c2,c3,c4})[id]()}}).observe($(id)));
+try{const g=localStorage.getItem("tgGroup"),r={a:"Servers 1428–1558",b:"Servers 1559–1689"}[g];if(r)$("srvr").textContent=r}catch(e){}
+all();
+</script></body></html>

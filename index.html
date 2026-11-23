@@ -16,7 +16,7 @@ button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{ou
 .sidebar{background:var(--side);padding:34px 22px 26px;display:flex;flex-direction:column;border-right:1px solid var(--ln)}
 .brand{font-size:22px;white-space:nowrap;font-weight:800;letter-spacing:-.02em;margin:0 12px 44px}.brand em,.brand i{font-style:normal;color:var(--pr)}
 .side-nav{display:flex;flex-direction:column;gap:8px}
-.side-nav a{position:relative;display:flex;align-items:center;gap:14px;height:46px;padding:0 14px;border-radius:14px;color:var(--mu);text-decoration:none;font-weight:600}
+.side-nav a{position:relative;display:flex;align-items:center;gap:14px;min-height:46px;padding:10px 14px;line-height:1.25;border-radius:14px;color:var(--mu);text-decoration:none;font-weight:600}
 .side-nav a:hover{color:var(--tx)}
 .side-nav a.active{background:var(--cot);color:var(--tx);font-weight:700}.side-nav a.active svg{color:var(--pr)}
 .side-nav a.active:after{content:"";position:absolute;right:-23px;top:6px;bottom:6px;width:3px;border-radius:3px;background:var(--pr)}
@@ -45,7 +45,7 @@ button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{ou
 .topbar p{margin:4px 0 0;color:var(--mu);font-size:13px;max-width:620px}
 .profile{display:flex;align-items:center;gap:12px;flex:none}
 .profile b{display:block;font-size:13px;text-align:right}.profile div span{display:block;font-size:11px;color:var(--mu);text-align:right}
-.ovl{padding:8px 14px;border-radius:12px;background:var(--tx);color:#fff;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap}.ovl:hover{background:var(--pr)}
+.ovl{padding:8px 14px;border-radius:12px;background:var(--tx);color:#fff;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap}.ovl:hover{background:var(--pr)}.ovl.alt{background:var(--prt);color:var(--pr)}.ovl.alt:hover{background:var(--pr);color:#fff}
 .avatar{width:46px;height:46px;border-radius:50%;background:linear-gradient(145deg,#8C8BF0,var(--pr));color:#fff;font-weight:800;display:grid;place-items:center;box-shadow:0 8px 18px rgba(83,82,212,.25)}
 
 .cols{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
@@ -179,6 +179,8 @@ footer a{color:inherit;font-weight:700;text-decoration:none}
 <button class="srv" data-g="b" aria-pressed="false"><i class="dt"><small>Dec</small>21</i><span><b>Dec 21 unlock</b><small>Servers 1559–1689</small></span></button>
 </div>
 <a href="overview.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="M4 16l5-6 4 3 7-8"/></svg><span>Overview</span></a>
+<a href="refinement.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6L4.5 18.5A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.5-2.5L14 9V3"/><path d="M7 15h10"/></svg><span>How Refinement Works</span></a>
+<a href="requirements.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 21V9l8-5 8 5v12z"/><path d="M9 21v-6h6v6"/></svg><span>Building Requirements</span></a>
 </nav>
 <div class="nav-label jl">Jump to</div>
 <nav class="side-nav jump">
@@ -190,7 +192,7 @@ footer a{color:inherit;font-weight:700;text-decoration:none}
 <div class="workspace">
 <header class="topbar">
 <div><h1>TG6-8 Calendar Planner</h1><p>Pick your TG goal and your targeted prep week. This planner finds the smallest Monday refinement batch that reaches your Tempered Truegold (TTG) goal by then, and lays out each week.</p></div>
-<div class="profile"><a class="ovl" href="overview.html">Overview <span aria-hidden="true">→</span></a><div><b>Welcome, NPC!</b><span id="srvr">Pick a server group</span></div><span class="avatar">N</span></div>
+<div class="profile"><a class="ovl alt" href="refinement.html">How it works</a><a class="ovl" href="overview.html">Overview <span aria-hidden="true">→</span></a><div><b>Welcome, NPC!</b><span id="srvr">Pick a server group</span></div><span class="avatar">N</span></div>
 </header>
 <div class="cols">
 <div class="colmain">
@@ -201,7 +203,7 @@ footer a{color:inherit;font-weight:700;text-decoration:none}
 <div class="row top"><button class="opt" id="sp1" aria-pressed="true"><b>One spend</b><span>Everything on one prep day</span></button><button class="opt" id="sp2" aria-pressed="false"><b>Two spends</b><span>Finish some first, the rest next prep</span></button></div>
 <div class="stg"><span>Tap cells to set:</span><div class="seg"><button data-stg="1" aria-pressed="true"><i class="k1"></i>1st spend</button><button data-stg="2" aria-pressed="false"><i class="k2"></i>2nd spend</button></div><span id="stgh"></span></div>
 <div class="w"><table id="bt"></table></div>
-<p class="note">Prerequisites are added for you: no building can be above the Town Center, a TG7/TG8 Town Center needs the Embassy one level below, and the Command Center needs the Embassy at the same level. Removing an upgrade also removes the ones that depend on it.</p>
+<p class="note">Prerequisites are added for you: no building can be above the Town Center, a TG7 Town Center needs a TG6 Embassy and TG6 Range, a TG8 Town Center needs a TG7 Embassy and TG7 Stable, and the Command Center needs the Embassy at the same level. Removing an upgrade also removes the ones that depend on it.</p>
 <div class="row"><div><label for="cur">Current TTG</label><input id="cur" type="number" min="0" value="0"></div>
 <div><label for="mode">Plan for</label><select id="mode"><option value="av">Average luck</option><option value="mn">Guaranteed (worst case)</option></select></div></div></section>
 <section class="card" id="results"><h2 id="pl">Your 6 Week Plan</h2><div id="sum"></div><div id="wr" class="warn"></div></section>
@@ -248,8 +250,8 @@ if(TWO&&stg==1){if(S1.has(k)){S1.delete(k);prune(S1)}else deps(k).forEach(x=>{S.
 else if(TWO&&S1.has(k)){S1.delete(k);prune(S1)}
 else if(S.has(k)){S.delete(k);fixS()}else deps(k).forEach(x=>S.add(x));
 build();render()}}
-// prerequisites: lower level of same building; nothing above the Town Center; TGn TC needs TG(n-1) Embassy; Command Center needs same-level Embassy
-function req(k){const l=+k[0],b=+k.slice(2),r=[];if(l>6)r.push((l-1)+"-"+b);if(b)r.push(l+"-0");if(b==0&&l>6)r.push((l-1)+"-1");if(b==2)r.push(l+"-1");return r}
+// prerequisites: lower level of same building; nothing above the Town Center; TG7 TC needs TG6 Embassy + Range, TG8 TC needs TG7 Embassy + Stable; Command Center needs same-level Embassy
+function req(k){const l=+k[0],b=+k.slice(2),r=[];if(l>6)r.push((l-1)+"-"+b);if(b)r.push(l+"-0");if(b==0&&l>6)r.push((l-1)+"-1",l==7?"6-6":"7-5");if(b==2)r.push(l+"-1");return r}
 function deps(k){const o=new Set(),st=[k];while(st.length){const x=st.pop();if(!o.has(x)){o.add(x);st.push(...req(x))}}return o}
 function prune(X){let ch=true;while(ch){ch=false;X.forEach(k=>{if(req(k).some(y=>!X.has(y))){X.delete(k);ch=true}})}}
 function fixS(){prune(S);S1.forEach(k=>{if(!S.has(k))S1.delete(k)});prune(S1)}
