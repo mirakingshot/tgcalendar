@@ -14,7 +14,7 @@ button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{ou
 /* shell */
 .shell{max-width:1320px;margin:28px auto;display:grid;grid-template-columns:244px minmax(0,1fr);background:var(--shell);border-radius:32px;box-shadow:0 30px 80px rgba(70,80,140,.10);overflow:hidden}
 .sidebar{background:var(--side);padding:34px 22px 26px;display:flex;flex-direction:column;border-right:1px solid var(--ln)}
-.brand{font-size:24px;font-weight:800;letter-spacing:-.02em;margin:0 12px 44px}.brand em{font-style:normal;color:var(--pr)}
+.brand{font-size:22px;white-space:nowrap;font-weight:800;letter-spacing:-.02em;margin:0 12px 44px}.brand em,.brand i{font-style:normal;color:var(--pr)}
 .side-nav{display:flex;flex-direction:column;gap:8px}
 .side-nav a{position:relative;display:flex;align-items:center;gap:14px;height:46px;padding:0 14px;border-radius:14px;color:var(--mu);text-decoration:none;font-weight:600}
 .side-nav a:hover{color:var(--tx)}
@@ -82,7 +82,7 @@ th:first-child,td:first-child{text-align:left}
 .tg:hover{border-color:#D6D6F5;color:var(--tx)}
 .tg[aria-pressed=true]{background:var(--pr);border-color:var(--pr);color:#fff;box-shadow:0 5px 12px rgba(83,82,212,.25)}
 .tg.s1[aria-pressed=true]{background:var(--ye);border-color:var(--ye);color:var(--tx);box-shadow:0 5px 12px rgba(242,181,60,.3)}
-body:not(.two) .two-only,body:not(.two) .stg{display:none!important}.stg{display:flex}
+body:not(.two) .two-only,body:not(.two) .stg:not(.pdrow){display:none!important}.pdrow{margin-top:16px}.stg{display:flex}
 .stg{align-items:center;gap:10px;flex-wrap:wrap;margin:14px 0 0}.stg>span{font-size:12px;font-weight:600;color:var(--mu)}
 .seg{display:inline-flex;gap:4px;padding:4px;border-radius:12px;background:var(--soft)}
 .seg button{display:flex;align-items:center;gap:6px;padding:6px 12px;border:0;border-radius:9px;background:none;color:var(--mu);font-size:12px;font-weight:700;cursor:pointer}
@@ -155,7 +155,7 @@ footer{text-align:center;color:var(--mu);font-size:12px;margin-top:6px}
 footer a{color:inherit;font-weight:700;text-decoration:none}
 
 /* responsive */
-@media(max-width:1180px){.shell{grid-template-columns:84px minmax(0,1fr)}.sidebar{padding:30px 14px}.brand{margin:0 0 40px;text-align:center;font-size:18px}.brand em{display:none}.side-nav a span,.pill,.srv>span,.nav-label{display:none}.side-nav a{justify-content:center;padding:0}.srv{justify-content:center;padding:4px 0}.sub{margin:4px 0;padding:8px 0;border:0;border-top:1px solid var(--ln);border-bottom:1px solid var(--ln)}.jump{margin-top:20px;padding-top:20px;border-top:1px solid var(--ln)}}
+@media(max-width:1180px){.shell{grid-template-columns:84px minmax(0,1fr)}.sidebar{padding:30px 14px}.brand{margin:0 0 40px;text-align:center;font-size:18px}.brand em,.brand span{display:none}.side-nav a span,.pill,.srv>span,.nav-label{display:none}.side-nav a{justify-content:center;padding:0}.srv{justify-content:center;padding:4px 0}.sub{margin:4px 0;padding:8px 0;border:0;border-top:1px solid var(--ln);border-bottom:1px solid var(--ln)}.jump{margin-top:20px;padding-top:20px;border-top:1px solid var(--ln)}}
 @media(max-width:1000px){.cols{display:flex;flex-direction:column;gap:0}.colmain,#app,.colrail{display:contents}.cols>*>*,#app>*{width:100%}
 #pick{order:1}#start{order:2}#buildings{order:3}#calendar{order:4}#keys{order:5}#results{order:6}#weeks{order:7}footer{order:8}}
 @media(max-width:720px){.shell{display:block;margin:0;border-radius:0;box-shadow:none;background:var(--bg)}.sidebar{display:block;background:none;border:0;padding:20px 16px 0}.brand,.jump,.jl,.pl,.pages-nav>a{display:none}.nav-label:not(.jl):not(.pl){display:block;margin:0 2px 8px}
@@ -169,7 +169,7 @@ footer a{color:inherit;font-weight:700;text-decoration:none}
 </style></head><body>
 <div class="shell">
 <aside class="sidebar">
-<div class="brand">TG<em>Planner</em></div>
+<div class="brand"><span>Mira&rsquo;s</span><i>TG</i><em>Planner</em></div>
 <div class="nav-label pl">Pages</div>
 <div class="nav-label ml">Server group</div>
 <nav class="side-nav pages-nav" aria-label="Pages">
@@ -196,9 +196,9 @@ footer a{color:inherit;font-weight:700;text-decoration:none}
 <div class="colmain">
 <section class="card" id="pick"><h2>Start by picking your server group</h2><p class="note" style="margin:0">Choose <b>Nov 23</b> or <b>Dec 21 unlock</b> <span class="d-only">in the sidebar</span><span class="m-only">above</span> to build your plan.</p></section>
 <div id="app" hidden>
-<section class="card" id="start"><h2><span class="step">1</span>Pick your start date</h2><div class="row top"><button class="opt" id="o1" aria-pressed="true"><b>Release day</b><span id="rd"></span></button><button class="opt" id="o2" aria-pressed="false"><b>Custom start date</b><span>Must be after the release day</span></button></div><div id="cw" hidden style="margin-top:14px;max-width:260px"><label for="cd">Start date</label><input id="cd" type="date"></div><div id="cwr" class="warn"></div></section>
+<section class="card" id="start"><h2><span class="step">1</span>Pick your start date</h2><div class="row top"><button class="opt" id="o1" aria-pressed="true"><b>Release day</b><span id="rd"></span></button><button class="opt" id="o2" aria-pressed="false"><b>Custom start date</b><span>Must be after the release day</span></button></div><div id="cw" hidden style="margin-top:14px;max-width:260px"><label for="cd">Start date</label><input id="cd" type="date"></div><div id="cwr" class="warn"></div><div class="stg pdrow"><span>Construction Prep Day:</span><div class="seg" id="pdp"><button data-pd="0" aria-pressed="true">Mon</button><button data-pd="1" aria-pressed="false">Tue</button><button data-pd="4" aria-pressed="false">Fri</button></div><span>Same prep week; the Monday batch and each day up to it still count.</span></div></section>
 <section class="card" id="buildings"><h2><span class="step">2</span>Buildings to upgrade</h2>
-<div class="row top"><button class="opt" id="sp1" aria-pressed="true"><b>One spend</b><span>Everything on one prep Monday</span></button><button class="opt" id="sp2" aria-pressed="false"><b>Two spends</b><span>Finish some first, the rest next prep</span></button></div>
+<div class="row top"><button class="opt" id="sp1" aria-pressed="true"><b>One spend</b><span>Everything on one prep day</span></button><button class="opt" id="sp2" aria-pressed="false"><b>Two spends</b><span>Finish some first, the rest next prep</span></button></div>
 <div class="stg"><span>Tap cells to set:</span><div class="seg"><button data-stg="1" aria-pressed="true"><i class="k1"></i>1st spend</button><button data-stg="2" aria-pressed="false"><i class="k2"></i>2nd spend</button></div><span id="stgh"></span></div>
 <div class="w"><table id="bt"></table></div>
 <p class="note">Prerequisites are added for you: no building can be above the Town Center, a TG7/TG8 Town Center needs the Embassy one level below, and the Command Center needs the Embassy at the same level. Removing an upgrade also removes the ones that depend on it.</p>
@@ -208,12 +208,12 @@ footer a{color:inherit;font-weight:700;text-decoration:none}
 </div>
 </div>
 <aside class="colrail" id="rail" hidden>
-<section class="card" id="calendar"><h2><span class="step">3</span>Choose your Monday prep day</h2>
+<section class="card" id="calendar"><h2><span class="step">3</span>Choose your prep day</h2>
 <div class="stg" style="margin:0 0 14px"><span>Picking:</span><div class="seg"><button data-stg="1" aria-pressed="true"><i class="k1"></i>1st spend</button><button data-stg="2" aria-pressed="false"><i class="k2"></i>2nd spend</button></div></div>
 <div class="nav"><span id="mt"></span><div><button id="pv" aria-label="Previous month">‹</button><button id="nx" aria-label="Next month">›</button></div></div>
 <div class="cal" id="cal"></div>
-<div class="legend"><span><i class="lg-rl"></i>TG6-8 release</span><span><i class="lg-pr"></i>Your start / spend day</span><span class="two-only"><i class="lg-ye"></i>1st spend days</span><span><i class="lg-pk"></i>Prep Monday (tap to pick)</span><span><i class="lg-in"></i>Refining days</span><span><i class="dot kv"></i>KvK battle</span><span><i class="lg-q">×N</i>Refinements that day</span></div>
-<p class="note">Refining starts on your server’s unlock day, when upgrades unlock. Every other day in the band gets 1 refinement, and the spend Monday’s batch counts because you refine before spending.</p></section>
+<div class="legend"><span><i class="lg-rl"></i>TG6-8 release</span><span><i class="lg-pr"></i>Your start / spend day</span><span class="two-only"><i class="lg-ye"></i>1st spend days</span><span><i class="lg-pk"></i>Prep day (tap to pick)</span><span><i class="lg-in"></i>Refining days</span><span><i class="dot kv"></i>KvK battle</span><span><i class="lg-q">×N</i>Refinements that day</span></div>
+<p class="note">Refining starts on your server’s unlock day, when upgrades unlock. Every other day in the band gets 1 refinement, and the prep week’s Monday batch (plus any days up to your prep day) counts because you refine before spending.</p></section>
 <section class="card" id="keys"><div class="rail-head"><h2>Key dates</h2><span id="kdn"></span></div><ul class="kd" id="kd"></ul><button class="cta" id="jump">Show my spend month</button></section>
 </aside>
 <section class="card span" id="weeks" hidden><h2>Week by week</h2><div class="w"><table id="wt"></table></div>
@@ -228,13 +228,13 @@ const N=["Town Center","Embassy","Command Center","Infirmary","Barracks","Stable
 const C={6:[[900,60],[225,13],[180,12],[180,12],[405,25],[405,25],[405,25],[405,25]],7:[[1080,90],[270,19],[216,18],[216,18],[486,37],[486,37],[486,37],[486,37]],8:[[1080,120],[270,30],[216,24],[216,24],[486,54],[486,54],[486,54],[486,54]]};
 const S=new Set([0,1,2,4,5,6].flatMap(b=>[6,7,8].map(l=>l+"-"+b)));
 const UNL={a:new Date(2026,10,23),b:new Date(2026,11,21)};let START=UNL.b,ST=UNL.b;const DAY=864e5,MS=["January","February","March","April","May","June","July","August","September","October","November","December"],DW=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-let sel=5,sel1=1,TWO=false,stg=1,vm=new Date(2026,11,1);const S1=new Set(["6-0","7-0","6-1","7-1","6-2","6-4","7-4","6-5","7-5","6-6","7-6"]),WM={};
+let sel=5,sel1=1,pd=0,TWO=false,stg=1,vm=new Date(2026,11,1);const S1=new Set(["6-0","7-0","6-1","7-1","6-2","6-4","7-4","6-5","7-5","6-6","7-6"]),WM={};
 const $=id=>document.getElementById(id),f=n=>Math.round(n).toLocaleString();
 const ICAL='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>';
 const wk=B=>{let tg=0,mn=0,av=0;for(let i=1;i<=B+6;i++){const t=Math.floor((i-1)/20);let p=T[t];if(i==1||i>B)p/=2;tg+=p;mn+=MN[t];av+=AV[t]}return{tg,mn,av}};
 const wkN=(B,n)=>{let tg=0,mn=0,av=0;for(let i=1;i<=B+n-1;i++){const t=Math.floor((i-1)/20);let p=T[t];if(i==1||i>B)p/=2;tg+=p;mn+=MN[t];av+=AV[t]}return{tg,mn,av}};
 const dOf=n=>new Date(START.getFullYear(),START.getMonth(),START.getDate()+n),dn=d=>Math.round((d-START)/DAY),iso=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
-function weeks(){const o=(ST.getDay()+6)%7,s=dn(ST),a=[];for(let m=s-o;m<sel*7;m+=7)a.push(m==s-o?{s:s,n:7-o}:{s:m,n:7});a.push({s:sel*7,n:1,fin:1});return a}
+function weeks(){const o=(ST.getDay()+6)%7,s=dn(ST),a=[];for(let m=s-o;m<sel*7;m+=7)a.push(m==s-o?{s:s,n:7-o}:{s:m,n:7});a.push({s:sel*7,n:1+pd,fin:1});return a}
 const wkOf=d=>Math.round((d-START)/DAY/7),addD=(d,n)=>new Date(d.getTime()+n*DAY);
 const fm=d=>MS[d.getMonth()].slice(0,3)+" "+d.getDate();
 const wkM=(B,n)=>WM[B*8+n]||(WM[B*8+n]=wkN(B,n));
@@ -253,16 +253,16 @@ function req(k){const l=+k[0],b=+k.slice(2),r=[];if(l>6)r.push((l-1)+"-"+b);if(b
 function deps(k){const o=new Set(),st=[k];while(st.length){const x=st.pop();if(!o.has(x)){o.add(x);st.push(...req(x))}}return o}
 function prune(X){let ch=true;while(ch){ch=false;X.forEach(k=>{if(req(k).some(y=>!X.has(y))){X.delete(k);ch=true}})}}
 function fixS(){prune(S);S1.forEach(k=>{if(!S.has(k))S1.delete(k)});prune(S1)}
-function cal(p=plan()){const y=vm.getFullYear(),m=vm.getMonth(),pad=new Date(y,m,1).getDay(),nd=new Date(y,m+1,0).getDate(),end=sel*7,e1=TWO?sel1*7:-1e9,s0=dn(ST);
+function cal(p=plan()){const y=vm.getFullYear(),m=vm.getMonth(),pad=new Date(y,m,1).getDay(),nd=new Date(y,m+1,0).getDate(),end=sel*7+pd,e1=TWO?sel1*7+pd:-1e9,s0=dn(ST);
 $('mt').textContent=MS[m]+', '+y;$('pv').disabled=y*12+m<=START.getFullYear()*12+START.getMonth();$('nx').disabled=y==2027&&m==5;
 let h=DW.map(x=>'<b>'+x+'</b>').join('');
 for(let i=pad;i>0;i--)h+='<div class="c x"><span class="n">'+new Date(y,m,1-i).getDate()+'</span><i class="m"></i></div>';
-for(let d=1;d<=nd;d++){const dt=new Date(y,m,d),dd=dn(dt),ds=dd-s0,w=wkOf(dt),dow=dt.getDay(),mon=dow==1,ms=mon&&w>=1&&w%4==1,ok=ms&&ds>=0&&!(TWO&&stg==2&&dd<=e1),pm=addD(dt,-5),kv=dow==6&&wkOf(pm)>=1&&wkOf(pm)%4==1,inP=ds>=0&&dd<=end,bt=ds==0||(mon&&ds>0),fst=TWO&&dd<=e1,B=fst?p.B1:p.B2;
+for(let d=1;d<=nd;d++){const dt=new Date(y,m,d),dd=dn(dt),ds=dd-s0,w=Math.floor(dd/7),dow=dt.getDay(),mon=dow==1,ms=mon&&w>=1&&w%4==1,pdd=dow==pd+1&&w>=1&&w%4==1,ok=pdd&&ds>=0&&!(TWO&&stg==2&&dd<=e1),pm=addD(dt,-5),kv=dow==6&&wkOf(pm)>=1&&wkOf(pm)%4==1,inP=ds>=0&&dd<=end,bt=ds==0||(mon&&ds>0),fst=TWO&&dd<=e1,B=fst?p.B1:p.B2;
 let k='c',lb=[];
 if(inP)k+=' in'+(fst?' in1':'');if(ds==0)k+=' a';if(dd==end)k+=' z';if(dow==0||d==1)k+=' rs';if(dow==6||d==nd)k+=' re';if(dow==0)k+=' sun';if(ds<0)k+=' off';
-if(dd==0){k+=' rl';lb.push('TG6-8 release')}if(ds==0&&dd!=0){k+=' st';lb.push('Your start')}if(ok)k+=' pk';if(dd==end&&ms&&ds>=0){k+=' sel';lb.push(TWO?'2nd spend':'Spend day')}if(dd==e1){k+=' sel1';lb.push('1st spend')}if(ms)lb.push('Prep Day 1');if(kv)lb.push('KvK battle');
+if(dd==0){k+=' rl';lb.push('TG6-8 release')}if(ds==0&&dd!=0){k+=' st';lb.push('Your start')}if(ok)k+=' pk';if(dd==end){k+=' sel';lb.push(TWO?'2nd spend':'Spend day')}if(dd==e1){k+=' sel1';lb.push('1st spend')}if(ms)lb.push('Prep week starts');if(kv)lb.push('KvK battle');
 if(inP)lb.push((bt?B:1)+' refinement'+((bt?B:1)==1?'':'s'));
-const mk=(inP?'×'+(bt?B:1):'')+(kv?'<span class="dot kv"></span>':ms&&!inP?'<span class="dot"></span>':'');
+const mk=(inP?'×'+(bt?B:1):'')+(kv?'<span class="dot kv"></span>':pdd&&!inP?'<span class="dot"></span>':'');
 const body='<span class="n">'+d+'</span><i class="m">'+mk+'</i>',tl=fm(dt)+(lb.length?': '+lb.join(', '):'');
 h+=ok?'<button class="'+k+'" data-w="'+w+'" aria-label="'+tl+'" aria-pressed="'+(dd==end||dd==e1)+'" title="'+tl+'">'+body+'</button>':'<div class="'+k+'" title="'+tl+'">'+body+'</div>'}
 const rem=(7-(pad+nd)%7)%7;for(let i=1;i<=rem;i++)h+='<div class="c x"><span class="n">'+i+'</span><i class="m"></i></div>';
@@ -274,25 +274,26 @@ function syncStg(){document.querySelectorAll("[data-stg]").forEach(x=>x.setAttri
 document.querySelectorAll("[data-stg]").forEach(x=>x.onclick=()=>{stg=+x.dataset.stg;syncStg();cal()});
 function setTwo(v){TWO=v;$("sp1").setAttribute("aria-pressed",!v);$("sp2").setAttribute("aria-pressed",v);document.body.classList.toggle("two",v);
 if(v){sel1=firstPrep();if(sel<=sel1)sel=sel1+4;if(!S1.size){const h8=[...S].some(k=>k[0]=="8");S.forEach(k=>{if(k[0]=="6"||(h8&&k[0]=="7"))S1.add(k)});prune(S1)}stg=1;syncStg()}build();render()}
+document.querySelectorAll("[data-pd]").forEach(x=>x.onclick=()=>{pd=+x.dataset.pd;document.querySelectorAll("[data-pd]").forEach(y=>y.setAttribute("aria-pressed",y==x));render()});
 $("sp1").onclick=()=>setTwo(false);$("sp2").onclick=()=>setTwo(true);
-$("jump").onclick=()=>{const e=dOf(sel*7);vm=new Date(e.getFullYear(),e.getMonth(),1);cal();$("calendar").scrollIntoView({behavior:"smooth",block:"start"})};
+$("jump").onclick=()=>{const e=dOf(sel*7+pd);vm=new Date(e.getFullYear(),e.getMonth(),1);cal();$("calendar").scrollIntoView({behavior:"smooth",block:"start"})};
 function plan(){const m=$("mode").value,cur=+$("cur").value||0,n=needs(),W=weeks(),need=Math.max(0,n.tt-cur),v=(b,x)=>wkM(b,x)[m],c=(b,x)=>wkM(b,x).tg;
 if(!TWO){const tot=b=>W.reduce((q,x)=>q+v(b,x.n),0);let B=1;while(B<94&&tot(B)<need)B++;return{m,B1:B,B2:B,need,ok:tot(B)>=need,ok1:true,n,W}}
 const n1=needs(S1),n2={tg:n.tg-n1.tg,tt:n.tt-n1.tt},e1=sel1*7,pre=W.filter(x=>x.s<e1),post=W.filter(x=>x.s>e1);
-const s1=b=>pre.reduce((q,x)=>q+v(b,x.n),0)+v(b,1),s2=b=>post.reduce((q,x)=>q+v(b,x.n),0),k1=b=>pre.reduce((q,x)=>q+c(b,x.n),0)+c(b,7),k2=b=>post.reduce((q,x)=>q+c(b,x.n),0);
+const s1=b=>pre.reduce((q,x)=>q+v(b,x.n),0)+v(b,1+pd),s2=b=>post.reduce((q,x)=>q+v(b,x.n),0),k1=b=>pre.reduce((q,x)=>q+c(b,x.n),0)+c(b,7),k2=b=>post.reduce((q,x)=>q+c(b,x.n),0);
 let best=null,f1=0;
-for(let b1=1;b1<=94;b1++){const t1=s1(b1);if(cur+t1<n1.tt)continue;if(!f1)f1=b1;const g2=n2.tt-(cur+t1-n1.tt)-(v(b1,7)-v(b1,1));let b2=1;while(b2<94&&s2(b2)<g2)b2++;if(s2(b2)<g2)continue;const cost=k1(b1)+k2(b2);if(!best||cost<best.cost)best={b1,b2,cost}}
+for(let b1=1;b1<=94;b1++){const t1=s1(b1);if(cur+t1<n1.tt)continue;if(!f1)f1=b1;const g2=n2.tt-(cur+t1-n1.tt)-(v(b1,7)-v(b1,1+pd));let b2=1;while(b2<94&&s2(b2)<g2)b2++;if(s2(b2)<g2)continue;const cost=k1(b1)+k2(b2);if(!best||cost<best.cost)best={b1,b2,cost}}
 return{m,B1:best?best.b1:f1||94,B2:best?best.b2:94,need,ok:!!best,ok1:!!f1,n,n1,n2,W}}
-function render(){const p=plan(),W=p.W,n=p.n,end=dOf(sel*7),e1=sel1*7,d1=dOf(e1),Bw=y=>!TWO||y.s<=e1?p.B1:p.B2,RT=W.reduce((q,y)=>q+wkN(Bw(y),y.n).tg,0),dif=TWO&&p.B1!=p.B2;
+function render(){const p=plan(),W=p.W,n=p.n,end=dOf(sel*7+pd),e1=sel1*7,d1=dOf(e1+pd),PD=DW[pd+1],sp=x=>pd?"Mon ×"+x+", 1 a day to "+PD+", then spend":"Mon ×"+x+", then spend",Bw=y=>!TWO||y.s<=e1?p.B1:p.B2,RT=W.reduce((q,y)=>q+wkN(Bw(y),y.n).tg,0),dif=TWO&&p.B1!=p.B2;
 $("sum").innerHTML='<div class="kp">'+(TWO?'<div class="stat"><i class="ic i3">'+ICAL+'</i><div><b>'+fm(d1)+", "+d1.getFullYear()+'</b><span>1st spend</span></div></div>':'')+'<div class="stat"><i class="ic i1">'+ICAL+'</i><div><b>'+fm(end)+", "+end.getFullYear()+'</b><span>'+(TWO?'2nd spend':'Spend date')+'</span></div></div><div class="stat"><i class="ic i2">×</i><div><b>'+(dif?p.B1+' → '+p.B2:p.B1)+'</b><span>Monday batch</span></div></div>'+(TWO?'':'<div class="stat"><i class="ic i3">◆</i><div><b>'+f(p.need)+'</b><span>TTG still needed</span></div></div>')+'</div><div class="ks">'+(TWO?'<div><span>TTG for 1st / 2nd spend</span><b>'+f(p.n1.tt)+' / '+f(p.n2.tt)+'</b></div>':'')+'<div><span>TG on refining, per week</span><b>'+(dif?f(wk(p.B1).tg)+' → '+f(wk(p.B2).tg):f(wk(p.B1).tg))+'</b></div><div><span>TG on refining, total</span><b>'+f(RT)+'</b></div><div><span>TG for the upgrades</span><b>'+f(n.tg)+'</b></div><div><span>TG needed overall</span><b>'+f(RT+n.tg)+'</b></div></div>';
 $("wr").textContent=TWO&&!S1.size?"Nothing is set for the 1st spend yet. Choose 1st spend above the building table, then tap the cells to finish first.":TWO&&!p.ok1?"Even the maximum batch of 94 does not reach the 1st spend goal ("+f(p.n1.tt)+" TTG) by "+fm(d1)+". Pick a later 1st spend Monday or move buildings to the 2nd spend.":p.ok?"":"Even the maximum batch of 94 does not reach "+f(p.need)+" TTG by "+(TWO?"the 2nd spend":"this date")+". Choose a later Monday or fewer buildings.";
 let h="<tr><th>Week</th><th>Dates</th><th>Plan</th><th>TG</th><th>TTG this week</th><th>Running TTG</th></tr>",run=+$("cur").value||0;
-W.forEach((y,i)=>{const B=Bw(y),q=wkN(B,y.n),per=q[p.m];run+=per;const mid=TWO&&y.s==e1,pct=Math.min(100,run/Math.max(1,n.tt)*100),a=dOf(y.s),b=dOf(y.s+y.n-1),mon=a.getDay()==1,pl=y.fin?"Mon ×"+B+", then "+(TWO?"2nd spend":"spend"):mid?"Mon ×"+B+", 1st spend, then 1 a day":(i==0&&!mon?"Start day ×"+B+(y.n>1?", then 1 a day":""):"Mon ×"+B+", then 1 a day");
+W.forEach((y,i)=>{const B=Bw(y),q=wkN(B,y.n),per=q[p.m];run+=per;const mid=TWO&&y.s==e1,pct=Math.min(100,run/Math.max(1,n.tt)*100),a=dOf(y.s),b=dOf(y.s+y.n-1),mon=a.getDay()==1,pl=y.fin?sp(B)+(TWO?" (2nd)":""):mid?"Mon ×"+B+", 1st spend "+PD+", then 1 a day":(i==0&&!mon?"Start day ×"+B+(y.n>1?", then 1 a day":""):"Mon ×"+B+", then 1 a day");
 h+='<tr><td data-l="Week">Week '+(i+1)+(i==0?(dn(ST)==0?" (unlock "+fm(START)+")":" (your start)"):"")+'</td><td data-l="Dates">'+(y.n>1?fm(a)+" – "+fm(b):fm(a))+'</td><td data-l="Plan">'+pl+'</td><td data-l="TG">'+f(q.tg)+'</td><td data-l="TTG this week">'+(p.m=="av"?"≈ ":"≥ ")+f(per)+'</td><td data-l="Running TTG">'+f(run)+" of "+f(n.tt)+(y.fin?"":'<div class="bar"><i style="width:'+pct+'%"></i></div>')+(mid?'<span class="tag">1st spend uses '+f(p.n1.tt)+' TTG</span>':'')+"</td></tr>"});
 $("pl").textContent="Your "+W.length+" Week Plan";$("wt").innerHTML=h;$("nb").textContent=S.size;
 const kd=[[START,"TG6-8 release","Upgrades unlock, refining starts","co"]];if(dn(ST)>0)kd.push([ST,"Your start","First refining day, ×"+p.B1,""]);
-if(TWO)kd.push([d1,"1st spend","Mon ×"+p.B1+", then spend","ye"]);
-kd.push([end,TWO?"2nd spend":"Spend day","Mon ×"+p.B2+", then spend",""],[dOf(sel*7+5),"KvK battle","Saturday after your spend","co"]);
+if(TWO)kd.push([d1,"1st spend",sp(p.B1),"ye"]);
+kd.push([end,TWO?"2nd spend":"Spend day",sp(p.B2),""],[dOf(sel*7+5),"KvK battle","Saturday after your spend","co"]);
 $("kdn").textContent=W.length+" weeks";
 $("kd").innerHTML=kd.map(([d,t,s,c])=>'<li class="'+c+'"><time>'+DW[d.getDay()]+'<b>'+fm(d)+'</b></time><div><b>'+t+'</b><span>'+s+'</span></div></li>').join("");
 cal(p)}

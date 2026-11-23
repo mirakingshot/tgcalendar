@@ -14,7 +14,7 @@ button:focus-visible,a:focus-visible,#chart:focus-visible{outline:2px solid var(
 /* shell (shared with planner) */
 .shell{max-width:1320px;margin:28px auto;display:grid;grid-template-columns:244px minmax(0,1fr);background:var(--shell);border-radius:32px;box-shadow:0 30px 80px rgba(70,80,140,.10);overflow:hidden}
 .sidebar{background:var(--side);padding:34px 22px 26px;display:flex;flex-direction:column;border-right:1px solid var(--ln)}
-.brand{font-size:24px;font-weight:800;letter-spacing:-.02em;margin:0 12px 44px}.brand em{font-style:normal;color:var(--pr)}
+.brand{font-size:22px;white-space:nowrap;font-weight:800;letter-spacing:-.02em;margin:0 12px 44px}.brand em,.brand i{font-style:normal;color:var(--pr)}
 .nav-label{margin:0 14px 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#B5B8CC}
 .side-nav+.nav-label{margin-top:30px}
 .side-nav{display:flex;flex-direction:column;gap:8px}
@@ -127,7 +127,7 @@ th:first-child,td:first-child{text-align:left}
 .lb li.na b,.lb li.na strong{color:var(--mu)}
 
 /* responsive (same breakpoints as planner) */
-@media(max-width:1180px){.shell{grid-template-columns:84px minmax(0,1fr)}.sidebar{padding:30px 14px}.brand{margin:0 0 40px;text-align:center;font-size:18px}.brand em{display:none}.side-nav a span,.nav-label{display:none}.side-nav a{justify-content:center;padding:0}.side-nav a.active:after{right:-15px}.side-nav a.srv{justify-content:center;padding:4px 0}.sub{margin:4px 0;padding:8px 0;border:0;border-top:1px solid var(--ln);border-bottom:1px solid var(--ln)}.jump{margin-top:20px;padding-top:20px;border-top:1px solid var(--ln)}}
+@media(max-width:1180px){.shell{grid-template-columns:84px minmax(0,1fr)}.sidebar{padding:30px 14px}.brand{margin:0 0 40px;text-align:center;font-size:18px}.brand em,.brand span{display:none}.side-nav a span,.nav-label{display:none}.side-nav a{justify-content:center;padding:0}.side-nav a.active:after{right:-15px}.side-nav a.srv{justify-content:center;padding:4px 0}.sub{margin:4px 0;padding:8px 0;border:0;border-top:1px solid var(--ln);border-bottom:1px solid var(--ln)}.jump{margin-top:20px;padding-top:20px;border-top:1px solid var(--ln)}}
 @media(max-width:1000px){.cols{display:flex;flex-direction:column;gap:0}.colmain,.colrail{display:contents}.cols>*>*{width:100%}
 #sets-card{order:1}#chart-card{order:2}#week-card{order:3}#prep-card{order:4}footer{order:5}}
 @media(max-width:720px){.shell{display:block;margin:0;border-radius:0;box-shadow:none;background:var(--bg)}.sidebar{display:block;background:none;border:0;padding:20px 16px 0}.brand,.jump,.jl,.sub{display:none}.nav-label:not(.jl){display:block;margin:0 2px 8px}
@@ -136,7 +136,7 @@ th:first-child,td:first-child{text-align:left}
 </style></head><body>
 <div class="shell">
 <aside class="sidebar">
-<div class="brand">TG<em>Planner</em></div>
+<div class="brand"><span>Mira&rsquo;s</span><i>TG</i><em>Planner</em></div>
 <div class="nav-label">Pages</div>
 <nav class="side-nav pages" aria-label="Pages">
 <a href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>Planner</span></a>
