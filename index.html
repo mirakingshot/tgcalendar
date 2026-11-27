@@ -93,6 +93,7 @@ dialog#sm{width:min(920px,calc(100vw - 24px));max-height:calc(100vh - 40px);padd
 .pp{font-style:normal;font-size:10px;font-weight:800;padding:2px 8px;border-radius:7px;text-transform:uppercase;letter-spacing:.04em}.pp.p1{background:var(--yet);color:#8A5F00}.pp.p2{background:var(--prt);color:var(--pr)}
 .lz-l li.na{background:var(--soft);border-style:dashed;border-color:#D9DAE6}.lz-l li.na:hover{border-color:#D9DAE6}.lz-l li.na b{color:var(--mu);text-decoration:line-through;text-decoration-color:rgba(248,111,107,.6)}.lz-l li.na .pp,.lz-l li.na b small{opacity:.6}
 .lz-l li.na .lz-why b{display:inline;text-decoration:none;color:var(--tx);font-size:12px}
+.lz-note{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:11px;font-weight:600;color:#8A5F00}.lz-note i{flex:none;width:15px;height:15px;border-radius:50%;background:var(--ye);color:var(--tx);font-style:normal;font-size:10px;font-weight:800;display:grid;place-items:center}
 .lz-q{margin:0 0 10px;font-size:15px;font-weight:800}
 .lz-sp button{padding:18px}.lz-sp b{font-size:15px;margin-bottom:2px}
 .lz-sw{display:flex;align-items:center;gap:10px;margin:0 0 14px;font-size:12px;font-weight:600;color:var(--mu)}
@@ -337,8 +338,8 @@ for(let d=1;d<=nd;d++){const dt=new Date(y,m,d),dd=dn(dt),ds=dd-s0,w=Math.floor(
 let k='c',lb=[];
 if(inP)k+=' in'+(fst?' in1':'');if(ds==0)k+=' a';if(dd==end)k+=' z';if(dow==0||d==1)k+=' rs';if(dow==6||d==nd)k+=' re';if(dow==0)k+=' sun';if(ds<0)k+=' off';
 if(dd==0){k+=' rl';lb.push('TG6-8 release')}if(ds==0&&dd!=0){k+=' st';lb.push('Your start')}if(ok)k+=' pk';if(dd==end){k+=' sel';lb.push(TWO?'2nd spend':'Spend day')}if(dd==e1){k+=' sel1';lb.push('1st spend')}if(ms)lb.push('Prep week starts');if(kv)lb.push('KvK battle');
-if(inP)lb.push((bt?B:1)+' refinement'+((bt?B:1)==1?'':'s'));
-const mk=(inP?'×'+(bt?B:1):'')+(kv?'<span class="dot kv"></span>':pdd&&!inP?'<span class="dot"></span>':'');
+const cnt=dayN(p,dd,ds,dow);if(inP)lb.push(cnt+' refinement'+(cnt==1?'':'s'));
+const mk=(inP?'×'+cnt:'')+(kv?'<span class="dot kv"></span>':pdd&&!inP?'<span class="dot"></span>':'');
 const body='<span class="n">'+d+'</span><i class="m">'+mk+'</i>',tl=fm(dt)+(lb.length?': '+lb.join(', '):'');
 h+=ok?'<button class="'+k+'" data-w="'+w+'" aria-label="'+tl+'" aria-pressed="'+(dd==end||dd==e1)+'" title="'+tl+'">'+body+'</button>':'<div class="'+k+'" title="'+tl+'">'+body+'</div>'}
 const rem=(7-(pad+nd)%7)%7;for(let i=1;i<=rem;i++)h+='<div class="c x"><span class="n">'+i+'</span><i class="m"></i></div>';
@@ -354,22 +355,39 @@ document.querySelectorAll("[data-pd]").forEach(x=>x.onclick=()=>{pd=+x.dataset.p
 $("sp1").onclick=()=>setTwo(false);$("sp2").onclick=()=>setTwo(true);
 $("jump").onclick=()=>{const e=dOf(sel*7+pd);vm=new Date(e.getFullYear(),e.getMonth(),1);cal();$("calendar").scrollIntoView({behavior:"smooth",block:"start"})};
 function plan(){const m=$("mode").value,cur=+$("cur").value||0,n=needs(),W=weeks(),need=Math.max(0,n.tt-cur),v=(b,x)=>wkM(b,x)[m],c=(b,x)=>wkM(b,x).tg;
-if(!TWO){const tot=b=>W.reduce((q,x)=>q+v(b,x.n),0);let B=1;while(B<94&&tot(B)<need)B++;return{m,B1:B,B2:B,need,ok:tot(B)>=need,ok1:true,n,W}}
+/* ×94 on Monday is the most efficient batch, but the only hard cap is 100 a week. In a spend week only the days up to the spend count,
+   so if ×94 isn't enough, that week's Monday can go up to 100 minus the daily refinements before the spend (Mon 100, Tue 99, Fri 96). */
+const MAXS=100-pd;
+if(!TWO){const tot=b=>W.reduce((q,x)=>q+v(b,x.n),0);let B=1;while(B<94&&tot(B)<need)B++;if(tot(B)>=need)return{m,B1:B,B2:B,need,ok:true,ok1:true,n,W};
+const base=W.filter(x=>!x.fin).reduce((q,x)=>q+v(94,x.n),0);for(let Y=95;Y<=MAXS;Y++)if(base+v(Y,1+pd)>=need)return{m,B1:94,B2:94,Y,need,ok:true,ok1:true,n,W};return{m,B1:94,B2:94,need,ok:false,ok1:true,n,W}}
 const n1=needs(S1),n2={tg:n.tg-n1.tg,tt:n.tt-n1.tt},e1=sel1*7,pre=W.filter(x=>x.s<e1),post=W.filter(x=>x.s>e1);
 const s1=b=>pre.reduce((q,x)=>q+v(b,x.n),0)+v(b,1+pd),s2=b=>post.reduce((q,x)=>q+v(b,x.n),0),k1=b=>pre.reduce((q,x)=>q+c(b,x.n),0)+c(b,7),k2=b=>post.reduce((q,x)=>q+c(b,x.n),0);
 let best=null,f1=0;
 for(let b1=1;b1<=94;b1++){const t1=s1(b1);if(cur+t1<n1.tt)continue;if(!f1)f1=b1;const g2=n2.tt-(cur+t1-n1.tt)-(v(b1,7)-v(b1,1+pd));let b2=1;while(b2<94&&s2(b2)<g2)b2++;if(s2(b2)<g2)continue;const cost=k1(b1)+k2(b2);if(!best||cost<best.cost)best={b1,b2,cost}}
-return{m,B1:best?best.b1:f1||94,B2:best?best.b2:94,need,ok:!!best,ok1:!!f1,n,n1,n2,W}}
-function render(){const p=plan(),W=p.W,n=p.n,end=dOf(sel*7+pd),e1=sel1*7,d1=dOf(e1+pd),PD=DW[pd+1],sp=x=>pd?"Mon ×"+x+", 1 a day to "+PD+", then spend":"Mon ×"+x+", then spend",Bw=y=>!TWO||y.s<=e1?p.B1:p.B2,RT=W.reduce((q,y)=>q+wkN(Bw(y),y.n).tg,0),dif=TWO&&p.B1!=p.B2;
+if(best)return{m,B1:best.b1,B2:best.b2,need,ok:true,ok1:true,n,n1,n2,W};
+/* fallback: run ×94 weeks and, where needed, a bigger spend-week Monday (X for the 1st spend, Y for the 2nd) */
+const pre94=pre.reduce((q,x)=>q+v(94,x.n),0);let X,sg,t1,tail;
+if(f1){t1=s1(94);tail=v(94,7)-v(94,1+pd)}
+else{for(let x=95;x<=MAXS;x++){const t=pre94+v(x,1+pd);if(cur+t>=n1.tt){X=x;t1=t;sg=Math.min(6-pd,100-x-pd);tail=v(x,1+pd+sg)-v(x,1+pd);break}}
+if(!X)return{m,B1:94,B2:94,need,ok:false,ok1:false,n,n1,n2,W}}
+const g2=n2.tt-(cur+t1-n1.tt)-tail,nf94=post.filter(x=>!x.fin).reduce((q,x)=>q+v(94,x.n),0);let b2=1;while(b2<94&&s2(b2)<g2)b2++;
+if(s2(b2)>=g2)return{m,B1:94,B2:b2,X,sg,need,ok:true,ok1:true,n,n1,n2,W};
+for(let Y=95;Y<=MAXS;Y++)if(nf94+v(Y,1+pd)>=g2)return{m,B1:94,B2:94,X,sg,Y,need,ok:true,ok1:true,n,n1,n2,W};
+return{m,B1:94,B2:94,X,sg,need,ok:false,ok1:true,n,n1,n2,W}}
+/* refinements for a plan week / day, including the "full 100 on the 1st spend Monday" case */
+function wkRow(p,y){const e1=sel1*7;if(p.Y&&y.fin)return wkN(p.Y,1+pd);return TWO&&p.X&&y.s==e1?wkN(p.X,1+pd+p.sg):wkN(!TWO||y.s<=e1?p.B1:p.B2,y.n)}
+function dayN(p,dd,ds,dow){const e1=sel1*7;if(p.Y&&dd==sel*7)return p.Y;if(TWO&&p.X&&dd>=e1&&dd<e1+7){const k=dd-e1;return k==0?p.X:k<=pd+p.sg?1:0}return ds==0||(dow==1&&ds>0)?(TWO&&dd<=e1+pd?p.B1:p.B2):1}
+function render(){const p=plan(),W=p.W,n=p.n,end=dOf(sel*7+pd),e1=sel1*7,d1=dOf(e1+pd),PD=DW[pd+1],dt=pd==0?"":pd==1?", 1 on "+PD:", 1 a day to "+PD,big=x=>"Mon ×"+x+" (above the usual ×94)"+dt,sp=x=>pd?"Mon ×"+x+", 1 a day to "+PD+", then spend":"Mon ×"+x+", then spend",Bw=y=>!TWO||y.s<=e1?p.B1:p.B2,RT=W.reduce((q,y)=>q+wkRow(p,y).tg,0),dif=TWO&&p.B1!=p.B2;
 $("sum").innerHTML='<div class="kp">'+(TWO?'<div class="stat"><i class="ic i3">'+ICAL+'</i><div><b>'+fm(d1)+", "+d1.getFullYear()+'</b><span>1st spend</span></div></div>':'')+'<div class="stat"><i class="ic i1">'+ICAL+'</i><div><b>'+fm(end)+", "+end.getFullYear()+'</b><span>'+(TWO?'2nd spend':'Spend date')+'</span></div></div><div class="stat"><i class="ic i2">×</i><div><b>'+(dif?p.B1+' → '+p.B2:p.B1)+'</b><span>Monday batch</span></div></div>'+(TWO?'':'<div class="stat"><i class="ic i3"><img class="gi gl" src="temperedtruegold.png" alt=""></i><div><b>'+f(p.need)+'</b><span>TTG still needed</span></div></div>')+'</div><div class="ks">'+(TWO?'<div><span><img class="gi" src="temperedtruegold.png" alt="">TTG for 1st / 2nd spend</span><b>'+f(p.n1.tt)+' / '+f(p.n2.tt)+'</b></div>':'')+'<div><span><img class="gi" src="truegold.png" alt="">TG on refining, per week</span><b>'+(dif?f(wk(p.B1).tg)+' → '+f(wk(p.B2).tg):f(wk(p.B1).tg))+'</b></div><div><span><img class="gi" src="truegold.png" alt="">TG on refining, total</span><b>'+f(RT)+'</b></div><div><span><img class="gi" src="truegold.png" alt="">TG for the upgrades</span><b>'+f(n.tg)+'</b></div><div><span><img class="gi" src="truegold.png" alt="">TG needed overall</span><b>'+f(RT+n.tg)+'</b></div></div>';
-$("wr").textContent=TWO&&!S1.size?"Nothing is set for the 1st spend yet. Choose 1st spend above the building table, then tap the cells to finish first.":TWO&&!p.ok1?"Even the maximum batch of 94 does not reach the 1st spend goal ("+f(p.n1.tt)+" TTG) by "+fm(d1)+". Pick a later 1st spend Monday or move buildings to the 2nd spend.":p.ok?"":"Even the maximum batch of 94 does not reach "+f(p.need)+" TTG by "+(TWO?"the 2nd spend":"this date")+". Choose a later Monday or fewer buildings.";
+if(p.X||p.Y)$("sum").insertAdjacentHTML("beforeend",'<p class="note"><b>Heads up:</b> ×94 on Monday is the most efficient batch, but it isn’t enough here. The only hard limit is 100 refinements a week, and in a spend week only the days up to the spend count, so the plan goes bigger: '+[p.X?'<b>×'+p.X+'</b> on the Monday before the 1st spend ('+fm(d1)+')'+(p.sg!=null?', leaving '+(p.sg?p.sg+' daily refinement'+(p.sg>1?'s':'')+' for the rest of that week':'none for the rest of that week'):''):'',p.Y?'<b>×'+p.Y+'</b> on the Monday before the '+(TWO?'2nd ':'')+'spend ('+fm(end)+')':''].filter(Boolean).join(' and ')+'.</p>');
+$("wr").textContent=TWO&&!S1.size?"Nothing is set for the 1st spend yet. Choose 1st spend above the building table, then tap the cells to finish first.":TWO&&!p.ok1?"Even the full weekly cap (×94 a week and up to ×"+(100-pd)+" on the spend week’s Monday) does not reach the 1st spend goal ("+f(p.n1.tt)+" TTG) by "+fm(d1)+". Pick a later 1st spend Monday or move buildings to the 2nd spend.":p.ok?"":"Even the full weekly cap (×94 a week and up to ×"+(100-pd)+" on the spend week’s Monday) does not reach "+f(p.need)+" TTG by "+(TWO?"the 2nd spend":"this date")+". Choose a later Monday or fewer buildings.";
 let h="<tr><th>Week</th><th>Dates</th><th>Plan</th><th><img class='gi' src='truegold.png' alt=''>TG</th><th><img class='gi' src='temperedtruegold.png' alt=''>TTG this week</th><th><img class='gi' src='temperedtruegold.png' alt=''>Running TTG</th></tr>",run=+$("cur").value||0;
-W.forEach((y,i)=>{const B=Bw(y),q=wkN(B,y.n),per=q[p.m];run+=per;const mid=TWO&&y.s==e1,pct=Math.min(100,run/Math.max(1,n.tt)*100),a=dOf(y.s),b=dOf(y.s+y.n-1),mon=a.getDay()==1,pl=y.fin?sp(B)+(TWO?" (2nd)":""):mid?"Mon ×"+B+", 1st spend "+PD+", then 1 a day":(i==0&&!mon?"Start day ×"+B+(y.n>1?", then 1 a day":""):"Mon ×"+B+", then 1 a day");
+W.forEach((y,i)=>{const B=Bw(y),q=wkRow(p,y),per=q[p.m];run+=per;const mid=TWO&&y.s==e1,pct=Math.min(100,run/Math.max(1,n.tt)*100),a=dOf(y.s),b=dOf(y.s+y.n-1),mon=a.getDay()==1,pl=y.fin?(p.Y?big(p.Y)+", then spend":sp(B))+(TWO?" (2nd)":""):mid?(p.X?big(p.X)+", 1st spend"+(p.sg?", then 1 a day for "+p.sg+" day"+(p.sg>1?"s":""):""):"Mon ×"+B+", 1st spend "+PD+", then 1 a day"):(i==0&&!mon?"Start day ×"+B+(y.n>1?", then 1 a day":""):"Mon ×"+B+", then 1 a day");
 h+='<tr><td data-l="Week">Week '+(i+1)+(i==0?(dn(ST)==0?" (unlock "+fm(START)+")":" (your start)"):"")+'</td><td data-l="Dates">'+(y.n>1?fm(a)+" – "+fm(b):fm(a))+'</td><td data-l="Plan">'+pl+'</td><td data-l="TG">'+f(q.tg)+'</td><td data-l="TTG this week">'+(p.m=="mn"?"≥ ":"≈ ")+f(per)+'</td><td data-l="Running TTG">'+f(run)+" of "+f(n.tt)+(y.fin?"":'<div class="bar"><i style="width:'+pct+'%"></i></div>')+(mid?'<span class="tag">1st spend uses '+f(p.n1.tt)+' TTG</span>':'')+"</td></tr>"});
 $("pl").textContent="Your "+W.length+" Week Plan";$("wt").innerHTML=h;$("nb").textContent=S.size;
 const kd=[[START,"TG6-8 release","Upgrades unlock, refining starts","co"]];if(dn(ST)>0)kd.push([ST,"Your start","First refining day, ×"+p.B1,""]);
-if(TWO)kd.push([d1,"1st spend",sp(p.B1),"ye"]);
-kd.push([end,TWO?"2nd spend":"Spend day",sp(p.B2),""],[dOf(sel*7+5),"KvK battle","Saturday after your spend","co"]);
+if(TWO)kd.push([d1,"1st spend",p.X?big(p.X)+", then spend":sp(p.B1),"ye"]);
+kd.push([end,TWO?"2nd spend":"Spend day",p.Y?big(p.Y)+", then spend":sp(p.B2),""],[dOf(sel*7+5),"KvK battle","Saturday after your spend","co"]);
 $("kdn").textContent=W.length+" weeks";
 $("kd").innerHTML=kd.map(([d,t,s,c])=>'<li class="'+c+'"><time>'+DW[d.getDay()]+'<b>'+fm(d)+'</b></time><div><b>'+t+'</b><span>'+s+'</span></div></li>').join("");
 cal(p)}
@@ -385,9 +403,9 @@ function miniCal(y,m,p){const pad=new Date(y,m,1).getDay(),nd=new Date(y,m+1,0).
 let h=DW.map(x=>'<b>'+x[0]+'</b>').join('');for(let i=0;i<pad;i++)h+=blank;
 for(let d=1;d<=nd;d++){const dt=new Date(y,m,d),dd=dn(dt),ds=dd-s0,dow=dt.getDay(),inP=ds>=0&&dd<=end,bt=ds==0||(dow==1&&ds>0),fst=TWO&&dd<=e1,B=fst?p.B1:p.B2;let k='c';
 if(inP)k+=' in'+(fst?' in1':'');if(ds==0)k+=' a';if(dd==end)k+=' z';if(dow==0||d==1)k+=' rs';if(dow==6||d==nd)k+=' re';if(ds<0||dd>end)k+=' off';if(dd==0)k+=' rl';if(ds==0&&dd!=0)k+=' st';if(dd==end)k+=' sel';if(dd==e1)k+=' sel1';
-h+='<div class="'+k+'"><span class="n">'+d+'</span><i class="m">'+(inP?'×'+(bt?B:1):'')+'</i></div>'}
+h+='<div class="'+k+'"><span class="n">'+d+'</span><i class="m">'+(inP?'×'+dayN(p,dd,ds,dow):'')+'</i></div>'}
 for(let i=(pad+nd)%7;i&&i<7;i++)h+=blank;return h}
-function summary(){const p=plan(),n=p.n,e1=sel1*7,d1=dOf(e1+pd),d2=dOf(sel*7+pd),RT=p.W.reduce((q,y)=>q+wkN(!TWO||y.s<=e1?p.B1:p.B2,y.n).tg,0),dif=TWO&&p.B1!=p.B2,g=document.querySelector('.srv[aria-pressed="true"]');
+function summary(){const p=plan(),n=p.n,e1=sel1*7,d1=dOf(e1+pd),d2=dOf(sel*7+pd),RT=p.W.reduce((q,y)=>q+wkRow(p,y).tg,0),dif=TWO&&p.B1!=p.B2,g=document.querySelector('.srv[aria-pressed="true"]');
 const lv=(X,b)=>Math.max(0,...[6,7,8].filter(l=>X.has(l+"-"+b))),row=(b,l,from)=>'<li><span>'+N[b]+'</span><span>'+(from?'<small>TG'+from+' → </small>':'')+'<b class="sm-lv">TG'+l+'</b></span></li>';
 const blk=(c,label,dt,rows,tt)=>'<div class="sm-p '+c+'"><h3><i class="pp '+c+'">'+label+'</i><span>'+DW[dt.getDay()]+', '+fm(dt)+', '+dt.getFullYear()+'</span></h3><ul class="sm-l">'+(rows.length?rows.join(""):'<li><small>Nothing set for this spend</small></li>')+'</ul><p class="note" style="margin-top:8px">Spends '+f(tt)+' TTG</p></div>';
 let lev;/* assumes every building starts at TG5 */
@@ -411,11 +429,11 @@ tick();setInterval(tick,1000);
 /* "Help me, I'm lazy!" presets. Buildings: 0 TC, 1 Embassy, 2 CC, 3 Infirmary, 4 Barracks, 5 Stable, 6 Range, 7 War Academy. Prerequisites are added automatically. */
 const TR=[0,4,5,6],ALL=[0,1,2,3,4,5,6,7];
 const PRESETS=[
-{k:"mid",pin:1,l1:"TG8 TC, Troops",s2:[[8,TR]],at:1},
+{k:"mid",pin:2,l1:"TG8 TC, Troops",s2:[[8,TR]],at:1},
 {k:"mid",l1:"TG7 TC, Troops, Command Center",l2:"TG8 TC, Troops, Command Center",s1:[[7,[0,2,4,5,6]]],s2:[[8,[0,2,4,5,6]]]},
 {k:"mid",l1:"TG7 TC, Troops, TG6 Command Center",l2:"TG8 TC, Troops, Command Center",s1:[[7,TR],[6,[2]]],s2:[[8,[0,2,4,5,6]]]},
 {k:"mid",l1:"TG7 TC, Troops",l2:"TG8 TC, Troops",s1:[[7,TR]],s2:[[8,TR]]},
-{k:"mid",l1:"Full TG7",l2:"Full TG8",s1:[[7,ALL]],s2:[[8,ALL]]},
+{k:"mid",pin:1,note:"Only possible with average luck. It isn’t attainable with shitty luck.",l1:"TG8 TC + Barracks, TG7 Stable + Range, TG6 CC",l2:"TG8 TC, Troops, Command Center",s1:[[8,[0,4]],[7,[5,6]],[6,[2]]],s2:[[8,[0,2,4,5,6]]]},
 {k:"f2p",l1:"TG6 TC, Troops",l2:"TG7 TC, Troops",s1:[[6,TR]],s2:[[7,TR]]},
 {k:"f2p",l1:"TG6 TC, Troops",s2:[[6,TR]],at:1},
 {k:"f2p",l2:"TG6 TC, Troops",s2:[[6,TR]]}];
@@ -423,16 +441,16 @@ let spend=null;try{spend=localStorage.getItem("tgSpend")}catch(e){}
 const SPEND={f2p:["F2P / low spend","Smaller goals that fit a lighter TG budget"],mid:["Mid spend +","Bigger TG7 and TG8 pushes"]};
 function presetSets(p){const a=new Set(),b=new Set(),add=(X,list)=>(list||[]).forEach(([l,bs])=>bs.forEach(x=>deps(l+"-"+x).forEach(k=>X.add(k))));add(a,p.s1);add(b,p.s2);a.forEach(k=>b.add(k));return{S:b,S1:a}}
 function applyState(p){const q=presetSets(p),p1=firstPrep();S.clear();q.S.forEach(k=>S.add(k));S1.clear();q.S1.forEach(k=>S1.add(k));TWO=!!p.s1;sel1=p1;sel=p.at==1?p1:p1+4}
-function evalPreset(p){const keep={S:[...S],S1:[...S1],TWO,sel,sel1};applyState(p);const r=plan(),e1=sel1*7,RT=r.W.reduce((q,y)=>q+wkN(!TWO||y.s<=e1?r.B1:r.B2,y.n).tg,0),cur=+$("cur").value||0,mx=TWO?null:cur+r.W.reduce((q,y)=>q+wkN(94,y.n)[r.m],0),out={tot:RT+r.n.tg,ok:r.ok&&(!TWO||r.ok1),B1:r.B1,B2:r.B2,two:TWO,d1:dOf(sel1*7+pd),d2:dOf(sel*7+pd),mx,need:r.n.tt};
+function evalPreset(p){const keep={S:[...S],S1:[...S1],TWO,sel,sel1};applyState(p);const r=plan(),e1=sel1*7,RT=r.W.reduce((q,y)=>q+wkRow(r,y).tg,0),cur=+$("cur").value||0,mx=TWO?null:cur+r.W.reduce((q,y)=>q+wkN(y.fin?100-pd:94,y.n)[r.m],0),out={tot:RT+r.n.tg,ok:r.ok&&(!TWO||r.ok1),B1:r.B1,B2:r.B2,two:TWO,d1:dOf(sel1*7+pd),d2:dOf(sel*7+pd),mx,need:r.n.tt};
 S.clear();keep.S.forEach(k=>S.add(k));S1.clear();keep.S1.forEach(k=>S1.add(k));TWO=keep.TWO;sel=keep.sel;sel1=keep.sel1;return out}
 function lazyList(){if($("app").hidden){$("lzb").innerHTML='<p class="note" style="margin:0 0 12px">Pick your server group first so the totals use the right dates.</p><div class="lz-g">'+[...document.querySelectorAll(".srv")].map(b=>'<button data-lg="'+b.dataset.g+'"><b>'+b.querySelector("b").textContent+'</b><span>'+b.querySelector("span small").textContent+'</span></button>').join("")+'</div>';return}
 $("lzs").textContent="Totals use your start date, "+DW[pd+1]+" prep day, current TTG and "+({av:"average luck",sh:"shitty luck",mn:"guaranteed"}[$("mode").value])+" setting. Pick one and the planner fills everything in.";
 if(!SPEND[spend]){$("lzb").innerHTML='<p class="lz-q">I’m more…</p><div class="lz-g lz-sp">'+Object.entries(SPEND).map(([k,[t,s]])=>'<button data-sp="'+k+'"><b>'+t+'</b><span>'+s+'</span></button>').join("")+'</div>';return}
 const seg='<div class="lz-sw"><span>I’m more</span><div class="seg2">'+Object.entries(SPEND).map(([k,[t]])=>'<button data-sp="'+k+'" aria-pressed="'+(k==spend)+'">'+t+'</button>').join("")+'</div></div>';
 const items=PRESETS.map((p,i)=>({p,i,r:evalPreset(p)})).filter(x=>x.p.k==spend).sort((a,b)=>(b.p.pin||0)-(a.p.pin||0)||(a.r.ok-b.r.ok)||(a.r.tot-b.r.tot));
-$("lzb").innerHTML=seg+'<ul class="lz-l">'+items.map(({p,i,r})=>{const ln=(n,t,d)=>t?'<b><i class="pp p'+n+'">'+(n==1?"1st":"2nd")+' Prep</i>'+t+'<small>'+fm(d)+'</small></b>':"",title=ln(1,p.l1,r.two||p.at==1?r.d1:r.d2)+ln(2,p.l2,r.d2);
-if(!r.ok)return'<li class="na"><div>'+title+'<div class="lz-why"><i>✕</i><span>Not possible. '+(r.mx!=null?'Even the max ×94 batch every week only reaches about <b>'+f(r.mx)+'</b> of the <b>'+f(r.need)+'</b> TTG needed by then.':'Even the max ×94 batch can’t reach these goals in time.')+'</span></div></div><div class="lz-r"><span class="lz-no">Not possible</span></div></li>';
-return'<li><div>'+title+'<div class="lz-st">'+(r.two?'<i>×'+r.B1+' → ×'+r.B2+' Monday batch</i>':'<i>×'+r.B1+' Monday batch</i>')+'</div></div><div class="lz-r"><strong>'+f(r.tot)+'</strong><small><img class="gi" src="truegold.png" alt="">TG needed in total</small><button data-p="'+i+'">Use this plan</button></div></li>'}).join("")+'</ul><p class="note">Totals include refining plus the upgrade costs. Prerequisites like the Embassy are included automatically.</p>'}
+$("lzb").innerHTML=seg+'<ul class="lz-l">'+items.map(({p,i,r})=>{const ln=(n,t,d)=>t?'<b><i class="pp p'+n+'">'+(n==1?"1st":"2nd")+' Prep</i>'+t+'<small>'+fm(d)+'</small></b>':"",title=ln(1,p.l1,r.two||p.at==1?r.d1:r.d2)+ln(2,p.l2,r.d2),nt=p.note?'<div class="lz-note"><i>!</i>'+p.note+'</div>':'';
+if(!r.ok)return'<li class="na"><div>'+title+nt+'<div class="lz-why"><i>✕</i><span>Not possible. '+(r.mx!=null?'Even the full weekly cap (×94 a week, up to ×100 on the spend Monday) only reaches about <b>'+f(r.mx)+'</b> of the <b>'+f(r.need)+'</b> TTG needed by then.':'Even the full weekly cap can’t reach these goals in time.')+'</span></div></div><div class="lz-r"><span class="lz-no">Not possible</span></div></li>';
+return'<li><div>'+title+nt+'<div class="lz-st">'+(r.two?'<i>×'+r.B1+' → ×'+r.B2+' Monday batch</i>':'<i>×'+r.B1+' Monday batch</i>')+'</div></div><div class="lz-r"><strong>'+f(r.tot)+'</strong><small><img class="gi" src="truegold.png" alt="">TG needed in total</small><button data-p="'+i+'">Use this plan</button></div></li>'}).join("")+'</ul><p class="note">Totals include refining plus the upgrade costs. Prerequisites like the Embassy are included automatically.</p>'}
 $("lazy").onclick=()=>{lazyList();$("lz").showModal()};
 $("lzx").onclick=()=>$("lz").close();
 $("lz").onclick=e=>{if(e.target==$("lz")){const r=$("lz").getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom){$("lz").close();return}}const g=e.target.closest("[data-lg]");if(g){document.querySelector('.srv[data-g="'+g.dataset.lg+'"]').click();lazyList();return}
